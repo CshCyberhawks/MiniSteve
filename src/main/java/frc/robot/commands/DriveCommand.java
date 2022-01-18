@@ -34,8 +34,8 @@ public class DriveCommand extends CommandBase {
       double forwardSpeed = IO.getJoystickForward();
       double turnSpeed = IO.getJoystickTurn();
 
-      double leftSpeed = -MathUtil.clamp(forwardSpeed + (turnSpeed * .5), -1, 1);
-      double rightSpeed = MathUtil.clamp(forwardSpeed - (turnSpeed * .5), -1, 1);
+      double leftSpeed = -MathUtil.clamp(forwardSpeed - (turnSpeed * .5), -1, 1);
+      double rightSpeed = MathUtil.clamp(forwardSpeed + (turnSpeed * .5), -1, 1);
       driveSystem.setSpeed(leftSpeed, rightSpeed);
     }
   
