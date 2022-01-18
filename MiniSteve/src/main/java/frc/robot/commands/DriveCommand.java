@@ -2,7 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSystem;
-import frc.robot.util.io;
+import frc.robot.util.IO;
 import edu.wpi.first.math.MathUtil;
 
 
@@ -20,12 +20,6 @@ public class DriveCommand extends CommandBase {
       // Use addRequirements() here to declare subsystem dependencies.
       addRequirements(subsystem);
     }
-  
-    public void drive(double zInput, double yInput) {
-        double leftSpeed = -MathUtil.clamp(yInput + (zInput * .5), -1, 1);
-        double rightSpeed = MathUtil.clamp(yInput - (zInput * .5), -1, 1);
-        driveSystem.setSpeed(leftSpeed, rightSpeed);
-    }
 
     // Called when the command is initially scheduled.
     @Override
@@ -37,7 +31,12 @@ public class DriveCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        drive(-io.getZ(), -io.getY());
+      double forwardSpeed = IO.getJoystickForward();
+      double turnSpeed = IO.getJoystickTurn();
+
+      double leftSpeed = -MathUtil.clamp(forwardSpeed + (turnSpeed * .5), -1, 1);
+      double rightSpeed = MathUtil.clamp(forwardSpeed - (turnSpeed * .5), -1, 1);
+      driveSystem.setSpeed(leftSpeed, rightSpeed);
     }
   
     // Called once the command ends or is interrupted.

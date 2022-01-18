@@ -2,14 +2,14 @@ package frc.robot.util;
 import edu.wpi.first.wpilibj.Joystick;
 
 
-public class io {
+public class IO {
     private static Joystick joystick = new Joystick(0);
 
-    public static double getZ() {
+    public static double getJoystickForward() {
         return joystick.getZ();
     }
 
-    public static double getY() {
+    public static double getJoystickTurn() {
         return joystick.getY();
     }
 
