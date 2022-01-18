@@ -5,12 +5,12 @@ import edu.wpi.first.wpilibj.Joystick;
 public class IO {
     private static Joystick joystick = new Joystick(0);
 
-    public static double getJoystickForward() {
-        return -joystick.getZ();
+    public static double getY() {
+        return Math.abs(joystick.getY()) > 0.05 ? joystick.getY() : 0;
     }
 
-    public static double getJoystickTurn() {
-        return joystick.getY();
+    public static double getZ() {
+        return Math.abs(joystick.getZ()) > 0.05 ? joystick.getZ() : 0;
     }
 
 }

@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -17,10 +18,12 @@ public class DriveSystem extends SubsystemBase {
 
 
     public void setSpeed(double leftSpeed, double rightSpeed) {
-        leftBackMotor.set(ControlMode.PercentOutput, rightSpeed);
-        leftFrontMotor.set(ControlMode.PercentOutput, rightSpeed);
-        rightBackMotor.set(ControlMode.PercentOutput, leftSpeed);
-        rightFrontMotor.set(ControlMode.PercentOutput, leftSpeed);
+        leftBackMotor.set(ControlMode.PercentOutput, -leftSpeed);
+        leftFrontMotor.set(ControlMode.PercentOutput, -leftSpeed);
+        rightBackMotor.set(ControlMode.PercentOutput, rightSpeed);
+        rightFrontMotor.set(ControlMode.PercentOutput, rightSpeed);
+        SmartDashboard.putNumber("Left Motor", -leftSpeed);
+        SmartDashboard.putNumber("Right Motor", rightSpeed);
     }
 
 
