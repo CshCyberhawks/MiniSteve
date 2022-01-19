@@ -10,6 +10,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSystem;
+import frc.robot.commands.SwerveCommand;
+import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.commands.SwerveCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -18,9 +21,8 @@ import frc.robot.subsystems.DriveSystem;
  * project.
  */
 public class Robot extends TimedRobot {
-
-
-  private DriveSystem driveSystem;
+  // private DriveSystem driveSystem;
+  public SwerveSubsystem swerveSystem;
 
   private Command m_autonomousCommand;
 
@@ -35,8 +37,10 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    driveSystem = new DriveSystem();
-    CameraServer.startAutomaticCapture();
+ 
+    //driveSystem = new DriveSystem();
+    swerveSystem = new SwerveSubsystem();
+    //CameraServer.startAutomaticCapture();
   }
 
   /**
@@ -65,9 +69,6 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-
-    
-    
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -84,7 +85,8 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
 
 
-    driveSystem.setDefaultCommand(new DriveCommand(driveSystem));
+    // driveSystem.setDefaultCommand(new DriveCommand(driveSystem));
+    swerveSystem.setDefaultCommand(new SwerveCommand(swerveSystem));
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
