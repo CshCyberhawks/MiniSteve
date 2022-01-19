@@ -22,6 +22,7 @@ public class SwerveSubsystem extends SubsystemBase {
    private Translation2d motorFrontRightLocation = new Translation2d(motorDist, -motorDist);
    private Translation2d motorBackLeftLocation = new Translation2d(-motorDist, motorDist);
    private Translation2d motorBackRightLocation = new Translation2d(-motorDist, -motorDist);
+
    AHRS gyro = new AHRS(SPI.Port.kMXP);
    
    private SwerveDriveKinematics swerveDriveKinematics = new SwerveDriveKinematics(motorFrontLeftLocation, motorFrontRightLocation, motorBackLeftLocation, motorBackRightLocation);
@@ -36,8 +37,8 @@ public class SwerveSubsystem extends SubsystemBase {
        
    }
 
-@Override
-public void periodic() {
+  @Override
+  public void periodic() {
     // This method will be called once per scheduler run
     ChassisSpeeds chassisSpeed = new ChassisSpeeds(velocityX, velocityY, omega);
     SwerveDriveOdometry swerveDriveOdometry = new SwerveDriveOdometry(swerveDriveKinematics, getGyroHeading(), new Pose2d(distanceX, distanceY, new Rotation2d())); //Placeholder 
@@ -51,6 +52,15 @@ public void periodic() {
     
     Rotation2d gyroAngle = Rotation2d.fromDegrees(-gyro.getAngle());
     Pose2d swerveDriveUpdate = swerveDriveOdometry.update(gyroAngle, frontLeftMotorState, frontRightMotorState, backRightMotorState);
+
+    
+
+  }
+
+  public void setVelocities(double inputX, double inputY, double inputOmega) {
+    velocityX = inputX;
+    velocityY = inputY;
+    omega = inputOmega;
   }
 
   @Override
