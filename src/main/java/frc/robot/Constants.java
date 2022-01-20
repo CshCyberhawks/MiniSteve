@@ -20,8 +20,14 @@ public final class Constants {
     public static final int backLeftTurnMotor = 2;
 
     //CANSparkMax Motors
-    public static final int frontRightDriveMotor = 7;    
+    public static final int frontRightDriveMotor = 9;    
     public static final int frontLeftDriveMotor = 6;    
-    public static final int backRightDriveMotor = 8;    
-    public static final int backLeftDriveMotor = 9;
+    public static final int backRightDriveMotor = 7;    
+    public static final int backLeftDriveMotor = 8;
+
+    //Encoders
+    public static final int frontRightEncoder = 1;
+    public static final int frontLeftEncoder = 0;
+    public static final int backRightEncoder = 2;
+    public static final int backLeftEncoder = 3;
 }

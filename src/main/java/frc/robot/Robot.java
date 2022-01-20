@@ -8,10 +8,9 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.DriveCommand;
-import frc.robot.subsystems.DriveSystem;
+import frc.robot.subsystems.SwerveDriveTrain;
 import frc.robot.commands.SwerveCommand;
-import frc.robot.subsystems.SwerveSubsystem;
+//import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.commands.SwerveCommand;
 
 /**
@@ -22,7 +21,7 @@ import frc.robot.commands.SwerveCommand;
  */
 public class Robot extends TimedRobot {
   // private DriveSystem driveSystem;
-  public SwerveSubsystem swerveSystem;
+  public SwerveDriveTrain swerveSystem;
 
   private Command m_autonomousCommand;
 
@@ -39,7 +38,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
  
     //driveSystem = new DriveSystem();
-    swerveSystem = new SwerveSubsystem();
+    swerveSystem = new SwerveDriveTrain();
     //CameraServer.startAutomaticCapture();
   }
 

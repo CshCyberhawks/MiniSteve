@@ -5,7 +5,7 @@
 // https://www.kauailabs.com/dist/frc/2022/navx_frc.json
 
 package frc.robot.subsystems;
-
+/*
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class SwerveSubsystem extends SubsystemBase {
   
-   public static final double motorDist = .745; //745cm
+   public static final double motorDist = .53; //53cm
 
    private Translation2d motorFrontLeftLocation = new Translation2d(motorDist, motorDist);
    private Translation2d motorFrontRightLocation = new Translation2d(motorDist, -motorDist);
@@ -67,4 +67,4 @@ public class SwerveSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
-}
+}*/
