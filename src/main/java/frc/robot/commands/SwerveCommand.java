@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import frc.robot.util.IO;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveDriveTrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
