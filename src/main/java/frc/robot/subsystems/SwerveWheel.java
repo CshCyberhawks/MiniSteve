@@ -53,7 +53,7 @@ public class SwerveWheel extends SubsystemBase{
         SwerveModuleState desiredState = SwerveModuleState.optimize(_desiredState, new Rotation2d(turnEncoder.getAngle()));
 
         double turnOutput = turnPID.calculate(turnEncoder.getAngle(), desiredState.angle.getDegrees());
-        double driveOutput = turnPID.calculate(driveEncoder.getVelocity(), desiredState.speedMetersPerSecond);
+        double driveOutput = drivePID.calculate(driveEncoder.getVelocity(), desiredState.speedMetersPerSecond);
 
         driveMotor.setVoltage(driveOutput);
         turnMotor.set(ControlMode.Current, turnOutput);
