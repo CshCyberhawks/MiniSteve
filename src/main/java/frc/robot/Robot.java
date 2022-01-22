@@ -4,12 +4,15 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.DriveCommand;
-import frc.robot.subsystems.DriveSystem;
+// import frc.robot.commands.DriveCommand;
+// import frc.robot.subsystems.DriveSystem;
 import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.commands.SwerveCommand;
@@ -86,7 +89,7 @@ public class Robot extends TimedRobot {
 
 
     // driveSystem.setDefaultCommand(new DriveCommand(driveSystem));
-    swerveSystem.setDefaultCommand(new SwerveCommand(swerveSystem));
+    // swerveSystem.setDefaultCommand(new SwerveCommand(swerveSystem));
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -101,10 +104,14 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {}
 
+  private CANSparkMax motor = new CANSparkMax(9, MotorType.kBrushless);
+
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+
+    motor.set(0.5);
   }
 
   /** This function is called periodically during test mode. */

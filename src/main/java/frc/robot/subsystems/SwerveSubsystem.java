@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class SwerveSubsystem extends SubsystemBase {
   
-   public static final double motorDist = .745; //745cm
+   public static final double motorDist = .53; //53cm
 
    private Translation2d motorFrontLeftLocation = new Translation2d(motorDist, motorDist);
    private Translation2d motorFrontRightLocation = new Translation2d(motorDist, -motorDist);
@@ -31,7 +31,7 @@ public class SwerveSubsystem extends SubsystemBase {
    private double velocityY = 1;
    private double distanceX; //Dim of field X
    private double distanceY; //Dim of field Y
-   private double omega = 0; //Rotation aka theta (radians)
+   private double theta = 0; //Rotation aka theta (radians)
    
    public SwerveSubsystem() {
        
@@ -40,8 +40,8 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    ChassisSpeeds chassisSpeed = new ChassisSpeeds(velocityX, velocityY, omega);
-    SwerveDriveOdometry swerveDriveOdometry = new SwerveDriveOdometry(swerveDriveKinematics, getGyroHeading(), new Pose2d(distanceX, distanceY, new Rotation2d())); //Placeholder 
+    ChassisSpeeds chassisSpeed = new ChassisSpeeds(velocityX, velocityY, theta);
+    // SwerveDriveOdometry swerveDriveOdometry = new SwerveDriveOdometry(swerveDriveKinematics, getGyroHeading(), new Pose2d(distanceX, distanceY, new Rotation2d())); //Placeholder 
     
     SwerveModuleState[] swerveStates = swerveDriveKinematics.toSwerveModuleStates(chassisSpeed);
 
@@ -51,16 +51,16 @@ public class SwerveSubsystem extends SubsystemBase {
     SwerveModuleState backRightMotorState = swerveStates[3];
     
     Rotation2d gyroAngle = Rotation2d.fromDegrees(-gyro.getAngle());
-    Pose2d swerveDriveUpdate = swerveDriveOdometry.update(gyroAngle, frontLeftMotorState, frontRightMotorState, backRightMotorState);
+    // Pose2d swerveDriveUpdate = swerveDriveOdometry.update(gyroAngle, frontLeftMotorState, frontRightMotorState, backRightMotorState);
 
     
 
   }
 
-  public void setVelocities(double inputX, double inputY, double inputOmega) {
+  public void setVelocities(double inputX, double inputY, double inputTheta) {
     velocityX = inputX;
     velocityY = inputY;
-    omega = inputOmega;
+    theta = inputTheta;
   }
 
   @Override
