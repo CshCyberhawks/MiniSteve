@@ -14,7 +14,7 @@ public class TurnEncoder {
     public TurnEncoder(int port) {
         encoder = new AnalogInput(port);
         encoderPort = port;
-        filter = LinearFilter.movingAverage(500);
+        filter = LinearFilter.movingAverage(1000);
     }
 
     private double voltageToDegrees(double input) {
@@ -22,6 +22,6 @@ public class TurnEncoder {
     }
 
     public double getAngle() {
-        return filter.calculate(voltageToDegrees(encoder.getVoltage()) - Constants.turnEncoderOffsets[encoderPort]);
+        return (double)Math.floor(filter.calculate(voltageToDegrees(encoder.getVoltage()) - Constants.turnEncoderOffsets[encoderPort]) * 10d) / 10d;
     }
 }

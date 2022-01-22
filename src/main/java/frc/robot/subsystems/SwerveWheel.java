@@ -26,7 +26,7 @@ public class SwerveWheel extends SubsystemBase{
     private int m_turnEncoderPort;
     private int m_drivePort;
 
-    private PIDController turnPID = new PIDController(1, 0, 0);
+    private PIDController turnPID = new PIDController(.40, 0, 0);
 
     private PIDController drivePID = new PIDController(1, 0, 0);
 
