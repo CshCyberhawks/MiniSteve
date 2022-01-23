@@ -14,7 +14,6 @@ public class Gyro {
 
     public Gyro() {
         gyro = new AHRS(SPI.Port.kMXP);
-        gyro.calibrate();
         Shuffleboard.getTab("SmartDashboard").add(gyro);
         filter = LinearFilter.movingAverage(2);
     }
@@ -24,7 +23,8 @@ public class Gyro {
     }
 
     public double getAngle() {
-        return gyro.getPitch();
+        return wrapAroundAngles(gyro.getYaw());
+        // return gyro.getYaw();
     }
 
     public boolean isConnected() {
@@ -32,7 +32,6 @@ public class Gyro {
     }
 
     public void reset() {
-        // gyro.calibrate();
         gyro.reset();
     }
 }

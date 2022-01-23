@@ -20,7 +20,7 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class OldSwerveWheel extends SubsystemBase {
-/*
+
     private TalonSRX turnMotor;
     private CANSparkMax driveMotor;
     private RelativeEncoder driveEncoder;
@@ -51,7 +51,7 @@ public class OldSwerveWheel extends SubsystemBase {
     
     public SwerveModuleState getState() {
 
-        SwerveModuleState swerveModuleState = new SwerveModuleState(driveEncoder.getVelocity(), new Rotation2d(turnEncoder.getAngle()));
+        SwerveModuleState swerveModuleState = new SwerveModuleState(driveEncoder.getVelocity(), new Rotation2d(turnEncoder.get()));
         return swerveModuleState;
     }
 
@@ -78,7 +78,7 @@ public class OldSwerveWheel extends SubsystemBase {
            
     }
     public void setState(SwerveModuleState desiredState) {
-        double encoderAngle = turnEncoder.getAngle();
+        double encoderAngle = turnEncoder.get();
 
         SwerveModuleState _desiredState = SwerveModuleState.optimize(desiredState, new Rotation2d(encoderAngle * (Math.PI / 180)));
         
@@ -112,5 +112,5 @@ public class OldSwerveWheel extends SubsystemBase {
         turnMotor.set(ControlMode.PercentOutput, turnOutput);
         SmartDashboard.putNumber(m_turnEncoderPort + " wheel turn: ", turnOutput);
         SmartDashboard.putNumber(m_turnEncoderPort + " Drive", driveOutput);
-    }*/
+    }
 }

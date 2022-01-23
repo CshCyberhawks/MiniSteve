@@ -1,9 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
 
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
-// https://www.kauailabs.com/dist/frc/2022/navx_frc.json
 
 // package frc.robot.subsystems;
 
@@ -41,7 +36,7 @@
 //   @Override
 //   public void periodic() {
 //     // This method will be called once per scheduler run
-//     ChassisSpeeds chassisSpeed = new ChassisSpeeds(velocityX, velocityY, theta);
+//     ChassisSpeeds chassisSpeed = ChassisSpeeds.fromFieldRelativeSpeeds(velocityX, velocityY, theta, gyro.getRotation2d());
 //     // SwerveDriveOdometry swerveDriveOdometry = new SwerveDriveOdometry(swerveDriveKinematics, getGyroHeading(), new Pose2d(distanceX, distanceY, new Rotation2d())); //Placeholder 
     
 //     SwerveModuleState[] swerveStates = swerveDriveKinematics.toSwerveModuleStates(chassisSpeed);
@@ -58,7 +53,7 @@
 
 //   }
 
- //  public void setVelocities(double inputX, double inputY, double inputTheta) {
+//   public void setVelocities(double inputX, double inputY, double inputTheta) {
 //     velocityX = inputX;
 //     velocityY = inputY;
 //     theta = inputTheta;
@@ -69,4 +64,4 @@
 //   public void simulationPeriodic() {
 //     // This method will be called once per scheduler run during simulation
 //   }
-//}
+// }

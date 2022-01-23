@@ -20,7 +20,6 @@ public class SwerveDriveTrain {
          backRight = new SwerveWheel(Constants.backRightTurnMotor, Constants.backRightDriveMotor, Constants.backRightEncoder);
          frontLeft = new SwerveWheel(Constants.frontLeftTurnMotor, Constants.frontLeftDriveMotor, Constants.frontLeftEncoder);
          frontRight = new SwerveWheel(Constants.frontRightTurnMotor, Constants.frontRightDriveMotor, Constants.frontRightEncoder);
-        //  gyro.reset();
     }        
 
     public void drive(double x, double y, double theta) {
@@ -40,10 +39,10 @@ public class SwerveDriveTrain {
         double frontRightSpeed = Math.sqrt((b * b) + (d * d));
         double frontLeftSpeed = Math.sqrt((b * b) + (c * c));
 
-        double backRightAngle = ((Math.atan2(a, d) / Math.PI) * 180);// - gyroAngle;
-        double backLeftAngle = ((Math.atan2(a, c) / Math.PI) * 180);// - gyroAngle;
-        double frontRightAngle = ((Math.atan2(b, d) / Math.PI) * 180);// - gyroAngle;
-        double frontLeftAngle = ((Math.atan2(b, c) / Math.PI) * 180);// - gyroAngle;
+        double backRightAngle = ((Math.atan2(a, d) / Math.PI) * 180);
+        double backLeftAngle = ((Math.atan2(a, c) / Math.PI) * 180);
+        double frontRightAngle = ((Math.atan2(b, d) / Math.PI) * 180);
+        double frontLeftAngle = ((Math.atan2(b, c) / Math.PI) * 180);
 
         backRight.drive(backRightSpeed, backRightAngle);
         backLeft.drive(-backLeftSpeed, backLeftAngle);
