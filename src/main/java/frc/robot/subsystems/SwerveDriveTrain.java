@@ -1,6 +1,10 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+import frc.robot.util.Gyro;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 public class SwerveDriveTrain {
     //https://jacobmisirian.gitbooks.io/frc-swerve-drive-programming/content/chapter1.html
@@ -8,41 +12,42 @@ public class SwerveDriveTrain {
     private SwerveWheel backRight;
     private SwerveWheel frontLeft;
     private SwerveWheel frontRight;
+    private Gyro gyro;
 
-
-
-    public SwerveDriveTrain()
-     {
+    public SwerveDriveTrain() {
+         gyro = new Gyro();
          backLeft = new SwerveWheel(Constants.backLeftTurnMotor, Constants.backLeftDriveMotor, Constants.backLeftEncoder);
          backRight = new SwerveWheel(Constants.backRightTurnMotor, Constants.backRightDriveMotor, Constants.backRightEncoder);
          frontLeft = new SwerveWheel(Constants.frontLeftTurnMotor, Constants.frontLeftDriveMotor, Constants.frontLeftEncoder);
          frontRight = new SwerveWheel(Constants.frontRightTurnMotor, Constants.frontRightDriveMotor, Constants.frontRightEncoder);
+        //  gyro.reset();
     }        
 
-    public void drive(double x, double y, double theta)
-    {
-        double length = 0.53; 
-        double r = Math.sqrt((length*length) + (length * length));
+    public void drive(double x, double y, double theta) {
+        double gyroAngle = gyro.getAngle();
+        SmartDashboard.putNumber("gyro val", gyroAngle);
+        SmartDashboard.putBoolean("gyro connected", gyro.isConnected());
+
+        double r = Math.sqrt((Constants.length * Constants.length) + (Constants.length * Constants.length));
  
-        double a = x - theta / (length / r);
-        double b = x + theta / (length / r);
-        double c = y - theta / (length / r);
-        double d = y + theta / (length / r);
+        double a = x - theta * (Constants.length / r);
+        double b = x + theta * (Constants.length / r);
+        double c = y - theta * (Constants.length / r);
+        double d = y + theta * (Constants.length / r);
 
-        double backRightSpeed = Math.sqrt((a * a) + (d*d));
-        double backLeftSpeed = Math.sqrt((a * a) + (c *c));
-        double frontRightSpeed = Math.sqrt((b*b) + (d*d));
-        double frontLeftSpeed = Math.sqrt((b*b) + (c*c));
+        double backRightSpeed = Math.sqrt((a * a) + (d * d));
+        double backLeftSpeed = Math.sqrt((a * a) + (c * c));
+        double frontRightSpeed = Math.sqrt((b * b) + (d * d));
+        double frontLeftSpeed = Math.sqrt((b * b) + (c * c));
 
-        double backRightAngle = Math.atan2(a, d) / Math.PI;
-        double backLeftAngle = Math.atan2(a, c) / Math.PI;
-        double frontRightAngle = Math.atan2(b, d) / Math.PI;
-        double frontLeftAngle = Math.atan2(b, c) / Math.PI;
+        double backRightAngle = ((Math.atan2(a, d) / Math.PI) * 180);// - gyroAngle;
+        double backLeftAngle = ((Math.atan2(a, c) / Math.PI) * 180);// - gyroAngle;
+        double frontRightAngle = ((Math.atan2(b, d) / Math.PI) * 180);// - gyroAngle;
+        double frontLeftAngle = ((Math.atan2(b, c) / Math.PI) * 180);// - gyroAngle;
 
         backRight.drive(backRightSpeed, backRightAngle);
-        backLeft.drive(backLeftSpeed, backLeftAngle);
+        backLeft.drive(-backLeftSpeed, backLeftAngle);
         frontRight.drive(frontRightSpeed, frontRightAngle);
-        frontLeft.drive(frontLeftSpeed,frontLeftAngle);
+        frontLeft.drive(-frontLeftSpeed,frontLeftAngle);
      }
-    
 }

@@ -38,5 +38,5 @@ public final class Constants {
     public static final int backRightEncoder = 2;
     public static final int backLeftEncoder = 3;
 
-    public static final double[] turnEncoderOffsets = {345, 252, 256, 5};
+    public static final double[] turnEncoderOffsets = {345, 260.4, 255, 8};
 }

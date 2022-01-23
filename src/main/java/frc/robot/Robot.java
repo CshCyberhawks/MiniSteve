@@ -4,10 +4,6 @@
 
 package frc.robot;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -25,8 +21,8 @@ public class Robot extends TimedRobot {
   // private DriveSystem driveSystem;
   private Command m_autonomousCommand;
 
-  private SwerveDriveTrain swerveSystem = new SwerveDriveTrain();
-  private RobotContainer m_robotContainer;
+  private SwerveDriveTrain swerveSystem;
+  // private RobotContainer m_robotContainer;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -36,7 +32,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    // m_robotContainer = new RobotContainer();
  
     //driveSystem = new DriveSystem();
     //CameraServer.startAutomaticCapture();
@@ -82,7 +78,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-
+    swerveSystem = new SwerveDriveTrain();
 
     // driveSystem.setDefaultCommand(new DriveCommand(driveSystem));
 
@@ -98,7 +94,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    swerveSystem.drive(IO.getJoyZ(), IO.getJoyY(), IO.getJoyTwist());
+    swerveSystem.drive(-IO.getJoyX(), -IO.getJoyY(), -IO.getJoyTwist());
   }
   @Override
   public void testInit() {
