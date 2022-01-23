@@ -69,7 +69,7 @@ public class SwerveWheel {
         SmartDashboard.putNumber(m_turnEncoderPort + " angle input", angle);
         SmartDashboard.putNumber(m_turnEncoderPort + " speed input", speed);
         double currentDriveSpeed = convertCentiMeterSecond(speed);
-        double turnValue = turnEncoder.get() / 5;
+        double turnValue = turnEncoder.get();
         SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", turnValue);
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
 
