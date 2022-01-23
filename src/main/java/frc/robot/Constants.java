@@ -25,6 +25,13 @@ public final class Constants {
     public static final int backRightDriveMotor = 7;    
     public static final int backLeftDriveMotor = 8;
 
+    //Dimensions
+    public static final double length = .53;
+    public static final double width = .53;
+    
+    //Capacities
+    public static final double maxVolts = 4.85; 
+
     //Encoders
     public static final int frontRightEncoder = 1;
     public static final int frontLeftEncoder = 0;

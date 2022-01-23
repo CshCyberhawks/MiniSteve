@@ -5,9 +5,10 @@ import edu.wpi.first.wpilibj.XboxController;
 
 public class IO {
     private static Joystick joystick = new Joystick(0);
+    
     private static XboxController xbox = new XboxController(1);
 
-    private static double deadzone = 0.1;
+    private static double deadzone = 0.3;
 
     public static double getJoyY() {
         return Math.abs(joystick.getY()) > deadzone ? joystick.getY() : 0;
@@ -16,6 +17,10 @@ public class IO {
     public static double getJoyZ() {
         return Math.abs(joystick.getZ()) > deadzone ? joystick.getZ() : 0;
     }
+   public static double getJoyTwist()
+   {
+       return Math.abs(joystick.getTwist()) > deadzone ? joystick.getTwist() : 0;
+   }
 
     public static double getXboxLeftY() {
         return Math.abs(xbox.getLeftY()) > deadzone ? xbox.getLeftY() : 0;

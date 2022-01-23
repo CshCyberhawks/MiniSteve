@@ -1,14 +1,16 @@
 package frc.robot.subsystems;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.TurnEncoder;
 
 import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.CAN;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 //leaving the below imports to remember that profiledPIDControllers exist, and that feedforwards exist in case we need to use them
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -19,23 +21,24 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SwerveWheel extends SubsystemBase {
 
+public class SwerveWheel {
     private TalonSRX turnMotor;
     private CANSparkMax driveMotor;
+
     private RelativeEncoder driveEncoder;
     private TurnEncoder turnEncoder;
+
     private int m_turnEncoderPort;
     private int m_drivePort;
+    //
+    private PIDController turnPidController;
 
-    private PIDController turnPID = new PIDController(.02, 0, 0);
-
-    private PIDController drivePID = new PIDController(.02, 0, 0);
-
-    // Can use wpilib encoder class for turning encoder bc they are wired into robo rio
-    // need to use revrobotics encoders for neo encoders because they are wired into sparkmax motor controllers
+    private PIDController drivePidController;
+    private SimpleMotorFeedforward driveFeedforward;
 
     public SwerveWheel(int turnPort, int drivePort, int turnEncoderPort) {
+
         turnMotor = new TalonSRX(turnPort);
         driveMotor = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless);
         
@@ -45,72 +48,39 @@ public class SwerveWheel extends SubsystemBase {
         m_turnEncoderPort = turnEncoderPort;
         m_drivePort = drivePort;
 
-        turnPID.setTolerance(3);
-        turnPID.enableContinuousInput(-180, 180);
-    }
-    
-    public SwerveModuleState getState() {
+        turnPidController = new PIDController(10, 0, 0);
+        turnPidController.enableContinuousInput(-1,  1);
 
-        SwerveModuleState swerveModuleState = new SwerveModuleState(driveEncoder.getVelocity(), new Rotation2d(turnEncoder.getAngle()));
-        return swerveModuleState;
+        drivePidController = new PIDController(.01, 0, 0);
+        driveFeedforward = new SimpleMotorFeedforward(.1, 473);
     }
 
-    private double wrapAroundAngles(double input) {
-        return input < 0 ? 360 + input : input;
-    }
-    
-    private double optimize(double currentState, double setPoint) {
-        double add = wrapAroundAngles(setPoint) - wrapAroundAngles(currentState); //350
-        double subtract = -360 + add; //-10
-        if (Math.abs(add) <= Math.abs(subtract)) {
-            return add;
-        } 
-        else {
-            return subtract;
-        }
-    }
-    public double convertMeterSecond(double rpm)
+
+    public double convertCentiMeterSecond(double rpm)
     {
         double diameter = 0.00101;//101 millimeters
-        return (rpm / 7) * ((Math.PI * diameter) / 60);
+        return ((rpm / 7) * ((Math.PI * diameter) / 60)) / 100;
     
         // 7:1 (Motor to wheel)
            
     }
-    public void setState(SwerveModuleState desiredState) {
-        double encoderAngle = turnEncoder.getAngle();
 
-        SwerveModuleState _desiredState = SwerveModuleState.optimize(desiredState, new Rotation2d(encoderAngle * (Math.PI / 180)));
+    public void drive(double speed, double angle) {
+        SmartDashboard.putNumber(m_turnEncoderPort + " angle input", angle);
+        SmartDashboard.putNumber(m_turnEncoderPort + " speed input", speed);
+        double currentDriveSpeed = convertCentiMeterSecond(speed);
+        double turnValue = turnEncoder.get() / 5;
+        SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", turnValue);
+        double turnPIDOutput = turnPidController.calculate(turnValue, angle);
+
+        double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, speed);
+        double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed, speed);
+
+        SmartDashboard.putNumber(m_turnEncoderPort + " drive set", drivePIDOutput + driveFeedForwardOutput);
+        SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
+
+        //driveMotor.set(drivePIDOutput + driveFeedForwardOutput);
+        turnMotor.set(ControlMode.PercentOutput, turnPIDOutput);
         
-        double setPoint = optimize(encoderAngle, desiredState.angle.getDegrees());
-        // SwerveModuleState desiredState = _desiredState;
-
-        double turnOutput = turnPID.calculate(encoderAngle, desiredState.angle.getDegrees());
-        SmartDashboard.putNumber(m_turnEncoderPort + "current velo drive: ", convertMeterSecond(driveEncoder.getVelocity()));
-        SmartDashboard.putNumber(m_turnEncoderPort + "desired drive: ", desiredState.speedMetersPerSecond);
-
-        SmartDashboard.putNumber(m_turnEncoderPort + " current angle: ", encoderAngle);
-
-        double driveOutput = drivePID.calculate(convertMeterSecond(driveEncoder.getVelocity()), desiredState.speedMetersPerSecond);
-
-        if (driveOutput > 0) {
-            if (m_drivePort == 6 || m_drivePort == 8) {
-                driveMotor.set(-driveOutput);
-            }
-            else {
-                driveMotor.set(driveOutput);
-            }
-        } else {
-            if (m_drivePort == 7 || m_drivePort == 9) {
-                driveMotor.set(-driveOutput);
-            }
-            else {
-                driveMotor.set(driveOutput);
-            }
-        }
-
-        turnMotor.set(ControlMode.PercentOutput, turnOutput);
-        SmartDashboard.putNumber(m_turnEncoderPort + " wheel turn: ", turnOutput);
-        SmartDashboard.putNumber(m_turnEncoderPort + " Drive", driveOutput);
     }
 }

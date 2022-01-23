@@ -12,9 +12,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.SwerveDriveTrain;
-import frc.robot.commands.SwerveCommand;
 //import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.commands.SwerveCommand;
+import frc.robot.util.IO;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -24,10 +23,9 @@ import frc.robot.commands.SwerveCommand;
  */
 public class Robot extends TimedRobot {
   // private DriveSystem driveSystem;
-  public SwerveDriveTrain swerveSystem;
-
   private Command m_autonomousCommand;
 
+  private SwerveDriveTrain swerveSystem = new SwerveDriveTrain();
   private RobotContainer m_robotContainer;
 
   /**
@@ -41,7 +39,6 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
  
     //driveSystem = new DriveSystem();
-    swerveSystem = new SwerveDriveTrain();
     //CameraServer.startAutomaticCapture();
   }
 
@@ -88,7 +85,6 @@ public class Robot extends TimedRobot {
 
 
     // driveSystem.setDefaultCommand(new DriveCommand(driveSystem));
-    swerveSystem.setDefaultCommand(new SwerveCommand(swerveSystem));
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -101,7 +97,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    swerveSystem.drive(IO.getJoyZ(), IO.getJoyY(), IO.getJoyTwist());
+  }
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
