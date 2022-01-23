@@ -13,7 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class SwerveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
     private final SwerveDriveTrain swerveDriveTrain;
-
+    private double maxWheelSpeed = 10;
+    private double maxAngularSpeed = 360;
   /**
    * Creates a new ExampleCommand.
    *
@@ -32,7 +33,7 @@ public class SwerveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    swerveDriveTrain.setVelocities(-IO.getXboxLeftX(), -IO.getXboxLeftY(), -IO.getXboxRightX());
+    swerveDriveTrain.setVelocities(-(IO.getXboxLeftY() * maxWheelSpeed), -(IO.getXboxLeftX() * maxWheelSpeed), -(IO.getXboxRightX() * maxAngularSpeed));
   }
 
   // Called once the command ends or is interrupted.
