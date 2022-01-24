@@ -26,7 +26,6 @@ public class SwerveDriveTrain {
         SmartDashboard.putNumber("gyro val", gyroAngle);
         SmartDashboard.putBoolean("gyro connected", gyro.isConnected());
 
-        //below is code we added to make it field oriented - this is "inspired" by wpilib fromFieldRelativeSpeeds
         double x = inputX * Math.cos(gyroAngle) + inputY * Math.sin(gyroAngle);
         double y = -inputX * Math.sin(gyroAngle) + inputY * Math.cos(gyroAngle);
 
