@@ -27,8 +27,8 @@ public class SwerveDriveTrain {
         SmartDashboard.putNumber("gyro val", gyroAngle);
         SmartDashboard.putBoolean("gyro connected", gyro.isConnected());
 
-        double x = vx * robotAngle.getCos() + vy * robotAngle.getSin();
-        double y = -vx * robotAngle.getSin() + vy * robotAngle.getCos()
+        double x = vx * Math.cos(gyroAngle) + vy * Math.sin(gyroAngle);
+        double y = -vx * Math.sin(gyroAngle) + vy * Math.cos(gyroAngle);
 
         double r = Math.sqrt((Constants.length * Constants.length) + (Constants.length * Constants.length));
  
