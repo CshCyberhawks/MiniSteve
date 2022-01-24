@@ -22,13 +22,13 @@ public class SwerveDriveTrain {
          frontRight = new SwerveWheel(Constants.frontRightTurnMotor, Constants.frontRightDriveMotor, Constants.frontRightEncoder);
     }        
 
-    public void drive(double vx, double vy, double theta) {
+    public void drive(double inputX, double inputY, double theta) {
         double gyroAngle = gyro.getRotation2d();
         SmartDashboard.putNumber("gyro val", gyroAngle);
         SmartDashboard.putBoolean("gyro connected", gyro.isConnected());
 
-        double x = vx * Math.cos(gyroAngle) + vy * Math.sin(gyroAngle);
-        double y = -vx * Math.sin(gyroAngle) + vy * Math.cos(gyroAngle);
+        double x = inputX * Math.cos(gyroAngle) + inputY * Math.sin(gyroAngle);
+        double y = -inputX * Math.sin(gyroAngle) + inputY * Math.cos(gyroAngle);
 
         double r = Math.sqrt((Constants.length * Constants.length) + (Constants.length * Constants.length));
  
