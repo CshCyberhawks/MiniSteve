@@ -5,7 +5,6 @@ import frc.robot.util.Gyro;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
 public class SwerveDriveTrain {
     //https://jacobmisirian.gitbooks.io/frc-swerve-drive-programming/content/chapter1.html
     private SwerveWheel backLeft;
@@ -26,6 +25,14 @@ public class SwerveDriveTrain {
         double gyroAngle = gyro.getAngle();
         SmartDashboard.putNumber("gyro val", gyroAngle);
         SmartDashboard.putBoolean("gyro connected", gyro.isConnected());
+
+
+        //below is code we added to make it field oriented - this is "inspired" by wpilib fromFieldRelativeSpeeds
+
+        double tempX = x * Math.cos(gyroAngle) + y * Math.sin(gyroAngle);
+        y = -x * Math.sin(gyroAngle) + y * Math.cos(gyroAngle);
+        x = tempX;
+        
 
         double r = Math.sqrt((Constants.length * Constants.length) + (Constants.length * Constants.length));
  
