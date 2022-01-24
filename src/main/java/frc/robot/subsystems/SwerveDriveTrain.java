@@ -21,18 +21,14 @@ public class SwerveDriveTrain {
          frontRight = new SwerveWheel(Constants.frontRightTurnMotor, Constants.frontRightDriveMotor, Constants.frontRightEncoder);
     }        
 
-    public void drive(double x, double y, double theta) {
+    public void drive(double inputX, double inputY, double theta) {
         double gyroAngle = gyro.getAngle();
         SmartDashboard.putNumber("gyro val", gyroAngle);
         SmartDashboard.putBoolean("gyro connected", gyro.isConnected());
 
-
         //below is code we added to make it field oriented - this is "inspired" by wpilib fromFieldRelativeSpeeds
-
-        double tempX = x * Math.cos(gyroAngle) + y * Math.sin(gyroAngle);
-        y = -x * Math.sin(gyroAngle) + y * Math.cos(gyroAngle);
-        x = tempX;
-        
+        double x = inputX * Math.cos(gyroAngle) + inputY * Math.sin(gyroAngle);
+        double y = -inputX * Math.sin(gyroAngle) + inputY * Math.cos(gyroAngle);
 
         double r = Math.sqrt((Constants.length * Constants.length) + (Constants.length * Constants.length));
  
