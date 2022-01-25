@@ -14,9 +14,9 @@ package frc.robot;
  */
 public final class Constants {
     //twist angles for each motor
-    public static final int frontRightTwistAngle = 155;
+    public static final int frontRightTwistAngle = -25;
     public static final int frontLeftTwistAngle = 25;
-    public static final int backRightTwistAngle = -155;
+    public static final int backRightTwistAngle = 25;
     public static final int backLeftTwistAngle = -25; 
 
 
