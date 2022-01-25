@@ -13,6 +13,15 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    //twist angles for each motor
+    public static final int frontRightTwistAngle = 155;
+    public static final int frontLeftTwistAngle = 25;
+    public static final int backRightTwistAngle = -155;
+    public static final int backLeftTwistAngle = -25; 
+
+
+
+
     //TalonSRX Motors
     public static final int frontRightTurnMotor = 1;
     public static final int frontLeftTurnMotor = 5;

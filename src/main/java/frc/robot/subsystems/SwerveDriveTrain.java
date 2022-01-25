@@ -23,15 +23,22 @@ public class SwerveDriveTrain {
          frontRight = new SwerveWheel(Constants.frontRightTurnMotor, Constants.frontRightDriveMotor, Constants.frontRightEncoder);
     }        
 
+
+    public double calculateAngle(double translationAngle, double twist) {
+         return 0;
+    }
+
     public void drive(double[] input) {
      
      double theta = input[0];
      double r = input[1];
      double twist = input[2];
-     
-     
+     double translationAngle = theta - 90;
 
 
+     double frontRightAngle = (translationAngle + (Constants.frontRightTwistAngle * (twist * twist)) / 2);
+
+     
 
         double gyroAngle = gyro.getAngle();
         SmartDashboard.putNumber("gyro val", gyroAngle);
