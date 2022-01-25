@@ -97,7 +97,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    swerveSystem.drive(-IO.getJoyX(), -IO.getJoyY(), -IO.getJoyTwist());
+    swerveSystem.drive(IO.getPolarCoords());
   }
   @Override
   public void testInit() {

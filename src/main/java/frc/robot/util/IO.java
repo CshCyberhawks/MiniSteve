@@ -11,6 +11,11 @@ public class IO {
 
     private static double deadzone = 0.3;
 
+    public static double[] getPolarCoords() {
+        double[] ret = {joystick.getDirectionDegrees(), joystick.getMagnitude(), joystick.getTwist()};
+        return ret;
+    }
+
     public static double getJoyY() {
         SmartDashboard.putNumber("Joystick Y", joystick.getY());
         return Math.abs(joystick.getY()) > deadzone ? joystick.getY() : 0;
