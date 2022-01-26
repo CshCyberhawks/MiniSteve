@@ -36,7 +36,7 @@ public class SwerveDriveTrain {
      }
 
      public double evaluateTheta(double theta) {
-          //quadrant 
+          //quadrant 1
           if (theta <= 90) {
                return 90 - theta;
           }
