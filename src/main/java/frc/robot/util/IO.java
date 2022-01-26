@@ -25,10 +25,11 @@ public class IO {
         SmartDashboard.putNumber("Jotstick X", joystick.getX());
         return Math.abs(joystick.getX()) > deadzone ? joystick.getX() : 0;
     }
-   public static double getJoyTwist() {
+
+    public static double getJoyTwist() {
        SmartDashboard.putNumber("Joystick Twist", joystick.getTwist());
        return Math.abs(joystick.getTwist()) > deadzone ? joystick.getTwist() : 0;
-   }
+    }
 
     public static double getXboxLeftY() {
         return Math.abs(xbox.getLeftY()) > deadzone ? xbox.getLeftY() : 0;
