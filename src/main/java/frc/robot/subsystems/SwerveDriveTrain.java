@@ -36,21 +36,26 @@ public class SwerveDriveTrain {
     }
 
      public void drive(double[] input) {
-     
+
           double theta = input[0];
           double r = input[1];
           double twist = input[2];
-          double translationAngle = theta - 90;
 
           double gyroAngle = gyro.getAngle();
           SmartDashboard.putNumber("gyro val", gyroAngle);
-          SmartDashboard.putBoolean("gyro connected", gyro.isConnected());
+          //might need to remove gyro angle subtraction below (I dont know if it will work)
+          double translationAngle = (theta - 90) - gyroAngle;
+
+          SmartDashboard.putNumber("input theta ", theta);
+          SmartDashboard.putNumber("input r ", r);
+          SmartDashboard.putNumber("input twist ", twist);
+          SmartDashboard.putNumber("translation angle ", translationAngle);
 
           //this code calls the calculate angle function to get the angle for each wheel
-          double frontRightAngle = calculateAngle(translationAngle /*- gyroAngle*/, twist /*- gyroAngle*/, "frontRight");
-          double frontLeftAngle = calculateAngle(translationAngle /*- gyroAngle*/, twist /*- gyroAngle*/, "frontLeft");
-          double backRightAngle = calculateAngle(translationAngle /*- gyroAngle*/, twist /*- gyroAngle*/, "backRight");
-          double backLeftAngle = calculateAngle(translationAngle /*- gyroAngle*/, twist /*- gyroAngle*/, "frontRight");
+          double frontRightAngle = calculateAngle(translationAngle, twist, "frontRight");
+          double frontLeftAngle = calculateAngle(translationAngle, twist, "frontLeft");
+          double backRightAngle = calculateAngle(translationAngle, twist, "backRight");
+          double backLeftAngle = calculateAngle(translationAngle, twist, "frontRight");
           
           //this code calls the wheelSpeed function to get the speed for each wheel unless twist = 0, in which case the speeds only equal r
           double frontRightSpeed = twist != 0 ? wheelSpeed(twist, r, "frontRight") : r;
