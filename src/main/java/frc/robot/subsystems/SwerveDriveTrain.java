@@ -26,7 +26,7 @@ public class SwerveDriveTrain {
 
      public double calculateAngle(double translationAngle, double twist, String wheel) {
           //averages the constant twistAngle with the translationAngle input from the joystick to swerve the robot?
-          return twist != 0 ? (translationAngle + Constants.twistAngleMap.get(wheel)) / 2 : 0;
+          return twist != 0 ? (translationAngle + Constants.twistAngleMap.get(wheel)) / 2 : translationAngle;
     }
 
      public double wheelSpeed(double twist, double r, String wheel) {
