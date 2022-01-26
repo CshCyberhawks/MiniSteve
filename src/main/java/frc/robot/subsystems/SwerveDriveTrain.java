@@ -8,14 +8,14 @@ import java.lang.Math;
 
 
 public class SwerveDriveTrain {
-    //https://jacobmisirian.gitbooks.io/frc-swerve-drive-programming/content/chapter1.html
-    private SwerveWheel backLeft;
-    private SwerveWheel backRight;
-    private SwerveWheel frontLeft;
-    private SwerveWheel frontRight;
-    private Gyro gyro;
+     //https://jacobmisirian.gitbooks.io/frc-swerve-drive-programming/content/chapter1.html
+     private SwerveWheel backLeft;
+     private SwerveWheel backRight;
+     private SwerveWheel frontLeft;
+     private SwerveWheel frontRight;
+     private Gyro gyro;
 
-    public SwerveDriveTrain() {
+     public SwerveDriveTrain() {
          gyro = new Gyro();
          backLeft = new SwerveWheel(Constants.backLeftTurnMotor, Constants.backLeftDriveMotor, Constants.backLeftEncoder);
          backRight = new SwerveWheel(Constants.backRightTurnMotor, Constants.backRightDriveMotor, Constants.backRightEncoder);
@@ -24,28 +24,49 @@ public class SwerveDriveTrain {
     }        
 
 
-    public double calculateAngle(double translationAngle, double twist) {
-     
+     public double calculateAngle(double translationAngle, double twist, String wheel) {
+          double twistAngle = Constants.twistAngleMap.get(wheel);
 
-         return 0;
+          return twist != 0 ? (translationAngle * twistAngle) / 2 : 0;
     }
 
-    public void drive(double[] input) {
+     public double wheelSpeed(double twist, double r, String wheel) {
+          if (twist > 0) {
+               return ((twist + r) / 2) * (Constants.twistSpeedMap.get(wheel) * 1);
+          }
+          else {
+               return ((twist + r) / 2) * (Constants.twistSpeedMap.get(wheel) * -1);
+          }
+    }
+
+     public void drive(double[] input) {
      
-     double theta = input[0];
-     double r = input[1];
-     double twist = input[2];
-     double translationAngle = theta - 90;
+          double theta = input[0];
+          double r = input[1];
+          double twist = input[2];
+          double translationAngle = theta - 90;
 
+          double gyroAngle = gyro.getAngle();
+          SmartDashboard.putNumber("gyro val", gyroAngle);
+          SmartDashboard.putBoolean("gyro connected", gyro.isConnected());
 
-     double frontRightAngle = (translationAngle + (Constants.frontRightTwistAngle * (twist * twist)) / 2);
+          double frontRightAngle = calculateAngle(translationAngle /*- gyroAngle*/, twist /*- gyroAngle*/, "frontRight");
+          double frontLeftAngle = calculateAngle(translationAngle /*- gyroAngle*/, twist /*- gyroAngle*/, "frontLeft");
+          double backRightAngle = calculateAngle(translationAngle /*- gyroAngle*/, twist /*- gyroAngle*/, "backRight");
+          double backLeftAngle = calculateAngle(translationAngle /*- gyroAngle*/, twist /*- gyroAngle*/, "frontRight");
 
-     
+          double frontRightSpeed = twist != 0 ? wheelSpeed(twist, r, "frontRight") : r;
+          double frontLeftSpeed = twist != 0 ? wheelSpeed(twist, r, "frontLeft") : r;
+          double backRightSpeed = twist != 0 ? wheelSpeed(twist, r, "backRight") : r;
+          double backLeftSpeed = twist != 0 ? wheelSpeed(twist, r, "backLeft") : r;
 
-        double gyroAngle = gyro.getAngle();
-        SmartDashboard.putNumber("gyro val", gyroAngle);
-        SmartDashboard.putBoolean("gyro connected", gyro.isConnected());
+          backRight.drive(backRightSpeed, backRightAngle);
+          backLeft.drive(-backLeftSpeed, backLeftAngle);
+          frontRight.drive(frontRightSpeed, frontRightAngle);
+          frontLeft.drive(-frontLeftSpeed,frontLeftAngle);
 
+     /*
+     //old swerve drive code
         double x = inputX * Math.cos(gyroAngle) + inputY * Math.sin(gyroAngle);
         double y = -inputX * Math.sin(gyroAngle) + inputY * Math.cos(gyroAngle);
 
@@ -65,10 +86,7 @@ public class SwerveDriveTrain {
         double backLeftAngle = ((Math.atan2(a, c) / Math.PI) * 180);
         double frontRightAngle = ((Math.atan2(b, d) / Math.PI) * 180);
         double frontLeftAngle = ((Math.atan2(b, c) / Math.PI) * 180);
+          */
 
-        backRight.drive(backRightSpeed, backRightAngle);
-        backLeft.drive(-backLeftSpeed, backLeftAngle);
-        frontRight.drive(frontRightSpeed, frontRightAngle);
-        frontLeft.drive(-frontLeftSpeed,frontLeftAngle);
      }
 }
