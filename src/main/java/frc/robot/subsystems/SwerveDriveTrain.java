@@ -25,18 +25,16 @@ public class SwerveDriveTrain {
 
 
      public double calculateAngle(double translationAngle, double twist, String wheel) {
+          //gets the constant angle that each wheel needs to be in to twist
           double twistAngle = Constants.twistAngleMap.get(wheel);
-
+          //averages the twistAngle with the translationAngle input from the joystick to swerve the robot?
           return twist != 0 ? (translationAngle * twistAngle) / 2 : 0;
     }
 
      public double wheelSpeed(double twist, double r, String wheel) {
-          if (twist > 0) {
-               return ((twist + r) / 2) * (Constants.twistSpeedMap.get(wheel) * 1);
-          }
-          else {
-               return ((twist + r) / 2) * (Constants.twistSpeedMap.get(wheel) * -1);
-          }
+          //if the twist is greater than 0, return the average of twist and r (the speed of the joystick translation) * (constant speed multiplier for each wheel (either -1 or 1) * 1)
+          // else same thing but the constant speed multiplier is multiplied by -1
+          return twist > 0 ? ((twist + r) / 2) * (Constants.twistSpeedMap.get(wheel) * 1) : ((twist + r) / 2) * (Constants.twistSpeedMap.get(wheel) * -1);
     }
 
      public void drive(double[] input) {
@@ -50,16 +48,19 @@ public class SwerveDriveTrain {
           SmartDashboard.putNumber("gyro val", gyroAngle);
           SmartDashboard.putBoolean("gyro connected", gyro.isConnected());
 
+          //this code calls the calculate angle function to get the angle for each wheel
           double frontRightAngle = calculateAngle(translationAngle /*- gyroAngle*/, twist /*- gyroAngle*/, "frontRight");
           double frontLeftAngle = calculateAngle(translationAngle /*- gyroAngle*/, twist /*- gyroAngle*/, "frontLeft");
           double backRightAngle = calculateAngle(translationAngle /*- gyroAngle*/, twist /*- gyroAngle*/, "backRight");
           double backLeftAngle = calculateAngle(translationAngle /*- gyroAngle*/, twist /*- gyroAngle*/, "frontRight");
-
+          
+          //this code calls the wheelSpeed function to get the speed for each wheel unless twist = 0, in which case the speeds only equal r
           double frontRightSpeed = twist != 0 ? wheelSpeed(twist, r, "frontRight") : r;
           double frontLeftSpeed = twist != 0 ? wheelSpeed(twist, r, "frontLeft") : r;
           double backRightSpeed = twist != 0 ? wheelSpeed(twist, r, "backRight") : r;
           double backLeftSpeed = twist != 0 ? wheelSpeed(twist, r, "backLeft") : r;
 
+          //might need to remove the below negatives, we can see how this works
           backRight.drive(backRightSpeed, backRightAngle);
           backLeft.drive(-backLeftSpeed, backLeftAngle);
           frontRight.drive(frontRightSpeed, frontRightAngle);
