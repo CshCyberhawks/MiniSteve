@@ -63,7 +63,7 @@ public class SwerveDriveTrain {
 
           double gyroAngle = gyro.getAngle();
           SmartDashboard.putNumber("gyro val", gyroAngle);
-          //might need to remove gyro angle subtraction below (I dont know if it will work)
+          //gyro angle subtraction should work
           double translationAngle = evaluateTheta(theta) - gyroAngle;
 
           SmartDashboard.putNumber("input theta ", theta);
