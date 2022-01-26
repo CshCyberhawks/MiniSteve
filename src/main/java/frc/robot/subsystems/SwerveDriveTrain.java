@@ -36,9 +36,22 @@ public class SwerveDriveTrain {
      }
 
      public double evaluateTheta(double theta) {
-          //if theta is greater than 90, rotate the wheels to 360 - theta
-          //if theta < 90, do 90 - theta
-          return theta < 90 ? 90 - theta : 360 - theta;
+          //quadrant 
+          if (theta <= 90) {
+               return 90 - theta;
+          }
+          //quadrant 2
+          else if (theta > 90 && theta <= 180) {
+               return -(90 - (180 - theta));
+          }
+          //quadrant 3
+          else if (theta > 180 && theta <= 270) {
+               return -(180 - (270 - theta));
+          }
+          //quadrant 4
+          else {
+               return -(270 - (360 - theta));
+          }
      }
 
 
