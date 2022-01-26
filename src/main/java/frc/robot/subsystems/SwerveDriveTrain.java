@@ -27,13 +27,20 @@ public class SwerveDriveTrain {
      public double calculateAngle(double translationAngle, double twist, String wheel) {
           //averages the constant twistAngle with the translationAngle input from the joystick to swerve the robot?
           return twist != 0 ? (translationAngle + Constants.twistAngleMap.get(wheel)) / 2 : translationAngle;
-    }
+     }
 
      public double wheelSpeed(double twist, double r, String wheel) {
           //if the twist is greater than 0, return the average of twist and r (the speed of the joystick translation) * (constant speed multiplier for each wheel (either -1 or 1) * 1)
           // else same thing but the constant speed multiplier is multiplied by -1
           return twist > 0 ? ((twist + r) / 2) * (Constants.twistSpeedMap.get(wheel) * 1) : ((twist + r) / 2) * (Constants.twistSpeedMap.get(wheel) * -1);
-    }
+     }
+
+     public double evaluateTheta(double theta) {
+          //if theta is greater than 90, rotate the wheels to 360 - theta
+          //if theta < 90, do 90 - theta
+          return theta < 90 ? 90 - theta : 360 - theta;
+     }
+
 
      public void drive(double[] input) {
 
@@ -44,7 +51,7 @@ public class SwerveDriveTrain {
           double gyroAngle = gyro.getAngle();
           SmartDashboard.putNumber("gyro val", gyroAngle);
           //might need to remove gyro angle subtraction below (I dont know if it will work)
-          double translationAngle = (theta - 90) - gyroAngle;
+          double translationAngle = evaluateTheta(theta) - gyroAngle;
 
           SmartDashboard.putNumber("input theta ", theta);
           SmartDashboard.putNumber("input r ", r);
