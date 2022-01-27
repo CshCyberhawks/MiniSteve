@@ -22,7 +22,7 @@ public class Robot extends TimedRobot {
   // private DriveSystem driveSystem;
   private Command m_autonomousCommand;
 
-  //private OldSwerveDriveTrain swerveSystem;
+  private OldSwerveDriveTrain swerveSystem;
   // private RobotContainer m_robotContainer;
 
   /**
@@ -80,7 +80,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
 
-    //swerveSystem.setDefaultCommand(new OldSwerveCommand(swerveSystem));
+    swerveSystem.setDefaultCommand(new OldSwerveCommand(swerveSystem));
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
