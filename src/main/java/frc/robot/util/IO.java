@@ -46,4 +46,8 @@ public class IO {
     public static double getXboxRightX() {
         return Math.abs(xbox.getRightX()) > deadzone ? xbox.getRightX() : 0;
     }
+
+    public static double getXboxRightTrigger() {
+        return xbox.getRightTriggerAxis();
+    }
 }

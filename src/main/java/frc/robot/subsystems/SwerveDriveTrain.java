@@ -4,10 +4,12 @@ import frc.robot.Constants;
 import frc.robot.util.Gyro;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import java.lang.Math;
 
 
-public class SwerveDriveTrain {
+public class SwerveDriveTrain extends SubsystemBase {
      //https://jacobmisirian.gitbooks.io/frc-swerve-drive-programming/content/chapter1.html
      private SwerveWheel backLeft;
      private SwerveWheel backRight;
@@ -127,7 +129,7 @@ public class SwerveDriveTrain {
         double backLeftAngle = ((Math.atan2(a, c) / Math.PI) * 180);
         double frontRightAngle = ((Math.atan2(b, d) / Math.PI) * 180);
         double frontLeftAngle = ((Math.atan2(b, c) / Math.PI) * 180);
-          */
+     */
 
      }
 }

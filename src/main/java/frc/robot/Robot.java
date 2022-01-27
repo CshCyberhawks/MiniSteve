@@ -5,8 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.cameraserver.CameraServer;
+import frc.robot.subsystems.ShootSystem;
 import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.IO;
@@ -23,6 +26,7 @@ public class Robot extends TimedRobot {
 
   //private OldSwerveDriveTrain swerveSystem;
   private SwerveDriveTrain swerveSystem;
+  private ShootSystem shootSystem;
   // private RobotContainer m_robotContainer;
 
   /**
@@ -36,7 +40,7 @@ public class Robot extends TimedRobot {
     // m_robotContainer = new RobotContainer();
  
     //driveSystem = new DriveSystem();
-    //CameraServer.startAutomaticCapture();
+    CameraServer.startAutomaticCapture();
   }
 
   /**
@@ -80,6 +84,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     swerveSystem = new SwerveDriveTrain();
+    shootSystem = new ShootSystem();
 
     //swerveSystem.setDefaultCommand(new OldSwerveCommand(swerveSystem));
 
@@ -97,6 +102,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     double[] input = {0, 0, 1};
     swerveSystem.drive(IO.getPolarCoords());
+    shootSystem.shoot(IO.getXboxRightTrigger());
   }
   @Override
   public void testInit() {

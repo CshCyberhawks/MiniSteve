@@ -10,8 +10,9 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ShootSystem {
+public class ShootSystem extends SubsystemBase {
     private CANSparkMax topMotor;
     private CANSparkMax bottomRightMotor;
     private CANSparkMax bottomLeftMotor;
@@ -20,10 +21,10 @@ public class ShootSystem {
     private PIDController shootPID;
     private SimpleMotorFeedforward shootFeedFoward;
 
-    public ShootSystem(int topMotorPort, int bottomLeftMotorPort, int bottomRightMotorPort) {
-        topMotor = new CANSparkMax(topMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-        bottomLeftMotor = new CANSparkMax(bottomLeftMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-        bottomRightMotor = new CANSparkMax(bottomRightMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public ShootSystem() {
+        topMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
+        bottomLeftMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
+        bottomRightMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         topEncoder = new Encoder(0, 0);
         bottomEncoder = new Encoder(0, 0);
@@ -36,18 +37,19 @@ public class ShootSystem {
     }
 
     public void shoot(double power) {
-        double shootPIDOutput = shootPID.calculate(0, 0);
-        double shootFeedFowardOutput = shootFeedFoward.calculate(power, 0);
+        double topShootPIDOutput = shootPID.calculate(topEncoder.getRate(), power);
+        double bottomShootPIDOutput = shootPID.calculate(bottomEncoder.getRate(), power);
+        double topShootFeedFowardOutput = shootFeedFoward.calculate(topEncoder.getRate(), power);
+        double bottomShootFeedFowardOutput = shootFeedFoward.calculate(topEncoder.getRate(), power);
 
-        topMotor.set(shootPIDOutput + shootFeedFowardOutput);
-        setBottom(shootPIDOutput + shootFeedFowardOutput);
+        topMotor.set(topShootPIDOutput + topShootFeedFowardOutput);
+        setBottom(bottomShootPIDOutput + bottomShootFeedFowardOutput);
 
-        SmartDashboard.putNumber("Motor Power", power);
     }
 
     //Syncing of bottom 2 motors
-    private void setBottom(double input) {
-        bottomLeftMotor.set(input);
-        bottomRightMotor.set(input);
+    private void setBottom(double power) {
+        bottomLeftMotor.set(power);
+        bottomRightMotor.set(power);
     }
 }
