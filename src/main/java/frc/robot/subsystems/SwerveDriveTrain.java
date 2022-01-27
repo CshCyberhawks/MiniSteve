@@ -79,17 +79,16 @@ public class SwerveDriveTrain {
           
 
           //this code calls the wheelSpeed function to get the speed for each wheel unless twist = 0, in which case the speeds only equal r
-          //below ternary operators not working for some reason/speed isn't right
           double frontRightSpeed = twist != 0 ? wheelSpeed(twist, r, "frontRight") : r;
           double frontLeftSpeed = twist != 0 ? wheelSpeed(twist, r, "frontLeft") : r;
           double backRightSpeed = twist != 0 ? wheelSpeed(twist, r, "backRight") : r;
           double backLeftSpeed = twist != 0 ? wheelSpeed(twist, r, "backLeft") : r;
 
-          //might need to remove the below negatives, we can see how this works
+          //might need to add negatives below
           backRight.drive(backRightSpeed, backRightAngle);
-          backLeft.drive(-backLeftSpeed, backLeftAngle);
+          backLeft.drive(backLeftSpeed, backLeftAngle);
           frontRight.drive(frontRightSpeed, frontRightAngle);
-          frontLeft.drive(-frontLeftSpeed,frontLeftAngle);
+          frontLeft.drive(frontLeftSpeed,frontLeftAngle);
 
      /*
      //old swerve drive code
