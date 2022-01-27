@@ -77,7 +77,9 @@ public class SwerveDriveTrain {
           double backRightAngle = calculateAngle(translationAngle, twist, "backRight");
           double backLeftAngle = calculateAngle(translationAngle, twist, "backLeft");
           
+
           //this code calls the wheelSpeed function to get the speed for each wheel unless twist = 0, in which case the speeds only equal r
+          //below ternary operators not working for some reason
           double frontRightSpeed = twist != 0 ? wheelSpeed(twist, r, "frontRight") : r;
           double frontLeftSpeed = twist != 0 ? wheelSpeed(twist, r, "frontLeft") : r;
           double backRightSpeed = twist != 0 ? wheelSpeed(twist, r, "backRight") : r;
