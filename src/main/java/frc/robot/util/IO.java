@@ -16,7 +16,7 @@ public class IO {
     }
 
     public static double[] getPolarCoords() {
-        double[] ret = {deadZone(joystick.getDirectionDegrees()), deadZone(joystick.getMagnitude()), deadZone(joystick.getTwist())};
+        double[] ret = {-deadZone(joystick.getDirectionDegrees()), deadZone(joystick.getMagnitude()), deadZone(joystick.getTwist())};
         return ret;
     }
 

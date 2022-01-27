@@ -43,11 +43,11 @@ public class SwerveDriveTrain {
           if (twist == 0) {
                return r;
           }
-          else if (twist > 0) {
-               return ((twist + r) / 2);
+          else if (r < 0) {
+               return -((Math.abs(twist) + Math.abs(r)) / 2);
           }
           else {
-               return -((twist + r) / 2);
+               return ((Math.abs(twist) + Math.abs(r)) / 2);
           }
      }
 
@@ -70,6 +70,26 @@ public class SwerveDriveTrain {
           }
      }
 
+     public double[] calculateDrive(double theta1, double r1, double theta2, double r2) {
+          double[] coord1 = polarToCartesian(theta1, r1);
+          double[] coord2 = polarToCartesian(theta2, r2);          
+
+          double[] ret = cartesianToPolar(coord1[0] + coord2[0], coord1[1] + coord2[1]);
+          return ret;
+     }
+
+     public double[] polarToCartesian(double theta, double r) {
+          double[] ret = {r * Math.cos(Math.toRadians(theta)), r * Math.sin(Math.toRadians(theta))};
+          return ret;
+     }
+
+     public double[] cartesianToPolar(double x, double y) {
+          double r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+          double theta = Math.toDegrees(Math.atan2(y, x));
+
+          double[] ret = {theta, r};
+          return ret;
+     }
 
      public void drive(double[] input) {
 
@@ -80,13 +100,13 @@ public class SwerveDriveTrain {
           double gyroAngle = gyro.getAngle();
           SmartDashboard.putNumber("gyro val", gyroAngle);
           //gyro angle subtraction should work
-          double translationAngle = theta;//evaluateTheta(theta); //- gyroAngle;
+          double translationAngle = theta;//evaluateTheta(theta);
 
           SmartDashboard.putNumber("input theta ", theta);
           SmartDashboard.putNumber("input r ", r);
           SmartDashboard.putNumber("input twist ", twist);
           SmartDashboard.putNumber("translation angle ", translationAngle);
-
+/*
           //this code calls the calculate angle function to get the angle for each wheel
           double frontRightAngle = calculateAngle(translationAngle, twist, r, "frontRight");
           double frontLeftAngle = calculateAngle(translationAngle, twist, r, "frontLeft");
@@ -99,7 +119,27 @@ public class SwerveDriveTrain {
           double frontLeftSpeed = wheelSpeed(twist, r, "frontLeft");
           double backRightSpeed = wheelSpeed(twist, r, "backRight");
           double backLeftSpeed = wheelSpeed(twist, r, "backLeft");
+*/
 
+
+          double[] frontRightVector = calculateDrive(theta, r, Constants.twistAngleMap.get("frontRight"), twist);
+          double[] frontLeftVector = calculateDrive(theta, r, Constants.twistAngleMap.get("frontLeft"), theta);
+          double[] backRightVector = calculateDrive(theta, r, Constants.twistAngleMap.get("backRight"), theta);
+          double[] backLeftVector = calculateDrive(theta, r, Constants.twistAngleMap.get("backLeft"), theta);
+
+          double frontRightSpeed = frontRightVector[1];
+          double frontLeftSpeed = frontLeftVector[1];
+          double backRightSpeed = backRightVector[1];
+          double backLeftSpeed = backLeftVector[1];
+
+
+          double frontRightAngle = frontRightVector[0];
+          double frontLeftAngle = frontLeftVector[0];
+          double backRightAngle = backRightVector[0];
+          double backLeftAngle = backLeftVector[0];
+
+
+          SmartDashboard.putNumber("backleft s", backLeftSpeed);
           //might need to add negatives below
           backRight.drive(backRightSpeed, backRightAngle);
           backLeft.drive(-backLeftSpeed, backLeftAngle);
