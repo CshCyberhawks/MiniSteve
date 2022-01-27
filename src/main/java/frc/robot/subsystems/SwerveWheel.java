@@ -54,8 +54,7 @@ public class SwerveWheel {
         return input < 0 ? 360 + input : input;
     }
 
-    public double convertCentiMeterSecond(double rpm)
-    {
+    public double convertCentiMeterSecond(double rpm) {
         double diameter = 0.00101;//101 millimeters
         return ((rpm / 7) * ((Math.PI * diameter) / 60)) / 100;
     

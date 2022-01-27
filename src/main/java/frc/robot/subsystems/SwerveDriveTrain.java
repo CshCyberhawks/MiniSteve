@@ -24,15 +24,31 @@ public class SwerveDriveTrain {
     }        
 
 
-     public double calculateAngle(double translationAngle, double twist, String wheel) {
+     public double calculateAngle(double translationAngle, double twist, double r, String wheel) {
           //averages the constant twistAngle with the translationAngle input from the joystick to swerve the robot?
-          return twist != 0 ? (translationAngle + Constants.twistAngleMap.get(wheel)) / 2 : translationAngle;
+          if (twist != 0 && r != 0) {
+               return (translationAngle + Constants.twistAngleMap.get(wheel)) / 2;
+          }
+          else if (twist == 0) {
+               return translationAngle;
+          }
+          else {
+               return Constants.twistAngleMap.get(wheel);
+          }
      }
 
      public double wheelSpeed(double twist, double r, String wheel) {
           //if the twist is greater than 0, return the average of twist and r (the speed of the joystick translation) * (constant speed multiplier for each wheel (either -1 or 1) * 1)
           // else same thing but the constant speed multiplier is multiplied by -1
-          return twist > 0 ? ((twist + r) / 2) * (Constants.twistSpeedMap.get(wheel) * 1) : ((twist + r) / 2) * (Constants.twistSpeedMap.get(wheel) * -1);
+          if (twist == 0) {
+               return r;
+          }
+          else if (twist > 0) {
+               return ((twist + r) / 2);
+          }
+          else {
+               return -((twist + r) / 2);
+          }
      }
 
      public double evaluateTheta(double theta) {
@@ -64,7 +80,7 @@ public class SwerveDriveTrain {
           double gyroAngle = gyro.getAngle();
           SmartDashboard.putNumber("gyro val", gyroAngle);
           //gyro angle subtraction should work
-          double translationAngle = evaluateTheta(theta); //- gyroAngle;
+          double translationAngle = theta;//evaluateTheta(theta); //- gyroAngle;
 
           SmartDashboard.putNumber("input theta ", theta);
           SmartDashboard.putNumber("input r ", r);
@@ -72,23 +88,23 @@ public class SwerveDriveTrain {
           SmartDashboard.putNumber("translation angle ", translationAngle);
 
           //this code calls the calculate angle function to get the angle for each wheel
-          double frontRightAngle = calculateAngle(translationAngle, twist, "frontRight");
-          double frontLeftAngle = calculateAngle(translationAngle, twist, "frontLeft");
-          double backRightAngle = calculateAngle(translationAngle, twist, "backRight");
-          double backLeftAngle = calculateAngle(translationAngle, twist, "backLeft");
+          double frontRightAngle = calculateAngle(translationAngle, twist, r, "frontRight");
+          double frontLeftAngle = calculateAngle(translationAngle, twist, r, "frontLeft");
+          double backRightAngle = calculateAngle(translationAngle, twist, r, "backRight");
+          double backLeftAngle = calculateAngle(translationAngle, twist, r, "backLeft");
           
 
           //this code calls the wheelSpeed function to get the speed for each wheel unless twist = 0, in which case the speeds only equal r
-          double frontRightSpeed = twist != 0 ? wheelSpeed(twist, r, "frontRight") : r;
-          double frontLeftSpeed = twist != 0 ? wheelSpeed(twist, r, "frontLeft") : r;
-          double backRightSpeed = twist != 0 ? wheelSpeed(twist, r, "backRight") : r;
-          double backLeftSpeed = twist != 0 ? wheelSpeed(twist, r, "backLeft") : r;
+          double frontRightSpeed = wheelSpeed(twist, r, "frontRight");
+          double frontLeftSpeed = wheelSpeed(twist, r, "frontLeft");
+          double backRightSpeed = wheelSpeed(twist, r, "backRight");
+          double backLeftSpeed = wheelSpeed(twist, r, "backLeft");
 
           //might need to add negatives below
           backRight.drive(backRightSpeed, backRightAngle);
-          backLeft.drive(backLeftSpeed, backLeftAngle);
+          backLeft.drive(-backLeftSpeed, backLeftAngle);
           frontRight.drive(frontRightSpeed, frontRightAngle);
-          frontLeft.drive(frontLeftSpeed,frontLeftAngle);
+          frontLeft.drive(-frontLeftSpeed,frontLeftAngle);
 
      /*
      //old swerve drive code

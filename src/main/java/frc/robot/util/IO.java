@@ -11,8 +11,12 @@ public class IO {
 
     private static double deadzone = 0.3;
 
+    public static double deadZone(double input) {
+        return Math.abs(input) > deadzone ? input : 0;
+    }
+
     public static double[] getPolarCoords() {
-        double[] ret = {joystick.getDirectionDegrees(), joystick.getMagnitude(), joystick.getTwist()};
+        double[] ret = {deadZone(joystick.getDirectionDegrees()), deadZone(joystick.getMagnitude()), deadZone(joystick.getTwist())};
         return ret;
     }
 
