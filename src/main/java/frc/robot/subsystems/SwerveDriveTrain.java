@@ -79,7 +79,10 @@ public class SwerveDriveTrain {
      }
 
      public double[] polarToCartesian(double theta, double r) {
-          double[] ret = {r * Math.cos(Math.toRadians(theta)), r * Math.sin(Math.toRadians(theta))};
+          double x = r * Math.cos(Math.toRadians(theta));
+          double y = r * Math.sin(Math.toRadians(theta));
+
+          double[] ret = {x, y};
           return ret;
      }
 
