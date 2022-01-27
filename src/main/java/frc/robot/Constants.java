@@ -31,10 +31,10 @@ public final class Constants {
 
     //twist angles for each motor
     public static final HashMap<String, Integer> twistAngleMap = new HashMap<>(){{
-        put("frontRight", -25);
-        put("frontLeft", 25);
-        put("backRight", 25);
-        put("backLeft", -25);
+        put("frontRight", -45);
+        put("frontLeft", 45);
+        put("backRight", 45);
+        put("backLeft", -45);
     }};
  
 
