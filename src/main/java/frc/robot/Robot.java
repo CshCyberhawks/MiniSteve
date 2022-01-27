@@ -95,8 +95,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    double[] input = {90, 1, 0};
-    swerveSystem.drive(/*IO.getPolarCoords()*/input);
+    swerveSystem.drive(IO.getJoyX(), IO.getJoyY(), IO.getJoyTwist());
   }
   @Override
   public void testInit() {
