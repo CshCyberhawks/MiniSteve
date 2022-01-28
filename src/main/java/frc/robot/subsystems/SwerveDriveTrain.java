@@ -24,55 +24,53 @@ public class SwerveDriveTrain {
     }        
 
 
-     public double calculateAngle(double translationAngle, double twist, double r, String wheel) {
-          //averages the constant twistAngle with the translationAngle input from the joystick to swerve the robot?
-          if (twist != 0 && r != 0) {
-               return (translationAngle + Constants.twistAngleMap.get(wheel)) / 2;
-          }
-          else if (twist == 0) {
-               return translationAngle;
+    public double evaluateTheta(double theta) {
+     //quadrant 1
+     if (theta <= 90) {
+          return 90 - theta;
+     }
+     //quadrant 2
+     else if (theta > 90 && theta <= 180) {
+          return -(90 - (180 - theta));
+     }
+     //quadrant 3
+     else if (theta > 180 && theta <= 270) {
+          return -(180 - (270 - theta));
+     }
+     //quadrant 4
+     else {
+          return -(270 - (360 - theta));
+     }
+}
+
+     public double thetaToPolar(double theta) {
+          if (theta <= 90 && theta >= -180) {
+               return -(theta) + 90;
+          } else if (theta == 135) {
+               return theta + 180;
+          } else if (theta > 90 && theta < 135) {
+               return (theta + 180) - (2 * (theta - 135));
           }
           else {
-               return Constants.twistAngleMap.get(wheel);
+               return (theta + 180) + (2 * (theta - 135));
           }
      }
 
-     public double wheelSpeed(double twist, double r, String wheel) {
-          //if the twist is greater than 0, return the average of twist and r (the speed of the joystick translation) * (constant speed multiplier for each wheel (either -1 or 1) * 1)
-          // else same thing but the constant speed multiplier is multiplied by -1
-          if (twist == 0) {
-               return r;
-          }
-          else if (r < 0) {
-               return -((Math.abs(twist) + Math.abs(r)) / 2);
-          }
-          else {
-               return ((Math.abs(twist) + Math.abs(r)) / 2);
-          }
+     public double[] fieldOriented(double x, double y, double gyroAngle) {
+          
+          double[] polar = cartesianToPolar(x, y);
+          double theta = thetaToPolar(evaluateTheta(polar[0]) - gyroAngle);
+
+          double r = polar[1];
+
+          double[] ret = polarToCartesian(theta, r);
+          return ret;
      }
 
-     public double evaluateTheta(double theta) {
-          //quadrant 1
-          if (theta <= 90) {
-               return 90 - theta;
-          }
-          //quadrant 2
-          else if (theta > 90 && theta <= 180) {
-               return -(90 - (180 - theta));
-          }
-          //quadrant 3
-          else if (theta > 180 && theta <= 270) {
-               return -(180 - (270 - theta));
-          }
-          //quadrant 4
-          else {
-               return -(270 - (360 - theta));
-          }
-     }
 
-     public double[] calculateDrive(double theta1, double r1, double theta2, double r2) {
-          double[] coord1 = polarToCartesian(theta1, r1);
-          double[] coord2 = polarToCartesian(theta2, r2);          
+     public double[] calculateDrive(double x1, double y1, double theta2, double r2) {
+          double[] coord1 = fieldOriented(x1, y1, gyro.getAngle());
+          double[] coord2 = polarToCartesian(theta2, r2);
 
           double[] ret = cartesianToPolar(coord1[0] + coord2[0], coord1[1] + coord2[1]);
           return ret;
@@ -91,41 +89,22 @@ public class SwerveDriveTrain {
           return ret;
      }
 
-     public void drive(double[] input) {
+     public void drive(double inputX, double inputY, double inputTwist) {
 
-          double theta = input[0];
-          double r = input[1];
-          double twist = input[2];
+          // double theta = input[0];
+          // double r = input[1];
+          // double twist = input[2];
 
           double gyroAngle = gyro.getAngle();
           SmartDashboard.putNumber("gyro val", gyroAngle);
           //gyro angle subtraction should work
-          double translationAngle = theta;//evaluateTheta(theta);
-
-          SmartDashboard.putNumber("input theta ", theta);
-          SmartDashboard.putNumber("input r ", r);
-          SmartDashboard.putNumber("input twist ", twist);
-          SmartDashboard.putNumber("translation angle ", translationAngle);
-/*
-          //this code calls the calculate angle function to get the angle for each wheel
-          double frontRightAngle = calculateAngle(translationAngle, twist, r, "frontRight");
-          double frontLeftAngle = calculateAngle(translationAngle, twist, r, "frontLeft");
-          double backRightAngle = calculateAngle(translationAngle, twist, r, "backRight");
-          double backLeftAngle = calculateAngle(translationAngle, twist, r, "backLeft");
-          
-
-          //this code calls the wheelSpeed function to get the speed for each wheel unless twist = 0, in which case the speeds only equal r
-          double frontRightSpeed = wheelSpeed(twist, r, "frontRight");
-          double frontLeftSpeed = wheelSpeed(twist, r, "frontLeft");
-          double backRightSpeed = wheelSpeed(twist, r, "backRight");
-          double backLeftSpeed = wheelSpeed(twist, r, "backLeft");
-*/
+          double translationAngle = inputTwist;//evaluateTheta(theta);
 
 
-          double[] frontRightVector = calculateDrive(theta, r, Constants.twistAngleMap.get("frontRight"), twist);
-          double[] frontLeftVector = calculateDrive(theta, r, Constants.twistAngleMap.get("frontLeft"), theta);
-          double[] backRightVector = calculateDrive(theta, r, Constants.twistAngleMap.get("backRight"), theta);
-          double[] backLeftVector = calculateDrive(theta, r, Constants.twistAngleMap.get("backLeft"), theta);
+          double[] frontRightVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("frontRight"), inputTwist);
+          double[] frontLeftVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("frontLeft"), inputTwist);
+          double[] backRightVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("backRight"), inputTwist);
+          double[] backLeftVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("backLeft"), inputTwist);
 
           double frontRightSpeed = frontRightVector[1];
           double frontLeftSpeed = frontLeftVector[1];
@@ -140,34 +119,13 @@ public class SwerveDriveTrain {
 
 
           SmartDashboard.putNumber("backleft s", backLeftSpeed);
-          //might need to add negatives below
+          SmartDashboard.putNumber("backleft a", backLeftAngle);
+
           backRight.drive(backRightSpeed, backRightAngle);
           backLeft.drive(-backLeftSpeed, backLeftAngle);
           frontRight.drive(frontRightSpeed, frontRightAngle);
           frontLeft.drive(-frontLeftSpeed,frontLeftAngle);
 
-     /*
-     //old swerve drive code
-        double x = inputX * Math.cos(gyroAngle) + inputY * Math.sin(gyroAngle);
-        double y = -inputX * Math.sin(gyroAngle) + inputY * Math.cos(gyroAngle);
-
-        double r = Math.sqrt((Constants.length * Constants.length) + (Constants.length * Constants.length));
- 
-        double a = x - theta * (Constants.length / r);
-        double b = x + theta * (Constants.length / r);
-        double c = y - theta * (Constants.length / r);
-        double d = y + theta * (Constants.length / r);
-
-        double backRightSpeed = Math.sqrt((a * a) + (d * d));
-        double backLeftSpeed = Math.sqrt((a * a) + (c * c));
-        double frontRightSpeed = Math.sqrt((b * b) + (d * d));
-        double frontLeftSpeed = Math.sqrt((b * b) + (c * c));
-
-        double backRightAngle = ((Math.atan2(a, d) / Math.PI) * 180);
-        double backLeftAngle = ((Math.atan2(a, c) / Math.PI) * 180);
-        double frontRightAngle = ((Math.atan2(b, d) / Math.PI) * 180);
-        double frontLeftAngle = ((Math.atan2(b, c) / Math.PI) * 180);
-          */
 
      }
 }

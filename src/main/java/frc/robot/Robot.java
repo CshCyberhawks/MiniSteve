@@ -96,7 +96,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     double[] input = {0, 0, 1};
-    swerveSystem.drive(IO.getPolarCoords());
+    swerveSystem.drive(IO.getJoyX(), IO.getJoyY(), IO.getJoyTwist());
   }
   @Override
   public void testInit() {

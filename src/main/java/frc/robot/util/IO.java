@@ -22,17 +22,17 @@ public class IO {
 
     public static double getJoyY() {
         SmartDashboard.putNumber("Joystick Y", joystick.getY());
-        return Math.abs(joystick.getY()) > deadzone ? joystick.getY() : 0;
+        return deadZone(joystick.getY());
     }
 
     public static double getJoyX() {
         SmartDashboard.putNumber("Jotstick X", joystick.getX());
-        return Math.abs(joystick.getX()) > deadzone ? joystick.getX() : 0;
+        return deadZone(joystick.getX());
     }
 
     public static double getJoyTwist() {
        SmartDashboard.putNumber("Joystick Twist", joystick.getTwist());
-       return Math.abs(joystick.getTwist()) > deadzone ? joystick.getTwist() : 0;
+       return deadZone(joystick.getTwist());
     }
 
     public static double getXboxLeftY() {
