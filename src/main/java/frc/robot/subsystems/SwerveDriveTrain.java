@@ -21,6 +21,7 @@ public class SwerveDriveTrain {
          backRight = new SwerveWheel(Constants.backRightTurnMotor, Constants.backRightDriveMotor, Constants.backRightEncoder);
          frontLeft = new SwerveWheel(Constants.frontLeftTurnMotor, Constants.frontLeftDriveMotor, Constants.frontLeftEncoder);
          frontRight = new SwerveWheel(Constants.frontRightTurnMotor, Constants.frontRightDriveMotor, Constants.frontRightEncoder);
+         gyro.reset();
     }        
 
 
@@ -59,7 +60,7 @@ public class SwerveDriveTrain {
      public double[] fieldOriented(double x, double y, double gyroAngle) {
           
           double[] polar = cartesianToPolar(x, y);
-          double theta = polar[0] - thetaToPolar(gyroAngle);
+          double theta = polar[0] + gyroAngle;
 
           double r = polar[1];
 

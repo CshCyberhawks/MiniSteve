@@ -4,6 +4,8 @@ import frc.robot.util.TurnEncoder;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 //leaving the below imports to remember that profiledPIDControllers exist, and that feedforwards exist in case we need to use them
@@ -94,7 +96,7 @@ public class SwerveWheel {
         SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
 
-        driveMotor.set((drivePIDOutput + driveFeedForwardOutput) * 1.2);
+        driveMotor.set(MathUtil.clamp((drivePIDOutput + driveFeedForwardOutput) * 1.2, -1, 1));
         if (!turnPidController.atSetpoint()) {
             turnMotor.set(ControlMode.PercentOutput, turnPIDOutput);
         }
