@@ -14,6 +14,7 @@ import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorMatch;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.IO;
@@ -28,7 +29,8 @@ public class Robot extends TimedRobot {
   // private DriveSystem driveSystem;
   private Command m_autonomousCommand;
   
-  private final I2C.Port port = I2C.Port.kMXP; //Check Later
+  private final I2C.Port port = I2C.Port.kMXP
+  ; //Check Later
   
   private final ColorSensorV3 colorSensor = new ColorSensorV3(port);
   
@@ -36,6 +38,7 @@ public class Robot extends TimedRobot {
   
   //private OldSwerveDriveTrain swerveSystem;
   private SwerveDriveTrain swerveSystem;
+  private IntakeSystem intakeSystem;
   // private RobotContainer m_robotContainer;
 
   /**
@@ -109,6 +112,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     swerveSystem = new SwerveDriveTrain();
+    intakeSystem = new IntakeSystem();
 
     //swerveSystem.setDefaultCommand(new OldSwerveCommand(swerveSystem));
 

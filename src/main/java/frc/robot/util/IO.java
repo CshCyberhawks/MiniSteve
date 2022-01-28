@@ -46,4 +46,10 @@ public class IO {
     public static double getXboxRightX() {
         return Math.abs(xbox.getRightX()) > deadzone ? xbox.getRightX() : 0;
     }
+    public static double getXboxRightTrigger() {
+        return Math.abs(xbox.getRightTriggerAxis()) > deadzone ? xbox.getRightTriggerAxis() : 0;
+    }
+    public static boolean getXboxRightBumper() {
+        return (xbox.getRightBumperPressed() ? xbox.getRightBumper() : false);
+    }
 }
