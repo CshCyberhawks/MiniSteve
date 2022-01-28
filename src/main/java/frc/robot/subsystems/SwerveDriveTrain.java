@@ -59,7 +59,7 @@ public class SwerveDriveTrain {
      public double[] fieldOriented(double x, double y, double gyroAngle) {
           
           double[] polar = cartesianToPolar(x, y);
-          double theta = thetaToPolar(evaluateTheta(polar[0]) - gyroAngle);
+          double theta = polar[0] - thetaToPolar(gyroAngle);
 
           double r = polar[1];
 
