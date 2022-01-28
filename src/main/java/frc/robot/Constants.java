@@ -37,9 +37,6 @@ public final class Constants {
         put("backLeft", -135);
     }};
  
-
-
-
     //TalonSRX Motors
     public static final int frontRightTurnMotor = 1;
     public static final int frontLeftTurnMotor = 5;
@@ -65,5 +62,6 @@ public final class Constants {
     public static final int backRightEncoder = 2;
     public static final int backLeftEncoder = 3;
 
+    //Encoder offsets
     public static final double[] turnEncoderOffsets = {345, 260.4, 255, 8};
 }
