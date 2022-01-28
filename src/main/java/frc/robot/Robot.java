@@ -79,6 +79,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    swerveSystem = new OldSwerveDriveTrain();
 
     swerveSystem.setDefaultCommand(new OldSwerveCommand(swerveSystem));
 

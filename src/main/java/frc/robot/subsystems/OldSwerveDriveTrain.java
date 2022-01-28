@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class OldSwerveDriveTrain extends SubsystemBase{
@@ -37,7 +38,7 @@ public class OldSwerveDriveTrain extends SubsystemBase{
     private OldSwerveWheel backRightSwerveWheel = new OldSwerveWheel(Constants.backRightTurnMotor, Constants.backRightDriveMotor, Constants.backRightEncoder);
 
     public OldSwerveDriveTrain() {
-        //gyro.reset();
+        gyro.reset();
     }
 
     public void setVelocities(double inputX, double inputY, double inputTheta) {
@@ -62,6 +63,8 @@ public class OldSwerveDriveTrain extends SubsystemBase{
         SwerveModuleState[] swerveStates = swerveDriveKinematics.toSwerveModuleStates(chassisSpeed);
 
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveStates, 10.0); //Caps the speed at 3 meters per second
+        SmartDashboard.putNumber("swerveStates", swerveStates[0].angle.getDegrees());
+        
         frontLeftSwerveWheel.setState(swerveStates[0]);
         frontRightSwerveWheel.setState(swerveStates[1]);
         backLeftSwerveWheel.setState(swerveStates[2]);

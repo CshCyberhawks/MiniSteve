@@ -23,8 +23,8 @@ public class Gyro {
     }
 
     public double getAngle() {
-        return wrapAroundAngles(gyro.getYaw());
-        // return gyro.getYaw();
+        // return wrapAroundAngles(gyro.getYaw());
+        return gyro.getYaw();
     }
 
     public boolean isConnected() {
