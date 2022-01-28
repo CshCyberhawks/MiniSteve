@@ -11,7 +11,6 @@ public class Gyro {
     private AHRS gyro;
     private LinearFilter filter;
 
-
     public Gyro() {
         gyro = new AHRS(SPI.Port.kMXP);
         Shuffleboard.getTab("SmartDashboard").add(gyro);

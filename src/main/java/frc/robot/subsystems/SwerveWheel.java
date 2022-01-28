@@ -22,11 +22,9 @@ public class SwerveWheel {
     private TalonSRX turnMotor;
     private CANSparkMax driveMotor;
 
-    // private RelativeEncoder driveEncoder;
     private TurnEncoder turnEncoder;
 
     private int m_turnEncoderPort;
-    // private int m_drivePort;
     
     private PIDController turnPidController;
     private PIDController drivePidController;
@@ -40,9 +38,7 @@ public class SwerveWheel {
         
         turnEncoder = new TurnEncoder(turnEncoderPort);
 
-        // driveEncoder = driveMotor.getEncoder();
         m_turnEncoderPort = turnEncoderPort;
-        // m_drivePort = drivePort;
 
         turnPidController = new PIDController(.01, 0, 0);
         turnPidController.setTolerance(4);
@@ -57,26 +53,15 @@ public class SwerveWheel {
     }
 
     public double convertCentiMeterSecond(double rpm) {
-        double diameter = 0.00101;//101 millimeters
+        double diameter = 0.00101; //101 millimeters
+        //Math to convert from rotations per minute to centimeters per second
         return ((rpm / 7) * ((Math.PI * diameter) / 60)) / 100;
-    
-        // 7:1 (Motor to wheel)
-           
-    }
-
-    private double[] optimizeWheelPositions(double angle, double encoderValue) {
-        double[] ret  = {1, angle};
-        double change = Math.abs(angle - encoderValue);
-
-        if ((change / 180) >= 1) {
-            ret[0] = -1;
-            ret[1] = angle % 180;
-        }
-
-        return ret;
+        // Ratio is 7:1 (Motor to wheel)
     }
 
     public void drive(double speed, double angle) {
+        // TODO: optimize wheel turns
+
         SmartDashboard.putNumber(m_turnEncoderPort + " angle input", angle);
         SmartDashboard.putNumber(m_turnEncoderPort + " speed input", speed);
 
@@ -85,16 +70,14 @@ public class SwerveWheel {
         angle = wrapAroundAngles(angle);
 
         SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", turnValue);
-        //double[] newPositions = optimizeWheelPositions(angle, turnValue);
         
-        double turnPIDOutput = turnPidController.calculate(turnValue, angle);//MathUtil.clamp(turnPidController.calculate(turnValue, angle), -1, 1);
+        double turnPIDOutput = turnPidController.calculate(turnValue, angle);
 
         double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, speed);
         double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed, speed);
 
         SmartDashboard.putNumber(m_turnEncoderPort + " drive set", drivePIDOutput + driveFeedForwardOutput);
         SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
-
 
         driveMotor.set(MathUtil.clamp((drivePIDOutput + driveFeedForwardOutput) * 1.2, -1, 1));
         if (!turnPidController.atSetpoint()) {
