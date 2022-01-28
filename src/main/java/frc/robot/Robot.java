@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.cameraserver.CameraServer;
+import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.ShootSystem;
 import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
@@ -39,6 +40,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     // m_robotContainer = new RobotContainer();
  
+    shootSystem = new ShootSystem();
     //driveSystem = new DriveSystem();
     CameraServer.startAutomaticCapture();
   }
@@ -84,8 +86,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     swerveSystem = new SwerveDriveTrain();
-    shootSystem = new ShootSystem();
 
+    shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
     //swerveSystem.setDefaultCommand(new OldSwerveCommand(swerveSystem));
 
     // This makes sure that the autonomous stops running when
@@ -100,9 +102,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    double[] input = {0, 0, 1};
     swerveSystem.drive(IO.getPolarCoords());
-    shootSystem.shoot(IO.getXboxRightTrigger());
   }
   @Override
   public void testInit() {
