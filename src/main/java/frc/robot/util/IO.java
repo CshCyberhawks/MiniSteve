@@ -35,6 +35,10 @@ public class IO {
        return deadZone(joystick.getTwist());
     }
 
+    public static boolean getJoystickButton8() {
+        return joystick.getRawButtonPressed(8);
+    }
+
     public static double getXboxLeftY() {
         return Math.abs(xbox.getLeftY()) > deadzone ? xbox.getLeftY() : 0;
     }

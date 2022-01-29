@@ -12,12 +12,13 @@ import com.kauailabs.navx.frc.AHRS;
 public class Gyro {
     private AHRS gyro;
     private LinearFilter filter;
-    private double offset = 0;
+    private double offset;
 
     public Gyro() {
         gyro = new AHRS(SPI.Port.kMXP);
         Shuffleboard.getTab("SmartDashboard").add(gyro);
         filter = LinearFilter.movingAverage(2);
+        offset = 0;
     }
 
     private double wrapAroundAngles(double input) {
@@ -38,7 +39,7 @@ public class Gyro {
         gyro.reset();
     }
 
-    public void resetOffset() {
+    public void setOffset() {
         // The gyro wasn't being nice
         offset = wrapAroundAngles(gyro.getYaw());
     }

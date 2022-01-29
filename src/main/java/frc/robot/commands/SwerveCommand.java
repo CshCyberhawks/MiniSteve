@@ -14,11 +14,15 @@ public class SwerveCommand extends CommandBase {
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {}
+    public void initialize() {
+        swerveDriveTrain.gyro.setOffset();
+    }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        if (IO.getJoystickButton8())
+            swerveDriveTrain.gyro.setOffset();
         swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoyTwist());
     }
 
