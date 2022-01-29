@@ -59,6 +59,19 @@ public class SwerveWheel {
         // Ratio is 7:1 (Motor to wheel)
     }
 
+    public double[] optimizeAngles(double setpoint, double encoderAngle) {
+        double angle = setpoint;
+        double oppositeAngle = (setpoint + 180) % 360;
+
+        double[] ret = {1, angle};
+
+        if (Math.abs(angle) > Math.abs(oppositeAngle)) {
+            ret[0] = -1;
+            ret[1] = oppositeAngle;
+        }
+        return ret;
+    }
+
     public void drive(double speed, double angle) {
         // TODO: optimize wheel turns
         // TODO: fix PIDs becuase they are currently limiting the speed to 0.1
@@ -69,13 +82,20 @@ public class SwerveWheel {
         double currentDriveSpeed = convertCentiMeterSecond(speed);
         double turnValue = wrapAroundAngles(turnEncoder.get());
         angle = wrapAroundAngles(angle);
+        // double[] optimizedAngle = optimizeAngles(angle, turnValue);
+        // angle = optimizedAngle[1];
 
         SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", turnValue);
         
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
 
-        double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, speed);
-        double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed, speed);
+        double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, /*optimizedAngle[0] * */speed);
+
+        SmartDashboard.putNumber(m_turnEncoderPort + " pid value", drivePIDOutput);
+
+        double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed, /*optimizedAngle[0] * */speed);
+
+        SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value", driveFeedForwardOutput);
 
         SmartDashboard.putNumber(m_turnEncoderPort + " drive set", drivePIDOutput + driveFeedForwardOutput);
         SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);

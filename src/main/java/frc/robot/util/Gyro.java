@@ -1,9 +1,6 @@
 package frc.robot.util;
 
-
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -11,13 +8,11 @@ import com.kauailabs.navx.frc.AHRS;
 
 public class Gyro {
     private AHRS gyro;
-    private LinearFilter filter;
     private double offset;
 
     public Gyro() {
         gyro = new AHRS(SPI.Port.kMXP);
         Shuffleboard.getTab("SmartDashboard").add(gyro);
-        filter = LinearFilter.movingAverage(2);
         offset = 0;
     }
 

@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.util.IO;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
