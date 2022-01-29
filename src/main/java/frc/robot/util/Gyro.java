@@ -5,11 +5,14 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.kauailabs.navx.frc.AHRS;
 
 public class Gyro {
     private AHRS gyro;
     private LinearFilter filter;
+    private double offset = 0;
 
     public Gyro() {
         gyro = new AHRS(SPI.Port.kMXP);
@@ -22,7 +25,8 @@ public class Gyro {
     }
 
     public double getAngle() {
-        return wrapAroundAngles(gyro.getYaw());
+        SmartDashboard.putNumber("Gyro Offset", offset);
+        return wrapAroundAngles(gyro.getYaw() - offset);
         // return gyro.getYaw();
     }
 
@@ -32,5 +36,10 @@ public class Gyro {
 
     public void reset() {
         gyro.reset();
+    }
+
+    public void resetOffset() {
+        // The gyro wasn't being nice
+        offset = wrapAroundAngles(gyro.getYaw());
     }
 }
