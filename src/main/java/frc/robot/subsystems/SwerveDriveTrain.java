@@ -49,12 +49,12 @@ public class SwerveDriveTrain extends SubsystemBase {
           return ret;
      }
 
-
      public double[] calculateDrive(double x1, double y1, double theta2, double r2) {
           //X is 0 and Y is 1
           double[] driveCoordinate = fieldOriented(x1, y1, gyro.getAngle());
           double[] twistCoordinate = polarToCartesian(theta2, r2);
 
+          //Args are theta, r
           double[] ret = cartesianToPolar(driveCoordinate[0] + twistCoordinate[0], driveCoordinate[1] + twistCoordinate[1]);
           return ret;
      }

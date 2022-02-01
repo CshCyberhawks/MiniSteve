@@ -59,17 +59,30 @@ public class SwerveWheel {
         // Ratio is 7:1 (Motor to wheel)
     }
 
-    public double[] optimizeAngles(double setpoint, double encoderAngle) {
-        double angle = setpoint;
-        double oppositeAngle = (setpoint + 180) % 360;
+    // public double[] optimizeAngles(double setpoint, double encoderAngle) {
+    //     double angle = setpoint;
+    //     double oppositeAngle = (setpoint + 180) % 360;
 
-        double[] ret = {1, angle};
+    //     double[] ret = {1, angle};
 
-        if (Math.abs(angle) > Math.abs(oppositeAngle)) {
-            ret[0] = -1;
-            ret[1] = oppositeAngle;
+    //     if (Math.abs(angle) > Math.abs(oppositeAngle)) {
+    //         ret[0] = -1;
+    //         ret[1] = oppositeAngle;
+    //     }
+    //     return ret;
+    // }
+
+    private double[] optimizeAngles(double angle, double encoderValue, double speed) {
+        double oppositeAngle = (angle + 180) % 360;
+        double oppositeAngleDistance = Math.abs(encoderValue - oppositeAngle);
+
+        double angleDistance = Math.abs(encoderValue - angle);
+
+        if (angleDistance < oppositeAngleDistance) {
+            return new double[] {speed, angle};
         }
-        return ret;
+
+        return new double[] {-speed, oppositeAngle}; 
     }
 
     public void drive(double speed, double angle) {
@@ -82,8 +95,9 @@ public class SwerveWheel {
         double currentDriveSpeed = convertCentiMeterSecond(speed);
         double turnValue = wrapAroundAngles(turnEncoder.get());
         angle = wrapAroundAngles(angle);
-        // double[] optimizedAngle = optimizeAngles(angle, turnValue);
-        // angle = optimizedAngle[1];
+        double[] optimizedAngles = optimizeAngles(angle, turnValue, speed);
+        angle = optimizedAngles[1];
+        speed = optimizedAngles[0];
 
         SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", turnValue);
         
