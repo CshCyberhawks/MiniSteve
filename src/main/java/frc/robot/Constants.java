@@ -40,16 +40,16 @@ public final class Constants {
 
 
     //TalonSRX Motors
-    public static final int frontRightTurnMotor = 1;
-    public static final int frontLeftTurnMotor = 5;
-    public static final int backRightTurnMotor = 3;
-    public static final int backLeftTurnMotor = 2;
+    public static final int frontRightTurnMotor = 5;
+    public static final int frontLeftTurnMotor = 2;
+    public static final int backRightTurnMotor = 1;
+    public static final int backLeftTurnMotor = 3;
 
     //CANSparkMax Motors
-    public static final int frontRightDriveMotor = 9;    
-    public static final int frontLeftDriveMotor = 6;    
-    public static final int backRightDriveMotor = 7;    
-    public static final int backLeftDriveMotor = 8;
+    public static final int frontRightDriveMotor = 6;  
+    public static final int frontLeftDriveMotor = 8; 
+    public static final int backRightDriveMotor = 9;   
+    public static final int backLeftDriveMotor = 7;
 
     //Dimensions
     public static final double length = .53;
@@ -59,10 +59,10 @@ public final class Constants {
     public static final double maxVolts = 4.85; 
 
     //Encoders
-    public static final int frontRightEncoder = 1;
-    public static final int frontLeftEncoder = 0;
-    public static final int backRightEncoder = 2;
-    public static final int backLeftEncoder = 3;
+    public static final int frontRightEncoder = 0;
+    public static final int frontLeftEncoder = 3;
+    public static final int backRightEncoder = 1;
+    public static final int backLeftEncoder = 2;
 
-    public static final double[] turnEncoderOffsets = {345, 260.4, 255, 8};
+    public static final double[] turnEncoderOffsets = {256, 346,171, 95};
 }

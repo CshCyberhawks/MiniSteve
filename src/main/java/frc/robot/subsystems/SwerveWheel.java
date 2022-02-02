@@ -59,30 +59,18 @@ public class SwerveWheel {
         // Ratio is 7:1 (Motor to wheel)
     }
 
-    // public double[] optimizeAngles(double setpoint, double encoderAngle) {
-    //     double angle = setpoint;
-    //     double oppositeAngle = (setpoint + 180) % 360;
 
-    //     double[] ret = {1, angle};
-
-    //     if (Math.abs(angle) > Math.abs(oppositeAngle)) {
-    //         ret[0] = -1;
-    //         ret[1] = oppositeAngle;
-    //     }
-    //     return ret;
-    // }
-
-    private double[] optimizeAngles(double angle, double encoderValue, double speed) {
+    private double[] optimizeAngles(double angle, double encoderValue) {
         double oppositeAngle = (angle + 180) % 360;
         double oppositeAngleDistance = Math.abs(encoderValue - oppositeAngle);
 
         double angleDistance = Math.abs(encoderValue - angle);
 
         if (angleDistance < oppositeAngleDistance) {
-            return new double[] {speed, angle};
+            return new double[] {1, angle};
         }
 
-        return new double[] {-speed, oppositeAngle}; 
+        return new double[] {-1, oppositeAngle}; 
     }
 
     public void drive(double speed, double angle) {
@@ -95,25 +83,26 @@ public class SwerveWheel {
         double currentDriveSpeed = convertCentiMeterSecond(speed);
         double turnValue = wrapAroundAngles(turnEncoder.get());
         angle = wrapAroundAngles(angle);
-        double[] optimizedAngles = optimizeAngles(angle, turnValue, speed);
+        double[] optimizedAngles = optimizeAngles(angle, turnValue);
         angle = optimizedAngles[1];
-        speed = optimizedAngles[0];
+        speed = optimizedAngles[0] * speed;
 
-        //SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", turnValue);
+        SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", turnValue);
         
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
 
-        double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, /*optimizedAngle[0] * */speed);
+        double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, speed);
 
         SmartDashboard.putNumber(m_turnEncoderPort + " pid value", drivePIDOutput);
 
-        double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed, /*optimizedAngle[0] * */speed);
+        double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed, speed);
 
         SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value", driveFeedForwardOutput);
 
         SmartDashboard.putNumber(m_turnEncoderPort + " drive set", MathUtil.clamp(drivePIDOutput + driveFeedForwardOutput, -.7, .7));
-        //SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
+        // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
+        //70% speed is about 5.6 feet/second
         driveMotor.set(MathUtil.clamp(drivePIDOutput + driveFeedForwardOutput, -.7, .7));
         if (!turnPidController.atSetpoint()) {
            turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -.7, .7));

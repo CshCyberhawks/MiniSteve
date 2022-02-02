@@ -38,4 +38,17 @@ public class Gyro {
         // The gyro wasn't being nice
         offset = wrapAroundAngles(gyro.getYaw());
     }
+
+    public double getVelX() {
+        return gyro.getVelocityX();
+    }
+
+    public double getVelY() {
+        return gyro.getVelocityY();
+    }
+
+    public double getAngVel() {
+        return gyro.getVelocityZ();
+    }
+
 }
