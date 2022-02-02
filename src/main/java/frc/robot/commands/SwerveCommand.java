@@ -23,7 +23,7 @@ public class SwerveCommand extends CommandBase {
     public void execute() {
         if (IO.getJoystickButton8())
             swerveDriveTrain.gyro.setOffset();
-        swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoyTwist());
+        swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoy2X());
     }
 
     // Called once the command ends or is interrupted.

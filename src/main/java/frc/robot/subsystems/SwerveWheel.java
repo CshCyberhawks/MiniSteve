@@ -100,9 +100,9 @@ public class SwerveWheel {
         SmartDashboard.putNumber(m_turnEncoderPort + " drive set", MathUtil.clamp(drivePIDOutput + driveFeedForwardOutput, -.7, .7));
         //SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
-        //driveMotor.set(MathUtil.clamp(drivePIDOutput + driveFeedForwardOutput, -.7, .7));
+        driveMotor.set(MathUtil.clamp(drivePIDOutput + driveFeedForwardOutput, -.7, .7));
         if (!turnPidController.atSetpoint()) {
-        //    turnMotor.set(ControlMode.PercentOutput, turnPIDOutput);
+           turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -.7, .7));
         }
     }
 }

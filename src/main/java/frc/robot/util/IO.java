@@ -6,8 +6,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IO {
     private static Joystick joystick = new Joystick(0);
-    
-    private static XboxController xbox = new XboxController(1);
+    private static Joystick joystick2 = new Joystick(1);
+
+    private static XboxController xbox = new XboxController(2);
 
     private static double deadzone = 0.3;
 
@@ -49,5 +50,9 @@ public class IO {
 
     public static double getXboxRightX() {
         return Math.abs(xbox.getRightX()) > deadzone ? xbox.getRightX() : 0;
+    }
+
+    public static double getJoy2X() {
+        return deadZone(joystick2.getX());
     }
 }
