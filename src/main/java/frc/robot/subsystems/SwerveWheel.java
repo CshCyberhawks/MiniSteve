@@ -44,7 +44,7 @@ public class SwerveWheel {
         turnPidController.setTolerance(4);
         turnPidController.enableContinuousInput(0,  360);
 
-        drivePidController = new PIDController(.01, 0, 0);
+        drivePidController = new PIDController(.3, 0, 0);
         driveFeedforward = new SimpleMotorFeedforward(.1, 473);
     }
 
@@ -85,7 +85,7 @@ public class SwerveWheel {
         // double[] optimizedAngle = optimizeAngles(angle, turnValue);
         // angle = optimizedAngle[1];
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", turnValue);
+        //SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", turnValue);
         
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
 
@@ -97,12 +97,12 @@ public class SwerveWheel {
 
         SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value", driveFeedForwardOutput);
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " drive set", drivePIDOutput + driveFeedForwardOutput);
-        SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
+        SmartDashboard.putNumber(m_turnEncoderPort + " drive set", MathUtil.clamp(drivePIDOutput + driveFeedForwardOutput, -.7, .7));
+        //SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
-        driveMotor.set(MathUtil.clamp((drivePIDOutput + driveFeedForwardOutput) * 1.2, -1, 1));
+        //driveMotor.set(MathUtil.clamp(drivePIDOutput + driveFeedForwardOutput, -.7, .7));
         if (!turnPidController.atSetpoint()) {
-            turnMotor.set(ControlMode.PercentOutput, turnPIDOutput);
+        //    turnMotor.set(ControlMode.PercentOutput, turnPIDOutput);
         }
     }
 }
