@@ -82,9 +82,8 @@ public class SwerveWheel {
 
         double currentDriveSpeed = convertCentiMeterSecond(speed);
         double turnValue = wrapAroundAngles(turnEncoder.get());
-        angle = wrapAroundAngles(angle);
         double[] optimizedAngles = optimizeAngles(angle, turnValue, speed);
-        angle = optimizedAngles[1];
+        angle = wrapAroundAngles(optimizedAngles[1]);
         speed = optimizedAngles[0];
 
         SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", turnValue);
