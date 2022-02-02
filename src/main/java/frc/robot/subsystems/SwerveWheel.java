@@ -60,17 +60,17 @@ public class SwerveWheel {
     }
 
 
-    private double[] optimizeAngles(double angle, double encoderValue) {
+    private double[] optimizeAngles(double angle, double encoderValue, double speed) {
         double oppositeAngle = (angle + 180) % 360;
         double oppositeAngleDistance = Math.abs(encoderValue - oppositeAngle);
 
         double angleDistance = Math.abs(encoderValue - angle);
 
         if (angleDistance < oppositeAngleDistance) {
-            return new double[] {1, angle};
+            return new double[] {speed, angle};
         }
 
-        return new double[] {-1, oppositeAngle}; 
+        return new double[] {-speed, oppositeAngle}; 
     }
 
     public void drive(double speed, double angle) {
@@ -83,21 +83,23 @@ public class SwerveWheel {
         double currentDriveSpeed = convertCentiMeterSecond(speed);
         double turnValue = wrapAroundAngles(turnEncoder.get());
         angle = wrapAroundAngles(angle);
-        double[] optimizedAngles = optimizeAngles(angle, turnValue);
+        double[] optimizedAngles = optimizeAngles(angle, turnValue, speed);
         angle = optimizedAngles[1];
-        speed = optimizedAngles[0] * speed;
+        speed = optimizedAngles[0];
 
         SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", turnValue);
         
+        SmartDashboard.putNumber(m_turnEncoderPort + " drive encoder ", currentDriveSpeed);
+
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
 
         double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, speed);
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " pid value", drivePIDOutput);
+        // SmartDashboard.putNumber(m_turnEncoderPort + " pid value", drivePIDOutput);
 
         double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed, speed);
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value", driveFeedForwardOutput);
+        // SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value", driveFeedForwardOutput);
 
         SmartDashboard.putNumber(m_turnEncoderPort + " drive set", MathUtil.clamp(drivePIDOutput + driveFeedForwardOutput, -.7, .7));
         // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
