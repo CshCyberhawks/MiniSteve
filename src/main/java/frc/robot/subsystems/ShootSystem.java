@@ -5,7 +5,7 @@ import javax.print.CancelablePrintJob;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-
+import frc.robot.Constants;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.Encoder;
@@ -20,11 +20,12 @@ public class ShootSystem extends SubsystemBase {
     private Encoder bottomEncoder;
     private PIDController shootPID;
     private SimpleMotorFeedforward shootFeedFoward;
-
+    
     public ShootSystem() {
-        topMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
-        bottomLeftMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
-        bottomRightMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
+        
+        topMotor = new CANSparkMax(Constants.spinShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        bottomLeftMotor = new CANSparkMax(Constants.leftShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        bottomRightMotor = new CANSparkMax(Constants.rightShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         topEncoder = new Encoder(0, 0);
         bottomEncoder = new Encoder(0, 0);
