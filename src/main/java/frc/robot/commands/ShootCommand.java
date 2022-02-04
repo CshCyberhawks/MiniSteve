@@ -14,6 +14,9 @@ public class ShootCommand extends CommandBase {
 
     @Override
     public void execute() {
-        shootSystem.shoot(IO.getXboxRightTrigger());
+        double speed = IO.getXboxRightTrigger();
+        speed = speed > 0 ? speed : IO.getXboxRightBumper() ? -0.25 : 0;
+
+        shootSystem.shoot(speed);
     }
 }

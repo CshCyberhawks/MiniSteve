@@ -8,6 +8,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.ShootSystem;
@@ -26,7 +30,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   //private OldSwerveDriveTrain swerveSystem;
-  private SwerveDriveTrain swerveSystem;
+  // private SwerveDriveTrain swerveSystem;
   private ShootSystem shootSystem;
   // private RobotContainer m_robotContainer;
 
@@ -85,7 +89,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    swerveSystem = new SwerveDriveTrain();
+    // swerveSystem = new SwerveDriveTrain();
 
     shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
     //swerveSystem.setDefaultCommand(new OldSwerveCommand(swerveSystem));
@@ -102,16 +106,19 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    swerveSystem.drive(IO.getPolarCoords());
+    // swerveSystem.drive(IO.getPolarCoords());
   }
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-
   }
+
+  // private CANSparkMax motor = new CANSparkMax(12, MotorType.kBrushless);
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    // motor.set(0.5);
+  }
 }
