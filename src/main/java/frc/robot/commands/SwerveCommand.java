@@ -6,7 +6,7 @@ import frc.robot.util.IO;
 
 public class SwerveCommand extends CommandBase {
     private final SwerveDriveTrain swerveDriveTrain;
-    
+
     public SwerveCommand(SwerveDriveTrain subsystem) {
         swerveDriveTrain = subsystem;
         addRequirements(subsystem);
