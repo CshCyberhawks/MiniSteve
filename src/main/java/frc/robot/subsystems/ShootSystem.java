@@ -18,6 +18,7 @@ public class ShootSystem extends SubsystemBase {
     private CANSparkMax topMotor;
     private CANSparkMax bottomRightMotor;
     private CANSparkMax bottomLeftMotor;
+    private double topMotorMult = 1.2;
 
     public ShootSystem() {
         topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -26,7 +27,7 @@ public class ShootSystem extends SubsystemBase {
     }
 
     public void shoot(double power) {
-        topMotor.set(-power);
+        topMotor.set(-power * topMotorMult);
         setBottom(power);
     }
 
