@@ -41,4 +41,8 @@ public class SwerveAuto {
         Robot.swerveSystem.frontLeft.drive(-1, wheelAngle);
     }
 
+    public void kill() {
+        Robot.swerveSystem.drive(0, 0, 0);
+    }
+
 }

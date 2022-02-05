@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommandGroup;
-import frc.robot.commands.AutoGoTo;
 import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.SwerveAuto;
 import frc.robot.subsystems.SwerveDriveTrain;
@@ -36,7 +35,7 @@ public class Robot extends TimedRobot {
   public static SwerveOdometry swo;
   private static SwerveCommand swerveCommand;
 
-  private Command autoCommand;
+  private Command autoCommands;
   
   // private RobotContainer m_robotContainer;
 
@@ -92,10 +91,10 @@ public class Robot extends TimedRobot {
     }
     //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     swerveAuto = new SwerveAuto();
-    autoCommand = new AutoGoTo();
+    autoCommands = new AutoCommandGroup();
 
     // schedule the autonomous command (example)
-    autoCommand.schedule();
+    autoCommands.schedule();
     
   }
 
@@ -115,8 +114,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (autoCommand != null) {
-     autoCommand.cancel();
+    if (autoCommands != null) {
+     autoCommands.cancel();
     }
   }
 

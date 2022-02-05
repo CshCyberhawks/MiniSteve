@@ -25,6 +25,7 @@ public class AutoGoTo extends CommandBase{
 
     @Override
     public void end(boolean interrupted) {
+        Robot.swerveAuto.kill();
         SmartDashboard.putBoolean("auto command finsihed", true);
     }
 
