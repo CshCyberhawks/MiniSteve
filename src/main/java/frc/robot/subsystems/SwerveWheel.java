@@ -15,6 +15,8 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 // import edu.wpi.first.math.geometry.Rotation2d;
 // import edu.wpi.first.math.kinematics.SwerveModuleState;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.RelativeEncoder;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -23,6 +25,7 @@ public class SwerveWheel {
     private CANSparkMax driveMotor;
 
     private TurnEncoder turnEncoder;
+    private RelativeEncoder driveEncoder;
 
     private int m_turnEncoderPort;
     
@@ -36,6 +39,7 @@ public class SwerveWheel {
         turnMotor = new TalonSRX(turnPort);
         driveMotor = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless);
         
+        driveEncoder = driveMotor.getEncoder();
         turnEncoder = new TurnEncoder(turnEncoderPort);
 
         m_turnEncoderPort = turnEncoderPort;
@@ -69,6 +73,7 @@ public class SwerveWheel {
         double turnValue = wrapAroundAngles(turnEncoder.get());
         angle = wrapAroundAngles(angle);
 
+        // Code stolen from https://github.com/Frc2481/frc-2015/blob/master/src/Components/SwerveModule.cpp
         if (Math.abs(angle - turnValue) > 90 && Math.abs(angle - turnValue) < 270) {
 			angle = ((int)angle + 180) % 360;
 			speed = -speed;
