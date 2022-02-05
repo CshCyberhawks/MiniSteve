@@ -8,10 +8,10 @@ import java.lang.Math;
 
 
 public class SwerveDriveTrain extends SubsystemBase {
-     private SwerveWheel backLeft;
-     private SwerveWheel backRight;
-     private SwerveWheel frontLeft;
-     private SwerveWheel frontRight;
+     public SwerveWheel backLeft;
+     public SwerveWheel backRight;
+     public SwerveWheel frontLeft;
+     public SwerveWheel frontRight;
      public Gyro gyro;
 
      public SwerveDriveTrain() {
@@ -61,6 +61,9 @@ public class SwerveDriveTrain extends SubsystemBase {
      public void drive(double inputX, double inputY, double inputTwist) {
           double gyroAngle = gyro.getAngle();
           SmartDashboard.putNumber("gyro val", gyroAngle);
+
+          SmartDashboard.putNumber(" gyroXDisTeleop ", Gyro.getDisplacementX());
+
 
           double[] frontRightVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("frontRight"), inputTwist);
           double[] frontLeftVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("frontLeft"), inputTwist);

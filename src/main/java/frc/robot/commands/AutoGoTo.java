@@ -11,13 +11,19 @@ public class AutoGoTo extends CommandBase{
 
     @Override
     public void initialize() {
-        desiredPosition = new FieldPosition(1, 0, 0);
-        Robot.swo.setDesiredPosition(desiredPosition, 10);
+        desiredPosition = new FieldPosition(100, 0, 0);
+        Robot.swo.resetPos();
+        Robot.swo.setDesiredPosition(desiredPosition);
     }
 
     @Override
     public void execute() {
         //swo is swerve drive odometry, and calling.swo calls its main loop
         Robot.swo.swo();
+    }
+
+    @Override
+    public boolean isFinished() {
+        return Robot.swo.isAtPosition();
     }
 }

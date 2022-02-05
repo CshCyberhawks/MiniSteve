@@ -12,5 +12,9 @@ public class FieldPosition {
         angle = startAngle;
     }
 
+    public void reset() {
+        positionCoord = new Vector2(0, 0);
+        angle = 0;
+    }
 
 }

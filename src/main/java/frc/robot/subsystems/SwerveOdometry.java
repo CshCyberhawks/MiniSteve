@@ -8,6 +8,7 @@ import frc.robot.util.Vector2;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -15,9 +16,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SwerveOdometry extends SubsystemBase{
     private FieldPosition fieldPosition;
     private SwerveDriveTrain swerveDriveTrain;
-    private double movementTime;
     private FieldPosition desiredPosition;
-    private double timeToDesiredPosition;
+
+    private double[] inputs;
 
     public SwerveOdometry(FieldPosition _fieldPosition, SwerveDriveTrain _driveTrain) {
         swerveDriveTrain = _driveTrain;
@@ -30,15 +31,20 @@ public class SwerveOdometry extends SubsystemBase{
     
     //time to desired position is in ms
 
-    public void setDesiredPosition(FieldPosition _desiredPosition, double _timeToDesiredPosition) {
+    public void setDesiredPosition(FieldPosition _desiredPosition) {
         desiredPosition = _desiredPosition;
-        timeToDesiredPosition = _timeToDesiredPosition;
 
+        inputs = calculateInputs();
+    }
+
+    public void resetPos() {
+        fieldPosition.reset();
+        Gyro.resetDispacement();
     }
 
     public void updatePosition() {
-        fieldPosition.positionCoord.x += Gyro.getVelX();
-        fieldPosition.positionCoord.y += Gyro.getVelY();
+        fieldPosition.positionCoord.x = Gyro.getDisplacementX();
+        fieldPosition.positionCoord.y = Gyro.getDisplacementY();
 
         fieldPosition.angle = Gyro.getAngle();
 
@@ -51,18 +57,19 @@ public class SwerveOdometry extends SubsystemBase{
         
         updatePosition();
 
-        double inputTwist = 0;//(desiredAngle - fieldPosition.angle) / timeToDesiredPosition;
-
         
+        SmartDashboard.putNumber(" fieldPosX ", fieldPosition.positionCoord.x);
+        SmartDashboard.putNumber(" fieldPosY ", fieldPosition.positionCoord.y);
 
-        double[] inputs = calculateInputs();
+        SmartDashboard.putNumber(" gyroXDis ", Gyro.getDisplacementX());
 
-        // SmartDashboard.putNumber(" fieldPosX ", fieldPosition.);
 
         //need to figure out how to make those inputs AHHHHH
-        swerveDriveTrain.drive(inputs[0], inputs[1], inputTwist);
+        swerveDriveTrain.backRight.drive(inputs[1], inputs[0]);
+        swerveDriveTrain.backLeft.drive(-inputs[1], inputs[0]);
+        swerveDriveTrain.frontRight.drive(inputs[1], inputs[0]);
+        swerveDriveTrain.frontLeft.drive(-inputs[1], inputs[0]);
 
-        timeToDesiredPosition -= 20;
     }
     
     private double[] calculateInputs() {
@@ -76,16 +83,27 @@ public class SwerveOdometry extends SubsystemBase{
         new TrapezoidProfile.State(desiredPosition.positionCoord.y, 0), 
         new TrapezoidProfile.State(fieldPosition.positionCoord.y, 0));
 
+        double[] polarCurrent = swerveDriveTrain.cartesianToPolar(fieldPosition.positionCoord.x, fieldPosition.positionCoord.y);
+
+        double[] polarDesired = swerveDriveTrain.cartesianToPolar(desiredPosition.positionCoord.x, desiredPosition.positionCoord.y);
+
+        double thetaDifference = polarDesired[0] - polarCurrent[0];
 
 
-        double inputX = MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.positionCoord.x - fieldPosition.positionCoord.x, -1, 1), .3);//trapProfileX.calculate(timeToDesiredPosition).velocity * MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.positionCoord.x - fieldPosition.positionCoord.x, -1, 1), .3);
-        double inputY = MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.positionCoord.y - fieldPosition.positionCoord.y, -1, 1), .3);//trapProfileY.calculate(timeToDesiredPosition).velocity * MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.positionCoord.y - fieldPosition.positionCoord.y, -1, 1), .3);
-        
-        SmartDashboard.putNumber(" auto inputX ", inputX);
-        SmartDashboard.putNumber(" auto inputY ", inputY);
 
-        double[] ret = {inputX, inputY};
+        SmartDashboard.putNumber(" auto theta ", thetaDifference);
+
+        double[] ret = {thetaDifference, 1};
         return ret;
+    }
+
+    public boolean isAtPosition() {
+        if (MathClass.calculateDeadzone(desiredPosition.positionCoord.x - fieldPosition.positionCoord.x, 2) == 0) {
+            if (MathClass.calculateDeadzone(desiredPosition.positionCoord.y - fieldPosition.positionCoord.y, 2) == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

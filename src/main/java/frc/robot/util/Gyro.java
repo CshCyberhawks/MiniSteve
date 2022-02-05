@@ -35,16 +35,20 @@ public class Gyro {
         offset = wrapAroundAngles(gyro.getYaw());
     }
 
-    public static double getVelX() {
-        return gyro.getVelocityX();
+    public static double getDisplacementX() {
+        return gyro.getDisplacementX();
     }
 
-    public static double getVelY() {
-        return gyro.getVelocityY();
+    public static double getDisplacementY() {
+        return gyro.getDisplacementY();
     }
 
     public static double getAngVel() {
         return gyro.getVelocityZ();
+    }
+
+    public static void resetDispacement() {
+        gyro.resetDisplacement();
     }
 
 }
