@@ -6,7 +6,7 @@ import frc.robot.util.IO;
 
 public class ShootCommand extends CommandBase {
     private final ShootSystem shootSystem;
-    private final double speedMult = 0.50;
+    private final double speedMult = .43;
     
     public ShootCommand(ShootSystem subsystem) {
         shootSystem = subsystem;
