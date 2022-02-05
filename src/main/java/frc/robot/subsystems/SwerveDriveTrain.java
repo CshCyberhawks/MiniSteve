@@ -15,7 +15,6 @@ public class SwerveDriveTrain extends SubsystemBase {
      public Gyro gyro;
 
      public SwerveDriveTrain() {
-         gyro = new Gyro();
          backLeft = new SwerveWheel(Constants.backLeftTurnMotor, Constants.backLeftDriveMotor, Constants.backLeftEncoder);
          backRight = new SwerveWheel(Constants.backRightTurnMotor, Constants.backRightDriveMotor, Constants.backRightEncoder);
          frontLeft = new SwerveWheel(Constants.frontLeftTurnMotor, Constants.frontLeftDriveMotor, Constants.frontLeftEncoder);

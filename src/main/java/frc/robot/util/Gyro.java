@@ -7,47 +7,43 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.kauailabs.navx.frc.AHRS;
 
 public class Gyro {
-    private AHRS gyro;
-    private double offset;
+    private static AHRS gyro = new AHRS(SPI.Port.kMXP);
+    private static double offset = 0;
 
-    public Gyro() {
-        gyro = new AHRS(SPI.Port.kMXP);
-        Shuffleboard.getTab("SmartDashboard").add(gyro);
-        offset = 0;
-    }
 
-    private double wrapAroundAngles(double input) {
+
+    private static double wrapAroundAngles(double input) {
         return input < 0 ? 360 + input : input;
     }
 
-    public double getAngle() {
+    public static double getAngle() {
         SmartDashboard.putNumber("Gyro Offset", offset);
         return wrapAroundAngles(gyro.getYaw() - offset);
         // return gyro.getYaw();
     }
 
-    public boolean isConnected() {
+    public static boolean isConnected() {
         return gyro.isConnected();
     }
 
-    public void reset() {
+    public static void reset() {
         gyro.reset();
     }
 
-    public void setOffset() {
+    public static void setOffset() {
         // The gyro wasn't being nice
         offset = wrapAroundAngles(gyro.getYaw());
     }
 
-    public double getVelX() {
+    public static double getVelX() {
         return gyro.getVelocityX();
     }
 
-    public double getVelY() {
+    public static double getVelY() {
         return gyro.getVelocityY();
     }
 
-    public double getAngVel() {
+    public static double getAngVel() {
         return gyro.getVelocityZ();
     }
 

@@ -4,10 +4,13 @@
 
 package frc.robot;
 
+import org.ejml.dense.fixed.CommonOps_DDF2;
+
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.AutoCommandGroup;
 import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
@@ -26,6 +29,8 @@ public class Robot extends TimedRobot {
   //private OldSwerveDriveTrain swerveSystem;
   public SwerveDriveTrain swerveSystem;
   public static SwerveOdometry swo;
+
+  private Command autoCommands;
   // private RobotContainer m_robotContainer;
 
   /**
@@ -42,6 +47,8 @@ public class Robot extends TimedRobot {
     //CameraServer.startAutomaticCapture();
     swerveSystem = new SwerveDriveTrain();
     swo = new SwerveOdometry(0, 0, 0, swerveSystem);
+
+    
   }
 
   /**
@@ -71,11 +78,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    autoCommands = new AutoCommandGroup();
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+    autoCommands.schedule();
+    
   }
 
   /** This function is called periodically during autonomous. */
