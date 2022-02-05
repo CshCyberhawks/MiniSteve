@@ -6,6 +6,7 @@ import frc.robot.util.IO;
 
 public class ShootCommand extends CommandBase {
     private final ShootSystem shootSystem;
+    private final double speedMult = 0.50;
     
     public ShootCommand(ShootSystem subsystem) {
         shootSystem = subsystem;
@@ -14,6 +15,9 @@ public class ShootCommand extends CommandBase {
 
     @Override
     public void execute() {
-        shootSystem.shoot(IO.getXboxRightTrigger());
+        double speed = IO.getXboxRightTrigger();
+        speed = speed > 0 ? speed * speedMult : IO.getXboxRightBumper() ? -0.25 : 0;
+
+        shootSystem.shoot(speed);
     }
 }

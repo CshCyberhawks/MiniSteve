@@ -5,17 +5,24 @@ import javax.print.CancelablePrintJob;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+<<<<<<< HEAD
 import frc.robot.Constants;
+=======
+import com.revrobotics.RelativeEncoder;
+
+>>>>>>> c2765311d0d3eb5e029c2f192cb1de28be389657
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ShootSystem extends SubsystemBase {
     private CANSparkMax topMotor;
     private CANSparkMax bottomRightMotor;
     private CANSparkMax bottomLeftMotor;
+<<<<<<< HEAD
     private Encoder topEncoder;
     private Encoder bottomEncoder;
     private PIDController shootPID;
@@ -35,22 +42,24 @@ public class ShootSystem extends SubsystemBase {
 
         SmartDashboard.putNumber("Top Shoot Encoder", topEncoder.getRate());
         SmartDashboard.putNumber("Bottom Shoot Encoder", bottomEncoder.getRate());
+=======
+    private double topMotorMult = 1.2;
+
+    public ShootSystem() {
+        topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        bottomLeftMotor = new CANSparkMax(Constants.leftShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        bottomRightMotor = new CANSparkMax(Constants.rightShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+>>>>>>> c2765311d0d3eb5e029c2f192cb1de28be389657
     }
 
     public void shoot(double power) {
-        double topShootPIDOutput = shootPID.calculate(topEncoder.getRate(), power);
-        double bottomShootPIDOutput = shootPID.calculate(bottomEncoder.getRate(), power);
-        double topShootFeedFowardOutput = shootFeedFoward.calculate(topEncoder.getRate(), power);
-        double bottomShootFeedFowardOutput = shootFeedFoward.calculate(topEncoder.getRate(), power);
-
-        topMotor.set(topShootPIDOutput + topShootFeedFowardOutput);
-        setBottom(bottomShootPIDOutput + bottomShootFeedFowardOutput);
-
+        topMotor.set(-power * topMotorMult);
+        setBottom(power);
     }
 
     //Syncing of bottom 2 motors
     private void setBottom(double power) {
         bottomLeftMotor.set(power);
-        bottomRightMotor.set(power);
+        bottomRightMotor.set(-power);
     }
 }

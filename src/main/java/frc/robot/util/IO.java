@@ -50,4 +50,8 @@ public class IO {
     public static double getXboxRightTrigger() {
         return xbox.getRightTriggerAxis();
     }
+
+    public static boolean getXboxRightBumper() {
+        return xbox.getRightBumper();
+    }
 }
