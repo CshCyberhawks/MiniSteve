@@ -68,8 +68,8 @@ public class SwerveOdometry extends SubsystemBase{
 
 
 
-        double inputX = trapProfileX.calculate(timeToDesiredPosition).velocity * MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.x - fieldPosition.positionCoord.x, -1, 1), .3);
-        double inputY = trapProfileY.calculate(timeToDesiredPosition).velocity * MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.y - fieldPosition.positionCoord.y, -1, 1), .3);
+        double inputX = MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.x - fieldPosition.positionCoord.x, -1, 1), .3);//trapProfileX.calculate(timeToDesiredPosition).velocity * MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.x - fieldPosition.positionCoord.x, -1, 1), .3);
+        double inputY = MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.y - fieldPosition.positionCoord.y, -1, 1), .3);//trapProfileY.calculate(timeToDesiredPosition).velocity * MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.y - fieldPosition.positionCoord.y, -1, 1), .3);
         
 
 

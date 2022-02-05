@@ -11,7 +11,7 @@ public class AutoGoTo extends CommandBase{
 
     @Override
     public void initialize() {
-        desiredPosition = new Vector2(0, 1);
+        desiredPosition = new Vector2(-.5, 0);
         Robot.swo.setDesiredPosition(desiredPosition, 0, 10);
     }
 
