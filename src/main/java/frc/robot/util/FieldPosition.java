@@ -3,8 +3,8 @@ import java.util.HashMap;
 import frc.robot.util.Vector2;
 
 public class FieldPosition {
-    private static double angle = 0;
-    private static Vector2 positionCoord;
+    public static double angle = 0;
+    public static Vector2 positionCoord;
 
     private static Gyro gyro = new Gyro();
 

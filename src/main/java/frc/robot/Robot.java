@@ -4,12 +4,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.SwerveOdometry;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -22,7 +24,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   
   //private OldSwerveDriveTrain swerveSystem;
-  private SwerveDriveTrain swerveSystem;
+  public SwerveDriveTrain swerveSystem;
+  public static SwerveOdometry swo;
   // private RobotContainer m_robotContainer;
 
   /**
@@ -38,6 +41,7 @@ public class Robot extends TimedRobot {
     //driveSystem = new DriveSystem();
     //CameraServer.startAutomaticCapture();
     swerveSystem = new SwerveDriveTrain();
+    swo = new SwerveOdometry(0, 0, 0, swerveSystem);
   }
 
   /**
