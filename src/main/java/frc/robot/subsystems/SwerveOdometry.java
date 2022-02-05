@@ -10,15 +10,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.util.WPIUtilJNI;
 
 
 public class SwerveOdometry extends SubsystemBase{
     private FieldPosition fieldPosition;
     private SwerveDriveTrain swerveDriveTrain;
-    private FieldPosition desiredPosition;
 
-    private double[] inputs;
+    private double lastUpdateTime = 1;
+
+
 
     public SwerveOdometry(FieldPosition _fieldPosition, SwerveDriveTrain _driveTrain) {
         swerveDriveTrain = _driveTrain;
@@ -28,14 +29,6 @@ public class SwerveOdometry extends SubsystemBase{
     public FieldPosition getPosition() {
         return fieldPosition;
     }
-    
-    //time to desired position is in ms
-
-    public void setDesiredPosition(FieldPosition _desiredPosition) {
-        desiredPosition = _desiredPosition;
-
-        inputs = calculateInputs();
-    }
 
     public void resetPos() {
         fieldPosition.reset();
@@ -43,67 +36,20 @@ public class SwerveOdometry extends SubsystemBase{
     }
 
     public void updatePosition() {
-        fieldPosition.positionCoord.x = Gyro.getDisplacementX();
-        fieldPosition.positionCoord.y = Gyro.getDisplacementY();
+        SmartDashboard.putNumber("fieldPosX ", fieldPosition.positionCoord.x);
+        SmartDashboard.putNumber("fieldPosY ", fieldPosition.positionCoord.y);
+
+
+        double timeNow = WPIUtilJNI.now() * 1.0e-6;
+        double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
+
+        fieldPosition.positionCoord.x += Gyro.getVelocityX() * period;
+        fieldPosition.positionCoord.y += Gyro.getVelocityY() * period;
 
         fieldPosition.angle = Gyro.getAngle();
 
-
-    }
-
-    //swo is the main loop
-    //subtracting 20 from time cuz thats the periodic loop interval
-    public void swo() {
         
-        updatePosition();
-
-        
-        SmartDashboard.putNumber(" fieldPosX ", fieldPosition.positionCoord.x);
-        SmartDashboard.putNumber(" fieldPosY ", fieldPosition.positionCoord.y);
-
-        SmartDashboard.putNumber(" gyroXDis ", Gyro.getDisplacementX());
-
-
-        //need to figure out how to make those inputs AHHHHH
-        swerveDriveTrain.backRight.drive(inputs[1], inputs[0]);
-        swerveDriveTrain.backLeft.drive(-inputs[1], inputs[0]);
-        swerveDriveTrain.frontRight.drive(inputs[1], inputs[0]);
-        swerveDriveTrain.frontLeft.drive(-inputs[1], inputs[0]);
-
-    }
-    
-    private double[] calculateInputs() {
-
-        TrapezoidProfile trapProfileX = new TrapezoidProfile(new TrapezoidProfile.Constraints(1, 1),
-        new TrapezoidProfile.State(desiredPosition.positionCoord.x, 0), 
-        new TrapezoidProfile.State(fieldPosition.positionCoord.x, 0));
-
-
-        TrapezoidProfile trapProfileY = new TrapezoidProfile(new TrapezoidProfile.Constraints(1, 1), 
-        new TrapezoidProfile.State(desiredPosition.positionCoord.y, 0), 
-        new TrapezoidProfile.State(fieldPosition.positionCoord.y, 0));
-
-        double[] polarCurrent = swerveDriveTrain.cartesianToPolar(fieldPosition.positionCoord.x, fieldPosition.positionCoord.y);
-
-        double[] polarDesired = swerveDriveTrain.cartesianToPolar(desiredPosition.positionCoord.x, desiredPosition.positionCoord.y);
-
-        double thetaDifference = polarDesired[0] - polarCurrent[0];
-
-
-
-        SmartDashboard.putNumber(" auto theta ", thetaDifference);
-
-        double[] ret = {thetaDifference, 1};
-        return ret;
-    }
-
-    public boolean isAtPosition() {
-        if (MathClass.calculateDeadzone(desiredPosition.positionCoord.x - fieldPosition.positionCoord.x, 2) == 0) {
-            if (MathClass.calculateDeadzone(desiredPosition.positionCoord.y - fieldPosition.positionCoord.y, 2) == 0) {
-                return true;
-            }
-        }
-        return false;
+        lastUpdateTime = timeNow;
     }
 
 }

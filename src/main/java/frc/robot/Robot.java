@@ -8,10 +8,13 @@ import org.ejml.dense.fixed.CommonOps_DDF2;
 
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommandGroup;
+import frc.robot.commands.AutoGoTo;
 import frc.robot.commands.SwerveCommand;
+import frc.robot.subsystems.SwerveAuto;
 import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.SwerveOdometry;
@@ -28,10 +31,13 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   
   //private OldSwerveDriveTrain swerveSystem;
-  public SwerveDriveTrain swerveSystem;
+  public static SwerveAuto swerveAuto;
+  public static SwerveDriveTrain swerveSystem;
   public static SwerveOdometry swo;
+  private static SwerveCommand swerveCommand;
 
-  private Command autoCommands;
+  private Command autoCommand;
+  
   // private RobotContainer m_robotContainer;
 
   /**
@@ -66,6 +72,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    swo.updatePosition();
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -78,28 +86,37 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+  
+    if (swerveCommand != null) {
+      swerveCommand.cancel();
+    }
     //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    autoCommands = new AutoCommandGroup();
+    swerveAuto = new SwerveAuto();
+    autoCommand = new AutoGoTo();
 
     // schedule the autonomous command (example)
-    autoCommands.schedule();
+    autoCommand.schedule();
     
   }
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    SmartDashboard.putData("commands ", CommandScheduler.getInstance());
+  }
 
   @Override
   public void teleopInit() {
-    swerveSystem.setDefaultCommand(new SwerveCommand(swerveSystem));
+
+    swerveCommand = new SwerveCommand(swerveSystem);
+    swerveCommand.schedule();
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (autoCommand != null) {
+     autoCommand.cancel();
     }
   }
 

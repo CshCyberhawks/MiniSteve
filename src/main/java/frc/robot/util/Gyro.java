@@ -47,6 +47,14 @@ public class Gyro {
         return gyro.getVelocityZ();
     }
 
+    public static double getVelocityX() {
+        return gyro.getVelocityX();
+    }
+
+    public static double getVelocityY() {
+        return gyro.getVelocityY();
+    }
+
     public static void resetDispacement() {
         gyro.resetDisplacement();
     }
