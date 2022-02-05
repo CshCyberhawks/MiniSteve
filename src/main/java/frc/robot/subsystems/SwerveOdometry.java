@@ -6,6 +6,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 public class SwerveOdometry {
     private FieldPosition fieldPosition;
     private SwerveDriveTrain swerveDriveTrain;
+    private double movementTime;
 
 
     public void SwerveOdometry(double startX, double startY, double startAngle, SwerveDriveTrain _driveTrain) {
@@ -20,6 +21,10 @@ public class SwerveOdometry {
     //swo is the main loop
     public void swo(FieldPosition desiredPosition, double timeToDesiredPosition) {
         fieldPosition.update();
+
+
+        
+        TrapezoidProfile trapProfileAngle = new TrapezoidProfile(new TrapezoidProfile.Constraints(10, 10), new TrapezoidProfile.State(0, 10));
 
 
 
