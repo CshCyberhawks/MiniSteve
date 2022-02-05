@@ -51,11 +51,6 @@ public final class Constants {
     public static final int frontLeftDriveMotor = 6;    
     public static final int backRightDriveMotor = 7;    
     public static final int backLeftDriveMotor = 8;
-    //Shoot System
-    //CANSparkMax Motors
-    public static final int leftShootMotor =11;
-    public static final int rightShootMotor = 12;
-    public static final int spinShootMotor = 13;
 
     //Shoot System Motors
     public static final int rightShootMotor = 13;
