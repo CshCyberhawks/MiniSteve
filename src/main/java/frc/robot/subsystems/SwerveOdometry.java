@@ -8,6 +8,9 @@ import frc.robot.util.Vector2;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+
 
 public class SwerveOdometry extends SubsystemBase{
     private FieldPosition fieldPosition;
@@ -54,7 +57,7 @@ public class SwerveOdometry extends SubsystemBase{
 
         double[] inputs = calculateInputs();
 
-
+        // SmartDashboard.putNumber(" fieldPosX ", fieldPosition.);
 
         //need to figure out how to make those inputs AHHHHH
         swerveDriveTrain.drive(inputs[0], inputs[1], inputTwist);
@@ -75,10 +78,11 @@ public class SwerveOdometry extends SubsystemBase{
 
 
 
-        double inputX = trapProfileX.calculate(timeToDesiredPosition).velocity * MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.positionCoord.x - fieldPosition.positionCoord.x, -1, 1), .3);
-        double inputY = trapProfileY.calculate(timeToDesiredPosition).velocity * MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.positionCoord.y - fieldPosition.positionCoord.y, -1, 1), .3);
+        double inputX = MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.positionCoord.x - fieldPosition.positionCoord.x, -1, 1), .3);//trapProfileX.calculate(timeToDesiredPosition).velocity * MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.positionCoord.x - fieldPosition.positionCoord.x, -1, 1), .3);
+        double inputY = MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.positionCoord.y - fieldPosition.positionCoord.y, -1, 1), .3);//trapProfileY.calculate(timeToDesiredPosition).velocity * MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.positionCoord.y - fieldPosition.positionCoord.y, -1, 1), .3);
         
-
+        SmartDashboard.putNumber(" auto inputX ", inputX);
+        SmartDashboard.putNumber(" auto inputY ", inputY);
 
         double[] ret = {inputX, inputY};
         return ret;
