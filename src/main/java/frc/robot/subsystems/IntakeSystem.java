@@ -2,15 +2,18 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.IO;
 
 public class IntakeSystem extends SubsystemBase {
     
-    TalonSRX motor = new TalonSRX(0);
-
+    private TalonSRX motor = new TalonSRX(0);
+    private CANSparkMax feedForward; 
     public IntakeSystem() {
+        //= new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
     }
 
     @Override
