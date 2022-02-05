@@ -3,7 +3,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
 public class IO {
     private static Joystick joystick = new Joystick(0);
     private static Joystick joystick2 = new Joystick(1);

@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
+import frc.robot.util.MathClass;
 import frc.robot.util.FieldPosition;
+import frc.robot.util.IO;
 import frc.robot.util.Vector2;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,7 +14,7 @@ public class SwerveOdometry extends SubsystemBase{
     private double movementTime;
     private Vector2 desiredPosition;
     private double timeToDesiredPosition;
-
+    private double desiredAngle;
 
 
     public SwerveOdometry(double startX, double startY, double startAngle, SwerveDriveTrain _driveTrain) {
@@ -26,10 +28,10 @@ public class SwerveOdometry extends SubsystemBase{
     
     //time to desired position is in ms
 
-    public void setDesiredPosition(Vector2 _desiredPosition, double _timeToDesiredPosition) {
+    public void setDesiredPosition(Vector2 _desiredPosition, double _desiredAngle, double _timeToDesiredPosition) {
         desiredPosition = _desiredPosition;
         timeToDesiredPosition = _timeToDesiredPosition;
-
+        desiredAngle = _desiredAngle;
 
     }
 
@@ -39,10 +41,9 @@ public class SwerveOdometry extends SubsystemBase{
     public void swo() {
         fieldPosition.update();
 
-        double inputTwist = 0;//(desiredPosition.angle - fieldPosition.angle) / timeToDesiredPosition;
+        double inputTwist = 0;//(desiredAngle - fieldPosition.angle) / timeToDesiredPosition;
 
         
-        TrapezoidProfile trapProfileAngle = new TrapezoidProfile(new TrapezoidProfile.Constraints(10, 10), new TrapezoidProfile.State(0, 10));
 
         double[] inputs = calculateInputs();
 
@@ -55,7 +56,24 @@ public class SwerveOdometry extends SubsystemBase{
     }
     
     private double[] calculateInputs() {
-        double[] ret = {MathUtil.clamp(desiredPosition.x - fieldPosition.positionCoord.x, -1, 1), MathUtil.clamp(desiredPosition.y - fieldPosition.positionCoord.y, -1, 1)};
+
+        TrapezoidProfile trapProfileX = new TrapezoidProfile(new TrapezoidProfile.Constraints(1, 1),
+        new TrapezoidProfile.State(desiredPosition.x, 0), 
+        new TrapezoidProfile.State(fieldPosition.positionCoord.x, 0));
+
+
+        TrapezoidProfile trapProfileY = new TrapezoidProfile(new TrapezoidProfile.Constraints(10, 10), 
+        new TrapezoidProfile.State(desiredPosition.y, 0), 
+        new TrapezoidProfile.State(fieldPosition.positionCoord.y, 0));
+
+
+
+        double inputX = trapProfileX.calculate(timeToDesiredPosition).velocity * MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.x - fieldPosition.positionCoord.x, -1, 1), .3);
+        double inputY = trapProfileY.calculate(timeToDesiredPosition).velocity * MathClass.calculateDeadzone(MathUtil.clamp(desiredPosition.y - fieldPosition.positionCoord.y, -1, 1), .3);
+        
+
+
+        double[] ret = {inputX, inputY};
         return ret;
     }
 
