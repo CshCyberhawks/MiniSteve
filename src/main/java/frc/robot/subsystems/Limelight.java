@@ -28,6 +28,7 @@ public class Limelight extends SubsystemBase {
         double area = ta.getDouble(0.0);
         double[] xCorners = tcornx.getDoubleArray(new double[4]);
         double[] yCorners = tcorny.getDoubleArray(new double[4]);
+
         SmartDashboard.putNumber("hasValidTarget", hasValidTarget);
         SmartDashboard.putNumber("limelight horrizontalOffset", horrizontalOffset);
         SmartDashboard.putNumber("limelight verticalOffset", verticalOffset);

@@ -8,8 +8,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.DriveCommand;
-import frc.robot.subsystems.DriveSystem;
+import frc.robot.subsystems.Limelight;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -20,11 +19,12 @@ import frc.robot.subsystems.DriveSystem;
 public class Robot extends TimedRobot {
 
 
-  private DriveSystem driveSystem;
 
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+
+  private Limelight limelight;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    driveSystem = new DriveSystem();
+    limelight = new Limelight();
     CameraServer.startAutomaticCapture();
   }
 
@@ -84,7 +84,6 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
 
 
-    driveSystem.setDefaultCommand(new DriveCommand(driveSystem));
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
