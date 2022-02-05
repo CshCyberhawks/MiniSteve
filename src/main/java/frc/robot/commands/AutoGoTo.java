@@ -17,6 +17,7 @@ public class AutoGoTo extends CommandBase{
 
     @Override
     public void execute() {
+        //swo is swerve drive odometry, and calling.swo calls its main loop
         Robot.swo.swo();
     }
 }
