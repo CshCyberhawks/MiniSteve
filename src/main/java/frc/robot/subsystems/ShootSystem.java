@@ -18,28 +18,34 @@ public class ShootSystem extends SubsystemBase {
     private CANSparkMax topMotor;
     private CANSparkMax bottomRightMotor;
     private CANSparkMax bottomLeftMotor;
-    private double topMotorMult = 1;
-    // private RelativeEncoder topEncoder;
-    // private RelativeEncoder rightEncoder;
-    // private RelativeEncoder leftEncoder;
-    // private PIDController topMotorController;
-    // private PIDController spinMotorController; 
+    private double topMotorMult = 1.2;
+    private RelativeEncoder topEncoder;
+    private RelativeEncoder rightEncoder;
+    private RelativeEncoder leftEncoder;
+    private PIDController topMotorController;
+    private PIDController spinMotorController; 
 
     public ShootSystem() {
         topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         bottomLeftMotor = new CANSparkMax(Constants.leftShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         bottomRightMotor = new CANSparkMax(Constants.rightShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        topEncoder = topMotor.getEncoder();
+        rightEncoder = bottomRightMotor.getEncoder();
+        leftEncoder = bottomLeftMotor.getEncoder();
+        topMotorController = new PIDController(0.01, 0, 0);
+        spinMotorController = new PIDController(0, 0, 0);
     }
     public void shoot(double power) {
-        // double topPIDOut = topMotorController.calculate(topEncoder.getVelocity(), power);
-        topMotor.set(-power * topMotorMult);
+        double topPIDOut = topMotorController.calculate(topEncoder.getVelocity(), power);
+        topMotor.set(topPIDOut * topMotorMult);
         setBottom(power);
     }
 
     //Syncing of bottom 2 motors
     private void setBottom(double power) {
-        // double spinPIDOut = spinMotorController.calculate(rightEncoder.getVelocity(),power);
-        bottomLeftMotor.set(power);//power
-        bottomRightMotor.set(-power);
+        double averaged = (leftEncoder.getVelocity() + rightEncoder.getVelocity()) / 2;
+        double spinPIDOut = spinMotorController.calculate(averaged,power);
+        bottomLeftMotor.set(spinPIDOut);//power
+        bottomRightMotor.set(-spinPIDOut);
     }
 }
