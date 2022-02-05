@@ -15,9 +15,9 @@ public class IntakeSystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if(IO.getXboxRightTrigger() != 0)
+        if(IO.getXboxLeftTrigger() != 0)
             motor.set(ControlMode.PercentOutput, IO.getXboxRightTrigger());
-        else if(IO.getXboxRightBumper())
+        else if(IO.getXboxLeftBumper())
             motor.set(ControlMode.PercentOutput, -0.5);
     }
     
