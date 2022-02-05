@@ -7,12 +7,12 @@ import frc.robot.util.FieldPosition;
 import frc.robot.util.Vector2;
 
 public class AutoGoTo extends CommandBase{
-    private Vector2 desiredPosition;
+    private FieldPosition desiredPosition;
 
     @Override
     public void initialize() {
-        desiredPosition = new Vector2(0, 1);
-        Robot.swo.setDesiredPosition(desiredPosition, 0, 10);
+        desiredPosition = new FieldPosition(0, 0, 0);
+        Robot.swo.setDesiredPosition(desiredPosition, 10);
     }
 
     @Override

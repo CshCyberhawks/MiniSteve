@@ -15,6 +15,7 @@ import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.SwerveOdometry;
+import frc.robot.util.FieldPosition;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -46,7 +47,7 @@ public class Robot extends TimedRobot {
     //driveSystem = new DriveSystem();
     //CameraServer.startAutomaticCapture();
     swerveSystem = new SwerveDriveTrain();
-    swo = new SwerveOdometry(0, 0, 0, swerveSystem);
+    swo = new SwerveOdometry(new FieldPosition(0, 0, 0), swerveSystem);
 
     
   }
