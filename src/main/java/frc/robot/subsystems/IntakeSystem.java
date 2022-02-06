@@ -14,16 +14,31 @@ public class IntakeSystem extends SubsystemBase {
     private PIDController intakeController;
     private PIDController bottomFeedController;
     private PIDController topFeedController;
-
+    
     private static final double powerMult = 0.5;
     public IntakeSystem() {
         intakeMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless); 
+        intakeController = new PIDController(0, 0, 0);
+        bottomFeedController = new PIDController(0, 0, 0);
+        topFeedController = new PIDController(0, 0, 0);
+    }
+    public double measurement(double speed)
+    {
+        double r = 0; //get Radius
+        double gearRatio = 0; //get gearRatio
+        return (speed * gearRatio) * ((Math.PI * 2*(r)) / 60) / 100;
+        //Get measurement
         
     }
+    
     public void intake(double speed) {
-        intakeMotor.set(speed);
-        bottomFeedMotor.set(speed);
-        topFeedMotor.set(speed);
+        double intakePIDOutput = intakeController.calculate(measurement(speed), speed);
+        double bottomFeedPIDOutput = bottomFeedController.calculate(measurement(speed), speed);
+        double topFeedPIDOutput = topFeedController.calculate(measurement(speed), speed);
+
+        intakeMotor.set(intakePIDOutput);
+        bottomFeedMotor.set(bottomFeedPIDOutput);
+        topFeedMotor.set(topFeedPIDOutput);
         SmartDashboard.putNumber("Intake Motor Speed", speed);   
     }
 
