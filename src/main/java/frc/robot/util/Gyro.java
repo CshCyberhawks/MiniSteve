@@ -55,6 +55,15 @@ public class Gyro {
         return gyro.getVelocityY();
     }
 
+    public static void resetDisplacement() {
+        gyro.resetDisplacement();
+    }
+
+    
+    public static void calibrate() {
+        gyro.calibrate();
+    }
+
     public static void resetDispacement() {
         gyro.resetDisplacement();
     }

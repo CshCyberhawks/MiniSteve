@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.util.MathClass;
+import frc.robot.Robot;
 import frc.robot.util.FieldPosition;
 import frc.robot.util.Gyro;
 import frc.robot.util.IO;
@@ -9,6 +10,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Vector;
+import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.util.WPIUtilJNI;
 
@@ -36,20 +38,26 @@ public class SwerveOdometry extends SubsystemBase{
     }
 
     public void updatePosition() {
-        SmartDashboard.putNumber("fieldPosX ", fieldPosition.positionCoord.x);
-        SmartDashboard.putNumber("fieldPosY ", fieldPosition.positionCoord.y);
-
 
         double timeNow = WPIUtilJNI.now() * 1.0e-6;
         double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
 
-        fieldPosition.positionCoord.x += Gyro.getVelocityX() * period;
-        fieldPosition.positionCoord.y += Gyro.getVelocityY() * period;
+        double[] robotVelocityCartesian = Robot.swerveSystem.polarToCartesian(Robot.swerveSystem.backRight.turnValue, Robot.swerveSystem.backRight.currentDriveSpeed);
+
+        SmartDashboard.putNumber("robotVelocityCartesianX ", robotVelocityCartesian[0]);
+
+        fieldPosition.positionCoord.x -= robotVelocityCartesian[0] * period;
+        fieldPosition.positionCoord.y -= robotVelocityCartesian[1] * period;
+;
 
         fieldPosition.angle = Gyro.getAngle();
 
         
         lastUpdateTime = timeNow;
+
+        SmartDashboard.putNumber("fieldPosX ", fieldPosition.positionCoord.x);
+        SmartDashboard.putNumber("fieldPosY ", fieldPosition.positionCoord.y);
+        SmartDashboard.putNumber(" auto angle ", fieldPosition.angle);
     }
 
 }

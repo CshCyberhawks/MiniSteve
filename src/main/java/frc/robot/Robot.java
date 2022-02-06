@@ -18,6 +18,7 @@ import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.SwerveOdometry;
 import frc.robot.util.FieldPosition;
+import frc.robot.util.Gyro;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -71,7 +72,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    swo.updatePosition();
+
 
   }
 
@@ -85,7 +86,6 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-  
     if (swerveCommand != null) {
       swerveCommand.cancel();
     }
@@ -101,7 +101,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    SmartDashboard.putData("commands ", CommandScheduler.getInstance());
+    swo.updatePosition();
+
   }
 
   @Override
@@ -121,7 +122,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    swo.updatePosition();
+
+  }
 
   @Override
   public void testInit() {

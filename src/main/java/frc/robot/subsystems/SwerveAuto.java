@@ -14,14 +14,16 @@ import frc.robot.Robot;
 
 public class SwerveAuto {
     private FieldPosition desiredPosition;
+    private double wheelAngle;
 
     public void setDesiredPosition(FieldPosition _desiredPosition) {
         desiredPosition = _desiredPosition;
+        wheelAngle = Robot.swerveSystem.cartesianToPolar(desiredPosition.positionCoord.x, desiredPosition.positionCoord.y)[0];
     }
 
     public boolean isAtDesiredPosition() {
-        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().positionCoord.x) - Math.abs(desiredPosition.positionCoord.x), 1) == 0) {
-            if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().positionCoord.y) - Math.abs(desiredPosition.positionCoord.y), 1) == 0) {
+        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().positionCoord.x) - Math.abs(desiredPosition.positionCoord.x), .05) == 0) {
+            if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().positionCoord.y) - Math.abs(desiredPosition.positionCoord.y), .05) == 0) {
                 return true;
             }
         }
@@ -36,15 +38,15 @@ public class SwerveAuto {
     }
 
     public void drive() {
-        double wheelAngle = Robot.swerveSystem.cartesianToPolar(desiredPosition.positionCoord.x, desiredPosition.positionCoord.y)[0];
+
 
         SmartDashboard.putNumber(" wheel angles auto ", wheelAngle);
         
         System.out.println("auto drive loop ran");
         Robot.swerveSystem.backRight.drive(1, wheelAngle);
-        Robot.swerveSystem.backLeft.drive(-1, wheelAngle);
+        Robot.swerveSystem.backLeft.drive(-.85, wheelAngle);
         Robot.swerveSystem.frontRight.drive(1, wheelAngle);
-        Robot.swerveSystem.frontLeft.drive(-1, wheelAngle);
+        Robot.swerveSystem.frontLeft.drive(-.85, wheelAngle);
     }
 
     public void twist() {
@@ -53,7 +55,10 @@ public class SwerveAuto {
     }
 
     public void kill() {
-        Robot.swerveSystem.drive(0, 0, 0);
+        Robot.swerveSystem.backRight.kill();
+        Robot.swerveSystem.backLeft.kill();
+        Robot.swerveSystem.frontRight.kill();
+        Robot.swerveSystem.frontLeft.kill();  
     }
 
 }
