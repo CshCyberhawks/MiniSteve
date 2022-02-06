@@ -28,9 +28,15 @@ public class SwerveAuto {
         return false;
     }
 
+    public boolean isAtDesiredAngle() {
+        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().angle) - Math.abs(desiredPosition.angle), 5) == 0) {
+            return true;
+        }
+            return false;
+    }
+
     public void drive() {
         double wheelAngle = Robot.swerveSystem.cartesianToPolar(desiredPosition.positionCoord.x, desiredPosition.positionCoord.y)[0];
-
 
         SmartDashboard.putNumber(" wheel angles auto ", wheelAngle);
         
@@ -39,6 +45,11 @@ public class SwerveAuto {
         Robot.swerveSystem.backLeft.drive(-1, wheelAngle);
         Robot.swerveSystem.frontRight.drive(1, wheelAngle);
         Robot.swerveSystem.frontLeft.drive(-1, wheelAngle);
+    }
+
+    public void twist() {
+        double twistValue = desiredPosition.angle - Robot.swo.getPosition().angle > 0 ? 1 : 0;
+        Robot.swerveSystem.drive(0, 0, twistValue);
     }
 
     public void kill() {

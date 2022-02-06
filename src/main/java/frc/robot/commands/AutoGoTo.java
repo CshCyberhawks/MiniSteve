@@ -9,6 +9,8 @@ import frc.robot.util.Vector2;
 
 public class AutoGoTo extends CommandBase{
     private FieldPosition desiredPosition;
+    private boolean isMoveFinished = false;
+    private boolean isTwistFinished = false;
 
     @Override
     public void initialize() {
@@ -19,7 +21,8 @@ public class AutoGoTo extends CommandBase{
 
     @Override
     public void execute() {
-        Robot.swerveAuto.drive();
+        if(!isMoveFinished) Robot.swerveAuto.drive();
+        else Robot.swerveAuto.twist();
         System.out.println("auto command execute ran");
     }
 
@@ -32,7 +35,10 @@ public class AutoGoTo extends CommandBase{
     @Override
     public boolean isFinished() {
         SmartDashboard.putBoolean(" isAtPos ", Robot.swerveAuto.isAtDesiredPosition());
-        return Robot.swerveAuto.isAtDesiredPosition();
+        isMoveFinished = Robot.swerveAuto.isAtDesiredPosition();
+        isTwistFinished = Robot.swerveAuto.isAtDesiredAngle();
+        return isTwistFinished;
     }
+
 
 }
