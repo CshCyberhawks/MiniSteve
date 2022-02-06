@@ -56,18 +56,21 @@ public class SwerveWheel {
         return input < 0 ? 360 + input : input;
     }
 
-    public double convertCentiMeterSecond(double rpm) {
-        double diameter = 0.00101; //101 millimeters
-        //Math to convert from rotations per minute to centimeters per second
-        return ((rpm / 7) * ((Math.PI * diameter) / 60)) / 100;
-        // Ratio is 7:1 (Motor to wheel)
+    public double convertToMetersPerSecond(double rpm) {
+        double radius = 0.0505;
+        // Gear ratio is 7:1
+        return ((2 * Math.PI * radius) / 60) * (rpm / 7);
     }
 
     public void drive(double speed, double angle) {
+        speed = convertToMetersPerSecond(speed * 3000); //Converting the speed to m/s with a max rpm of 3000 (GEar ratio is 7:1)
+
         SmartDashboard.putNumber(m_turnEncoderPort + " angle input", angle);
         SmartDashboard.putNumber(m_turnEncoderPort + " speed input", speed);
 
-        double currentDriveSpeed = convertCentiMeterSecond(speed);
+        SmartDashboard.putNumber(m_turnEncoderPort + " raw drive encoder value", driveEncoder.getVelocity());
+
+        double currentDriveSpeed = convertToMetersPerSecond(driveEncoder.getVelocity());
         double turnValue = wrapAroundAngles(turnEncoder.get());
         angle = wrapAroundAngles(angle);
 
@@ -91,11 +94,11 @@ public class SwerveWheel {
 
         // SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value", driveFeedForwardOutput);
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " drive set", MathUtil.clamp(drivePIDOutput + driveFeedForwardOutput, -.7, .7));
+        SmartDashboard.putNumber(m_turnEncoderPort + " drive set", MathUtil.clamp(drivePIDOutput /*+ driveFeedForwardOutput*/, -.7, .7));
         // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
         //70% speed is about 5.6 feet/second
-        driveMotor.set(MathUtil.clamp(drivePIDOutput + driveFeedForwardOutput, -.7, .7));
+        driveMotor.set(MathUtil.clamp(drivePIDOutput /*+ driveFeedForwardOutput*/, -.7, .7));
         if (!turnPidController.atSetpoint()) {
            turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -.7, .7));
         }
