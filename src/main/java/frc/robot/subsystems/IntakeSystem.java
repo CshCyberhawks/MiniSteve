@@ -1,27 +1,35 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.IO;
+import edu.wpi.first.math.controller.PIDController;
 
 public class IntakeSystem extends SubsystemBase {
     
-    private TalonSRX motor = new TalonSRX(0);
-    private CANSparkMax feedForward; 
+    private CANSparkMax intakeMotor;
+    private CANSparkMax bottomFeedMotor;
+    private CANSparkMax topFeedMotor;
+    private PIDController intakeController;
+    private PIDController bottomFeedController;
+    private PIDController topFeedController;
+
+    private static final double powerMult = 0.5;
     public IntakeSystem() {
-        //= new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
+        intakeMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless); 
+        
+    }
+    public void intake(double speed) {
+        intakeMotor.set(speed);
+        bottomFeedMotor.set(speed);
+        topFeedMotor.set(speed);
+        SmartDashboard.putNumber("Intake Motor Speed", speed);   
     }
 
-    @Override
-    public void periodic() {
-        if(IO.getXboxLeftTrigger() != 0)
-            motor.set(ControlMode.PercentOutput, IO.getXboxLeftTrigger());
-        else if(IO.getXboxLeftBumper())
-            motor.set(ControlMode.PercentOutput, -0.5);
-    }
-    
+    public void output() {
+        intakeMotor.set(-powerMult);
+        bottomFeedMotor.set(-powerMult);
+        topFeedMotor.set(-powerMult);
+    } 
 }
