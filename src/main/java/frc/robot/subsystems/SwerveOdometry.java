@@ -38,22 +38,22 @@ public class SwerveOdometry extends SubsystemBase{
     }
 
     public void updatePosition() {
-
         double timeNow = WPIUtilJNI.now() * 1.0e-6;
         double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
 
+        if (!Robot.swerveSystem.isTwisting) {
         double[] robotVelocityCartesian = Robot.swerveSystem.polarToCartesian(Robot.swerveSystem.backRight.turnValue, Robot.swerveSystem.backRight.currentDriveSpeed);
 
         SmartDashboard.putNumber("robotVelocityCartesianX ", robotVelocityCartesian[0]);
 
         fieldPosition.positionCoord.x -= robotVelocityCartesian[0] * period;
         fieldPosition.positionCoord.y -= robotVelocityCartesian[1] * period;
-;
 
+        }
         fieldPosition.angle = Gyro.getAngle();
-
         
         lastUpdateTime = timeNow;
+        
 
         SmartDashboard.putNumber("fieldPosX ", fieldPosition.positionCoord.x);
         SmartDashboard.putNumber("fieldPosY ", fieldPosition.positionCoord.y);
