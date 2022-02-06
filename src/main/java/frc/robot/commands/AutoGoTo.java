@@ -12,9 +12,13 @@ public class AutoGoTo extends CommandBase{
     private boolean isMoveFinished = false;
     private boolean isTwistFinished = false;
 
+    //this command will move the robot to the desired position x, y and twist values
+    //it does this by first driving full speed in the direction of the desired x and y position, and then it will stop and twist until it reaches desired angle
+
     @Override
     public void initialize() {
-        Robot.swo.resetPos();
+        // Robot.swo.resetPos();
+        //desired position = x in meters, y in meters, and twist in degrees (based on robot staring position)
         desiredPosition = new FieldPosition(0, 1.5, 0);
         Robot.swerveAuto.setDesiredPosition(desiredPosition);
     }
