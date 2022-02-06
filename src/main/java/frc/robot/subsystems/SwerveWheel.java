@@ -64,8 +64,6 @@ public class SwerveWheel {
     }
 
     public void drive(double speed, double angle) {
-        // TODO: fix PIDs becuase they are currently limiting the speed to 0.1
-
         SmartDashboard.putNumber(m_turnEncoderPort + " angle input", angle);
         SmartDashboard.putNumber(m_turnEncoderPort + " speed input", speed);
 
@@ -73,7 +71,7 @@ public class SwerveWheel {
         double turnValue = wrapAroundAngles(turnEncoder.get());
         angle = wrapAroundAngles(angle);
 
-        // Code stolen from https://github.com/Frc2481/frc-2015/blob/master/src/Components/SwerveModule.cpp
+        // Optimization Code stolen from https://github.com/Frc2481/frc-2015/blob/master/src/Components/SwerveModule.cpp
         if (Math.abs(angle - turnValue) > 90 && Math.abs(angle - turnValue) < 270) {
 			angle = ((int)angle + 180) % 360;
 			speed = -speed;
@@ -84,7 +82,7 @@ public class SwerveWheel {
         SmartDashboard.putNumber(m_turnEncoderPort + " drive encoder ", currentDriveSpeed);
 
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
-
+        
         double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, speed);
 
         // SmartDashboard.putNumber(m_turnEncoderPort + " pid value", drivePIDOutput);
