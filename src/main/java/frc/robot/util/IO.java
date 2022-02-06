@@ -52,4 +52,12 @@ public class IO {
     public static boolean getXboxRightBumper() {
         return (xbox.getRightBumperPressed() ? xbox.getRightBumper() : false);
     }
+    public static boolean getXboxLeftBumper()
+    {
+        return (xbox.getLeftBumperPressed() ? xbox.getLeftBumper() : false);
+    }
+    public static double getXboxLeftTrigger()
+    {
+        return Math.abs(xbox.getLeftTriggerAxis()) > deadzone ? xbox.getLeftTriggerAxis() : 0;
+    }
 }
