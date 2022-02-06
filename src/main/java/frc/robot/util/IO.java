@@ -60,4 +60,8 @@ public class IO {
     {
         return Math.abs(xbox.getLeftTriggerAxis()) > deadzone ? xbox.getLeftTriggerAxis() : 0;
     }
+    public static boolean getXboxXButton()
+    {
+        return (xbox.getXButtonPressed() ? xbox.getXButton() : false);
+    }
 }
