@@ -15,6 +15,7 @@ import frc.robot.Robot;
 public class SwerveAuto {
     private FieldPosition desiredPosition;
     private double wheelAngle;
+    private double positionStopRange = 0.05;
 
     public void setDesiredPosition(FieldPosition _desiredPosition) {
         desiredPosition = _desiredPosition;
@@ -22,8 +23,8 @@ public class SwerveAuto {
     }
 
     public boolean isAtDesiredPosition() {
-        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().positionCoord.x) - Math.abs(desiredPosition.positionCoord.x), .05) == 0) {
-            if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().positionCoord.y) - Math.abs(desiredPosition.positionCoord.y), .05) == 0) {
+        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().positionCoord.x) - Math.abs(desiredPosition.positionCoord.x), positionStopRange) == 0) {
+            if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().positionCoord.y) - Math.abs(desiredPosition.positionCoord.y), positionStopRange) == 0) {
                 return true;
             }
         }
