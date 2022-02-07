@@ -17,7 +17,10 @@ public class Gyro {
     }
 
     private double wrapAroundAngles(double input) {
-        return input < 0 ? 360 + input : input;
+        while (input < 0) {
+            input += 360;
+        }
+        return input;
     }
 
     public double getAngle() {
