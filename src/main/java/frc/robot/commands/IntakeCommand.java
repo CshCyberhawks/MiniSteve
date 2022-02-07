@@ -18,7 +18,7 @@ public class IntakeCommand extends CommandBase {
         double speed = IO.getXboxLeftTrigger();
         boolean out = IO.getXboxLeftBumper();
 
-        if(speed != 0) {
+        if(speed > 0) {
             intakeSystem.intake(speed * speedMult);
         }
         else if(out) {
