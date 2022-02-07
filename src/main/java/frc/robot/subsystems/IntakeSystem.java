@@ -11,7 +11,7 @@ import frc.robot.util.IO;
 public class IntakeSystem extends SubsystemBase {
     
     private TalonSRX motor = new TalonSRX(0);
-    private CANSparkMax feedForward; 
+    
     public IntakeSystem() {
         //= new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
     }

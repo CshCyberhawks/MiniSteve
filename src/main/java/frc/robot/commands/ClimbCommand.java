@@ -6,7 +6,7 @@ import frc.robot.util.IO;
 
 public class ClimbCommand extends CommandBase {
     private final ClimbSystem climbSystem;
-    private final double speedMult = .43;
+    private final double speedMult = 1;
     
     public ClimbCommand(ClimbSystem subsystem) {
         climbSystem = subsystem;
@@ -19,7 +19,5 @@ public class ClimbCommand extends CommandBase {
         {
             climbSystem.climb(speedMult);
         }
-
-        //IntakeSystem.shoot(speed);
     }
 }

@@ -18,6 +18,5 @@ public class IntakeCommand extends CommandBase {
     public void execute() {
         double speed = IO.getXboxRightTrigger();
 
-        //IntakeSystem.shoot(speed);
     }
 }
