@@ -22,8 +22,7 @@ public class ShootSystem extends SubsystemBase {
     private RelativeEncoder topEncoder;
     private RelativeEncoder rightEncoder;
     private RelativeEncoder leftEncoder;
-    private PIDController topMotorController;
-    private PIDController spinMotorController; 
+    private PIDController motorController;
 
     public ShootSystem() {
         topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -32,20 +31,19 @@ public class ShootSystem extends SubsystemBase {
         topEncoder = topMotor.getEncoder();
         rightEncoder = bottomRightMotor.getEncoder();
         leftEncoder = bottomLeftMotor.getEncoder();
-        topMotorController = new PIDController(0.01, 0, 0);
-        spinMotorController = new PIDController(0, 0, 0);
+        motorController = new PIDController(0.01, 0, 0);
     }
     public void shoot(double power) {
-        double topPIDOut = topMotorController.calculate(topEncoder.getVelocity(), power);
-        topMotor.set(topPIDOut * topMotorMult);
+        double topPIDOut = motorController.calculate(topEncoder.getVelocity(), power * topMotorMult);
+        topMotor.set(topPIDOut);
         setBottom(power);
     }
 
     //Syncing of bottom 2 motors
     private void setBottom(double power) {
-        double averaged = (leftEncoder.getVelocity() + rightEncoder.getVelocity()) / 2;
-        double spinPIDOut = spinMotorController.calculate(averaged,power);
-        bottomLeftMotor.set(spinPIDOut);//power
-        bottomRightMotor.set(-spinPIDOut);
+        double leftPIDOut = motorController.calculate(leftEncoder.getVelocity(), power);
+        double rightPIDOut = motorController.calculate(rightEncoder.getVelocity(), power);
+        bottomLeftMotor.set(leftPIDOut);//power
+        bottomRightMotor.set(-rightPIDOut);
     }
 }
