@@ -13,9 +13,6 @@ public class Limelight extends SubsystemBase {
     private static NetworkTableEntry tx = table.getEntry("tx"); //The horizontal offset between the crosshair and target in degrees
     private static NetworkTableEntry ty = table.getEntry("ty"); //The vertical offset between the crosshair and target in degrees
     private static NetworkTableEntry ta = table.getEntry("ta"); //Percentage of image (filled by target?)
-    private static NetworkTableEntry tcornx = table.getEntry("tcornx");
-    private static NetworkTableEntry tcorny = table.getEntry("tcorny");
-    private static NetworkTableEntry tcornxy = table.getEntry("tcornxy");
     
     public Limelight() {}
 
@@ -41,10 +38,6 @@ public class Limelight extends SubsystemBase {
 
     @Override
     public void periodic() {
-        double[] xCorners = tcornx.getDoubleArray(new double[2]);
-        double[] yCorners = tcorny.getDoubleArray(new double[2]);
-        double[] xyCorners = tcornxy.getDoubleArray(new double[4]);
-    
         //Values needed from final robot before implemented
         //double distanceFromTarget = (targetHeight - cameraHeight(10 inches)) / Math.tan(mountAngle + getVerticalOffset());
 
@@ -52,8 +45,5 @@ public class Limelight extends SubsystemBase {
         SmartDashboard.putNumber("Limelight horrizontalOffset", getHorizontalOffset());
         SmartDashboard.putNumber("Limelight verticalOffset", getVerticalOffset());
         SmartDashboard.putNumber("LimelightArea", getArea());
-        SmartDashboard.putNumberArray("Limelight xCorners", xCorners);
-        SmartDashboard.putNumberArray("Limelight yCorners", yCorners);
-        SmartDashboard.putNumberArray("Limelight xyCorners", xyCorners);
     }
 }
