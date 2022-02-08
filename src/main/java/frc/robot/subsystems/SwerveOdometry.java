@@ -17,14 +17,12 @@ import edu.wpi.first.util.WPIUtilJNI;
 
 public class SwerveOdometry extends SubsystemBase{
     private FieldPosition fieldPosition;
-    private SwerveDriveTrain swerveDriveTrain;
 
     private double lastUpdateTime = 1;
 
 
 
-    public SwerveOdometry(FieldPosition _fieldPosition, SwerveDriveTrain _driveTrain) {
-        swerveDriveTrain = _driveTrain;
+    public SwerveOdometry(FieldPosition _fieldPosition) {
         fieldPosition = _fieldPosition;
     }
 

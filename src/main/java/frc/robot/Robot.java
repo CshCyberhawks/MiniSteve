@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
     //driveSystem = new DriveSystem();
     //CameraServer.startAutomaticCapture();
     swerveSystem = new SwerveDriveTrain();
-    swo = new SwerveOdometry(new FieldPosition(0, 0, 0), swerveSystem);
+    swo = new SwerveOdometry(new FieldPosition(0, 0, 0));
 
     
   }
