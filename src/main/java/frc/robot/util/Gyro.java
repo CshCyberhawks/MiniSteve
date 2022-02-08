@@ -3,13 +3,13 @@ package frc.robot.util;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.math.filter.LinearFilter;
 import com.kauailabs.navx.frc.AHRS;
 
 public class Gyro {
     private static AHRS gyro = new AHRS(SPI.Port.kMXP);
     private static double offset = 0;
-
+    private static LinearFilter filter = LinearFilter.highPass(0.1, 0.01);
 
 
     private static double wrapAroundAngles(double input) {
@@ -35,37 +35,21 @@ public class Gyro {
         offset = wrapAroundAngles(gyro.getYaw());
     }
 
-    public static double getDisplacementX() {
-        return gyro.getDisplacementX();
-    }
 
-    public static double getDisplacementY() {
-        return gyro.getDisplacementY();
-    }
-
-    public static double getAngVel() {
-        return gyro.getVelocityZ();
+    public static double getVelZ() {
+        return filter.calculate(gyro.getVelocityZ());
     }
 
     public static double getVelocityX() {
-        return gyro.getVelocityX();
+        return filter.calculate(gyro.getVelocityX());
     }
 
     public static double getVelocityY() {
-        return gyro.getVelocityY();
+        return filter.calculate(gyro.getVelocityY());
     }
-
-    public static void resetDisplacement() {
-        gyro.resetDisplacement();
-    }
-
     
     public static void calibrate() {
         gyro.calibrate();
-    }
-
-    public static void resetDispacement() {
-        gyro.resetDisplacement();
     }
 
 }
