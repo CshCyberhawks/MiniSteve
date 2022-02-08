@@ -14,6 +14,7 @@ public class SwerveDriveTrain extends SubsystemBase {
      public SwerveWheel frontRight;
      public Gyro gyro;
 
+     
      public boolean isTwisting = false;
 
      public SwerveDriveTrain() {
@@ -21,7 +22,7 @@ public class SwerveDriveTrain extends SubsystemBase {
          backRight = new SwerveWheel(Constants.backRightTurnMotor, Constants.backRightDriveMotor, Constants.backRightEncoder);
          frontLeft = new SwerveWheel(Constants.frontLeftTurnMotor, Constants.frontLeftDriveMotor, Constants.frontLeftEncoder);
          frontRight = new SwerveWheel(Constants.frontRightTurnMotor, Constants.frontRightDriveMotor, Constants.frontRightEncoder);
-         gyro.setOffset();
+         Gyro.setOffset();
      }
 
      public double[] polarToCartesian(double theta, double r) {
@@ -59,7 +60,7 @@ public class SwerveDriveTrain extends SubsystemBase {
      public double[] calculateDrive(double x1, double y1, double theta2, double r2) {
           //X is 0 and Y is 1
           //Gets the cartesian coordinate of the robot's joystick translation inputs
-          double[] driveCoordinate = fieldOriented(x1, y1, gyro.getAngle());
+          double[] driveCoordinate = fieldOriented(x1, y1, Gyro.getAngle());
           //Turns the twist constant + joystick twist input into a cartesian coordinates
           double[] twistCoordinate = polarToCartesian(theta2, r2);
 
@@ -73,7 +74,7 @@ public class SwerveDriveTrain extends SubsystemBase {
 
           isTwisting = inputTwist != 0;
 
-          double gyroAngle = gyro.getAngle();
+          double gyroAngle = Gyro.getAngle();
           SmartDashboard.putNumber("gyro val", gyroAngle);
 
           //calculates the speed and angle for each motor
