@@ -26,7 +26,7 @@ public class SwerveCommand extends CommandBase {
         if (IO.getJoystickButton8())
             swerveDriveTrain.gyro.setOffset();
         if (IO.getJoyButton3())
-            swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), deadzone(-Limelight.getHorizontalOffset()) / 27);
+            swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), deadzone(-Limelight.getHorizontalOffset() / 27));
         else
             swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoy2X());
     }
