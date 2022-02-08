@@ -27,7 +27,7 @@ public class AutoGoTo extends CommandBase{
     @Override
     public void execute() {
         Robot.swerveAuto.drive();
-        SmartDashboard.putBoolean("auto command finsihed", Robot.swerveAuto.isAtDesiredPosition());
+        SmartDashboard.putBoolean("auto command finsihed", Robot.swerveAuto.isAtDesiredPosAng());
     }
 
     @Override
