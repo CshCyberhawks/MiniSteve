@@ -32,7 +32,6 @@ public class SwerveOdometry extends SubsystemBase{
 
     public void resetPos() {
         fieldPosition.reset();
-        Gyro.resetDispacement();
     }
 
     public void updatePosition() {
