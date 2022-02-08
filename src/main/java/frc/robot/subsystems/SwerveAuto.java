@@ -18,41 +18,47 @@ public class SwerveAuto {
 
     public void setDesiredPosition(FieldPosition _desiredPosition) {
         desiredPosition = _desiredPosition;
-        wheelAngle = Robot.swerveSystem.cartesianToPolar(desiredPosition.positionCoord.x, desiredPosition.positionCoord.y)[0];
     }
 
     public boolean isAtDesiredPosition() {
-        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().positionCoord.x) - Math.abs(desiredPosition.positionCoord.x), .05) == 0) {
-            if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().positionCoord.y) - Math.abs(desiredPosition.positionCoord.y), .05) == 0) {
-                return true;
+        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().positionCoord.x) - Math.abs(desiredPosition.positionCoord.x), .1) == 0) {
+            if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().positionCoord.y) - Math.abs(desiredPosition.positionCoord.y), .1) == 0) {
+                return isAtDesiredAngle();
             }
         }
         return false;
     }
 
+
     public boolean isAtDesiredAngle() {
-        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().angle) - Math.abs(desiredPosition.angle), 5) == 0) {
+        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().angle) - Math.abs(desiredPosition.angle), 10) == 0) {
             return true;
         }
             return false;
     }
 
+    public double[] calculateInputs() {
+
+        double differenceX = desiredPosition.positionCoord.x - Robot.swo.getPosition().positionCoord.x;
+        double differenceY = desiredPosition.positionCoord.y - Robot.swo.getPosition().positionCoord.y;
+
+        double angleDifference = desiredPosition.angle - Robot.swo.getPosition().angle;
+        //if the angle difference = 0 return zero, else if angle difference > 0 return 1 else return -1
+        double twist = MathUtil.clamp(desiredPosition.angle - Robot.swo.getPosition().angle, -1, 1);
+
+        double[] ret = {MathUtil.clamp(differenceX, -1, 1), MathUtil.clamp(differenceY, -1, 1), twist};
+        return ret;
+    }
+
     public void drive() {
 
+        double inputs[] = calculateInputs();
 
-        SmartDashboard.putNumber(" wheel angles auto ", wheelAngle);
+        Robot.swerveSystem.drive(inputs[0], inputs[1], inputs[2]);
         
         System.out.println("auto drive loop ran");
-        Robot.swerveSystem.backRight.drive(1, wheelAngle);
-        Robot.swerveSystem.backLeft.drive(-.85, wheelAngle);
-        Robot.swerveSystem.frontRight.drive(1, wheelAngle);
-        Robot.swerveSystem.frontLeft.drive(-.85, wheelAngle);
     }
 
-    public void twist() {
-        double twistValue = desiredPosition.angle - Robot.swo.getPosition().angle > 0 ? 1 : 0;
-        Robot.swerveSystem.drive(0, 0, twistValue);
-    }
 
     public void kill() {
         Robot.swerveSystem.backRight.kill();
