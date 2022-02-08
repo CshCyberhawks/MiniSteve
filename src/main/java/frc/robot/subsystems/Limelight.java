@@ -8,36 +8,50 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Limelight extends SubsystemBase {
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tv = table.getEntry("tv"); //Between 0 and 1 whether it has a valid target
-    NetworkTableEntry tx = table.getEntry("tx"); //The horizontal offset between the crosshair and target in degrees
-    NetworkTableEntry ty = table.getEntry("ty"); //The vertical offset between the crosshair and target in degrees
-    NetworkTableEntry ta = table.getEntry("ta"); //Percentage of image (filled by target?)
-    NetworkTableEntry tcornx = table.getEntry("tcornx");
-    NetworkTableEntry tcorny = table.getEntry("tcorny");
-    NetworkTableEntry tcornxy = table.getEntry("tcornxy");
+    private static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    private static NetworkTableEntry tv = table.getEntry("tv"); //Between 0 and 1 whether it has a valid target
+    private static NetworkTableEntry tx = table.getEntry("tx"); //The horizontal offset between the crosshair and target in degrees
+    private static NetworkTableEntry ty = table.getEntry("ty"); //The vertical offset between the crosshair and target in degrees
+    private static NetworkTableEntry ta = table.getEntry("ta"); //Percentage of image (filled by target?)
+    private static NetworkTableEntry tcornx = table.getEntry("tcornx");
+    private static NetworkTableEntry tcorny = table.getEntry("tcorny");
+    private static NetworkTableEntry tcornxy = table.getEntry("tcornxy");
     
-    public Limelight() {
-        
+    public Limelight() {}
+
+    public static double getHorizontalOffset() {
+        return tx.getDouble(0.0);
+    }
+
+    public static double getVerticalOffset() {
+        return ty.getDouble(0.0);
+    }
+
+    public static double getArea() {
+        return ta.getDouble(0.0);
+    }
+
+    public static double getTarget() {
+        return tv.getDouble(0.0);
+    }
+
+    public static double getDistance() {
+        return getArea() * 1;
     }
 
     @Override
     public void periodic() {
-        double hasValidTarget = tv.getDouble(0.0);
-        double horrizontalOffset = tx.getDouble(0.0);
-        double verticalOffset = ty.getDouble(0.0);
-        double area = ta.getDouble(0.0);
         double[] xCorners = tcornx.getDoubleArray(new double[2]);
         double[] yCorners = tcorny.getDoubleArray(new double[2]);
         double[] xyCorners = tcornxy.getDoubleArray(new double[4]);
-        
+    
         //Values needed from final robot before implemented
-        //double distanceFromTarget = (targetHeight - cameraHeight) / Math.tan(mountAngle + verticalOffset);
+        //double distanceFromTarget = (targetHeight - cameraHeight(10 inches)) / Math.tan(mountAngle + getVerticalOffset());
 
-        SmartDashboard.putNumber("Limelight hasValidTarget", hasValidTarget);
-        SmartDashboard.putNumber("Limelight horrizontalOffset", horrizontalOffset);
-        SmartDashboard.putNumber("Limelight verticalOffset", verticalOffset);
-        SmartDashboard.putNumber("LimelightArea", area);
+        SmartDashboard.putNumber("Limelight hasValidTarget", getTarget());
+        SmartDashboard.putNumber("Limelight horrizontalOffset", getHorizontalOffset());
+        SmartDashboard.putNumber("Limelight verticalOffset", getVerticalOffset());
+        SmartDashboard.putNumber("LimelightArea", getArea());
         SmartDashboard.putNumberArray("Limelight xCorners", xCorners);
         SmartDashboard.putNumberArray("Limelight yCorners", yCorners);
         SmartDashboard.putNumberArray("Limelight xyCorners", xyCorners);
