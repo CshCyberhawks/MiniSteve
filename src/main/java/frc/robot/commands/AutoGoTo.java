@@ -23,7 +23,6 @@ public class AutoGoTo extends CommandBase{
 
     @Override
     public void initialize() {
-        Robot.swo.resetPos();
         //desired position = x in meters, y in meters, and twist in degrees (based on robot staring position)
         Robot.swerveAuto.setDesiredPosition(desiredPosition);
     }
