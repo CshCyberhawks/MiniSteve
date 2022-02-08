@@ -1,14 +1,10 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.SwerveOdometry;
-
-import javax.management.relation.RoleNotFoundException;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.util.FieldPosition;
-import frc.robot.util.Vector2;
 
 public class AutoGoTo extends CommandBase{
     private FieldPosition desiredPosition;

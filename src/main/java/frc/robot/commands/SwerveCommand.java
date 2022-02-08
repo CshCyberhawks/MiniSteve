@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveDriveTrain;
+import frc.robot.util.Gyro;
 import frc.robot.util.IO;
 
 public class SwerveCommand extends CommandBase {
@@ -15,14 +16,14 @@ public class SwerveCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        swerveDriveTrain.gyro.setOffset();
+        Gyro.setOffset();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         if (IO.getJoystickButton8())
-            swerveDriveTrain.gyro.setOffset();
+            Gyro.setOffset();
         swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoy2X());
     }
 
