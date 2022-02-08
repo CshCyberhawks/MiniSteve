@@ -63,6 +63,10 @@ public class SwerveAuto {
         return isAtAngle ? twistValue : 0;
     }
 
+    public boolean isAtDesiredPosAng() {
+        return isAtDesiredPosition() && isAtDesiredAngle();
+    }
+
     public void kill() {
         Robot.swerveSystem.backRight.kill();
         Robot.swerveSystem.backLeft.kill();

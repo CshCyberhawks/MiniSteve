@@ -37,7 +37,7 @@ public class AutoGoTo extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        return Robot.swerveAuto.isAtDesiredPosition();
+        return Robot.swerveAuto.isAtDesiredPosAng();
     }
 
 
