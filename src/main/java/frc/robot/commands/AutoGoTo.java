@@ -13,6 +13,11 @@ import frc.robot.util.Vector2;
 public class AutoGoTo extends CommandBase{
     private FieldPosition desiredPosition;
 
+
+    public AutoGoTo(FieldPosition _desiredPosition) {
+        desiredPosition = _desiredPosition;
+    }
+
     //this command will move the robot to the desired position x, y and twist values
     //it does this by first driving full speed in the direction of the desired x and y position, and then it will stop and twist until it reaches desired angle
 
@@ -20,7 +25,6 @@ public class AutoGoTo extends CommandBase{
     public void initialize() {
         Robot.swo.resetPos();
         //desired position = x in meters, y in meters, and twist in degrees (based on robot staring position)
-        desiredPosition = new FieldPosition(2, 0, 90);
         Robot.swerveAuto.setDesiredPosition(desiredPosition);
     }
 
