@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveDriveTrain;
@@ -25,7 +26,7 @@ public class SwerveCommand extends CommandBase {
         if (IO.getJoystickButton8())
             swerveDriveTrain.gyro.setOffset();
         if (IO.getJoyButton3())
-            swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), Limelight.getHorizontalOffset() / 100);
+            swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), MathUtil.clamp(deadzone(-Limelight.getHorizontalOffset()) / 27, -1, 1));
         else
             swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoy2X());
     }
@@ -42,5 +43,9 @@ public class SwerveCommand extends CommandBase {
 
     public void centerWithLimelight() {
         
+    }
+
+    public static double deadzone(double input) {
+        return Math.abs(input) > 15 ? input : 0;
     }
 }
