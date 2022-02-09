@@ -51,16 +51,16 @@ public class SwerveAuto {
         return isAtPosition ? ret : new double[] {0, 0};
     }
 
+    public double twist() {
+        double twistValue = MathUtil.clamp(desiredPosition.angle - Robot.swo.getPosition().angle, -1, 1);
+        return isAtAngle ? twistValue : 0;
+    }
+
     public void drive() {
         double[] translateInputs = translate();
         double twistInput = twist();
 
         Robot.swerveSystem.drive(translateInputs[0], translateInputs[0], twistInput);
-    }
-
-    public double twist() {
-        double twistValue = MathUtil.clamp(desiredPosition.angle - Robot.swo.getPosition().angle, -1, 1);
-        return isAtAngle ? twistValue : 0;
     }
 
     public boolean isAtDesiredPosAng() {
