@@ -8,6 +8,7 @@ import frc.robot.util.IO;
 
 public class SwerveCommand extends CommandBase {
     private final SwerveDriveTrain swerveDriveTrain;
+    private boolean isLimeLockToggle = false;
     
     public SwerveCommand(SwerveDriveTrain subsystem) {
         swerveDriveTrain = subsystem;
@@ -23,9 +24,11 @@ public class SwerveCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        isLimeLockToggle = isLimeLockToggle != IO.getJoyButton3() ? IO.getJoyButton3() : isLimeLockToggle;
+
         if (IO.getJoystickButton8())
             swerveDriveTrain.gyro.setOffset();
-        if (IO.getJoyButton3())
+        if (isLimeLockToggle)
             swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), MathUtil.clamp(deadzone(-Limelight.getHorizontalOffset()) / 27, -1, 1));
         else
             swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoy2X());
