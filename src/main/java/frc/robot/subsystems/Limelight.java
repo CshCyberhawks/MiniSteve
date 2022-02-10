@@ -32,14 +32,14 @@ public class Limelight extends SubsystemBase {
         return tv.getDouble(0.0);
     }
 
-    public static double getDistance() {
-        return getArea() * 1;
-    }
+    //public static double getDistance() {
+    //    return getArea();
+    //}
 
     @Override
     public void periodic() {
         //Values needed from final robot before implemented
-        //double distanceFromTarget = (targetHeight - cameraHeight(10 inches)) / Math.tan(mountAngle + getVerticalOffset());
+        //double distanceFromTarget = (10 - 10) / Math.tan(0 + getVerticalOffset());
 
         SmartDashboard.putNumber("Limelight hasValidTarget", getTarget());
         SmartDashboard.putNumber("Limelight horrizontalOffset", getHorizontalOffset());

@@ -24,12 +24,11 @@ public class SwerveCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        isLimeLockToggle = isLimeLockToggle != IO.getJoyButton3() ? IO.getJoyButton3() : isLimeLockToggle;
-
+        
         if (IO.getJoystickButton8())
             swerveDriveTrain.gyro.setOffset();
-        if (isLimeLockToggle)
-            swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), MathUtil.clamp(deadzone(-Limelight.getHorizontalOffset()) / 27, -1, 1));
+        if (IO.getJoyButton3())
+            swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), deadzone(-Limelight.getHorizontalOffset() / 27));
         else
             swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoy2X());
     }
