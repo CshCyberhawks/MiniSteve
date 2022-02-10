@@ -58,12 +58,6 @@ public class SwerveDriveTrain extends SubsystemBase {
           return ret;
      }
 
-     public double[][] calculateDrive(double inputX, double inputY, double inputTwist) {
-          
-
-          return new double[][] {frontRightVector, frontLeftVector, backRightVector, backLeftVector};
-     }
-
      public void drive(double inputX, double inputY, double inputTwist) {
           double gyroAngle = gyro.getAngle();
           SmartDashboard.putNumber("gyro val", gyroAngle);
