@@ -1,8 +1,9 @@
-//https://readthedocs.org/projects/limelight/downloads/pdf/latest/
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -12,7 +13,7 @@ public class Limelight extends SubsystemBase {
     private static NetworkTableEntry tv = table.getEntry("tv"); //Between 0 and 1 whether it has a valid target
     private static NetworkTableEntry tx = table.getEntry("tx"); //The horizontal offset between the crosshair and target in degrees
     private static NetworkTableEntry ty = table.getEntry("ty"); //The vertical offset between the crosshair and target in degrees
-    private static NetworkTableEntry ta = table.getEntry("ta"); //Percentage of image (filled by target?)
+    private static NetworkTableEntry ta = table.getEntry("ta"); //Percentage of image filled by target
     
     public Limelight() {}
 
@@ -32,18 +33,17 @@ public class Limelight extends SubsystemBase {
         return tv.getDouble(0.0);
     }
 
-    //public static double getDistance() {
-    //    return getArea();
-    //}
+    //(target height - limelight height) / tanget(limelight angle + target vertical offset)
+    public static double getDistance() {
+        return (7 - 10) / Math.tan(0 + getVerticalOffset());    
+    }
 
     @Override
     public void periodic() {
-        //Values needed from final robot before implemented
-        //double distanceFromTarget = (10 - 10) / Math.tan(0 + getVerticalOffset());
-
         SmartDashboard.putNumber("Limelight hasValidTarget", getTarget());
         SmartDashboard.putNumber("Limelight horrizontalOffset", getHorizontalOffset());
         SmartDashboard.putNumber("Limelight verticalOffset", getVerticalOffset());
-        SmartDashboard.putNumber("LimelightArea", getArea());
+        SmartDashboard.putNumber("Limelight area", getArea());
+        SmartDashboard.putNumber("Limelight distance", getDistance());
     }
 }
