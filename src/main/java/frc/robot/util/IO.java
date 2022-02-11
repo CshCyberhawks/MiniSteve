@@ -55,4 +55,8 @@ public class IO {
     public static double getJoy2X() {
         return deadZone(joystick2.getX());
     }
+
+    public static boolean getJoyButton3() {
+        return joystick.getRawButton(3);
+    }
 }
