@@ -19,7 +19,6 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
 public class SwerveWheel {
     private TalonSRX turnMotor;
     private CANSparkMax driveMotor;
