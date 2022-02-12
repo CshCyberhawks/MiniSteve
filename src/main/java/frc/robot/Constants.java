@@ -56,7 +56,8 @@ public final class Constants {
     public static final int frontLeftDriveMotor = 6;    
     public static final int backRightDriveMotor = 7;    
     public static final int backLeftDriveMotor = 8;
-
+    //DigitalInput Channels
+    public static final int breakBeamChannel = 1;
     //Dimensions
     public static final double length = .53;
     public static final double width = .53;

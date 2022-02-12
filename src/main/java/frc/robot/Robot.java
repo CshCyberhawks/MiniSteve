@@ -6,7 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.Constants;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -19,6 +20,7 @@ import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.IO;
 
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -28,9 +30,8 @@ import frc.robot.util.IO;
 public class Robot extends TimedRobot {
   // private DriveSystem driveSystem;
   private Command m_autonomousCommand;
-  
-  private final I2C.Port port = I2C.Port.kMXP
-  ; //Check Later
+  private DigitalInput dio  = new DigitalInput(Constants.breakBeamChannel);
+  private final I2C.Port port = I2C.Port.kMXP; //Check Later
   
   private final ColorSensorV3 colorSensor = new ColorSensorV3(port);
   
@@ -65,6 +66,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    boolean isCircuitOpen = dio.get();
     Color foundColor = colorSensor.getColor();
     String colorString;
     ColorMatchResult result = colorMatch.matchClosestColor(foundColor);
