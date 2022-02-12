@@ -11,9 +11,9 @@ public class AutoCommandGroup extends SequentialCommandGroup{
         //example: below will move robot 2 meters on the x and rotate to 90 degrees
         //then it will wait 1 second before moving the robot back to its starting position
         addCommands(
-            new AutoGoTo(new FieldPosition(2, 0, 90)),
-            new Wait(1000),
-            new AutoGoTo(new FieldPosition(0, 0, 0))
+            new AutoGoTo(new FieldPosition(2, 0, 90))
+           //new Wait(1000),
+           //new AutoGoTo(new FieldPosition(0, 0, 0))
         );
     }
 }
