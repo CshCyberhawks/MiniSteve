@@ -103,11 +103,11 @@ public class SwerveWheel {
         //70% speed is about 5.6 feet/second
         double output = drivePIDOutput;
 
-        if (drivePIDOutput > 0) {
-            output += driveFeedForwardOutput;
-        } else {
-            output -= driveFeedForwardOutput;
-        }
+        // if (drivePIDOutput > 0) {
+        //     output += driveFeedForwardOutput;
+        // } else {
+        //     output -= driveFeedForwardOutput;
+        // }
 
         driveMotor.set(MathUtil.clamp(output, -.7, .7));
         if (!turnPidController.atSetpoint()) {
