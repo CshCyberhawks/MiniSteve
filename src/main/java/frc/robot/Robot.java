@@ -6,12 +6,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.ColorSystem;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-// import frc.robot.subsystems.Limelight;
-import frc.robot.commands.SwerveCommand;
-import frc.robot.subsystems.SwerveDriveTrain;
-import edu.wpi.first.cameraserver.CameraServer;
+// import frc.robot.subsystems.IntakeSystem;
+// import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
+// import frc.robot.util.IO;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -22,11 +23,11 @@ import edu.wpi.first.cameraserver.CameraServer;
 public class Robot extends TimedRobot {
   // private DriveSystem driveSystem;
   private Command m_autonomousCommand;
-  
+  private ColorSystem colorSystem;
   //private OldSwerveDriveTrain swerveSystem;
-  private SwerveDriveTrain swerveSystem;
-
-  // private Limelight limelight;
+  // private SwerveDriveTrain swerveSystem;
+  // private IntakeSystem intakeSystem;
+  // private RobotContainer m_robotContainer;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -36,12 +37,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    // limelight = new Limelight();
-    CameraServer.startAutomaticCapture();
     // m_robotContainer = new RobotContainer();
- 
+    colorSystem = new ColorSystem();
     //driveSystem = new DriveSystem();
-    swerveSystem = new SwerveDriveTrain();
+    //CameraServer.startAutomaticCapture();
   }
 
   /**
@@ -57,6 +56,8 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+    String colorString = colorSystem.returnColor();
+
     CommandScheduler.getInstance().run();
   }
 
@@ -84,7 +85,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    swerveSystem.setDefaultCommand(new SwerveCommand(swerveSystem));
+    // swerveSystem = new SwerveDriveTrain();
+    // intakeSystem = new IntakeSystem();
+
+    //swerveSystem.setDefaultCommand(new OldSwerveCommand(swerveSystem));
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -97,8 +101,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
-
+  public void teleopPeriodic() {
+    // double[] input = {0, 0, 1};
+    // swerveSystem.drive(IO.getPolarCoords());
+  }
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
