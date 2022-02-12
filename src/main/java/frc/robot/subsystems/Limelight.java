@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.IO;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.math.filter.LinearFilter;
@@ -14,19 +15,20 @@ public class Limelight extends SubsystemBase {
     private static NetworkTableEntry tx = table.getEntry("tx"); //The horizontal offset between the crosshair and target in degrees
     private static NetworkTableEntry ty = table.getEntry("ty"); //The vertical offset between the crosshair and target in degrees
     private static NetworkTableEntry ta = table.getEntry("ta"); //Percentage of image filled by target
+    private static LinearFilter filter = LinearFilter.highPass(0.05, 0.02);
     
     public Limelight() {}
 
     public static double getHorizontalOffset() {
-        return tx.getDouble(0.0);
+        return filter.calculate(tx.getDouble(0.0));
     }
 
     public static double getVerticalOffset() {
-        return ty.getDouble(0.0);
+        return filter.calculate(ty.getDouble(0.0));
     }
 
     public static double getArea() {
-        return ta.getDouble(0.0);
+        return filter.calculate(ta.getDouble(0.0));
     }
 
     public static double getTarget() {
