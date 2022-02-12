@@ -88,7 +88,7 @@ public class SwerveOdometry extends SubsystemBase {
 
         SmartDashboard.putNumber("fieldPosX ", fieldPosition.positionCoord.x);
         SmartDashboard.putNumber("fieldPosY ", fieldPosition.positionCoord.y);
-        SmartDashboard.putNumber(" auto angle ", fieldPosition.angle);
+        SmartDashboard.putNumber("fieldPosAngle ", fieldPosition.angle);
     }
 
 }

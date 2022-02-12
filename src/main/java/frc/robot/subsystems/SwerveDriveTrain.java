@@ -14,8 +14,6 @@ public class SwerveDriveTrain extends SubsystemBase {
      public SwerveWheel frontLeft;
      public SwerveWheel frontRight;
      public Gyro gyro;
-     public SimpleMatrix forwardKinematics;
-     public SimpleMatrix inverseKinematics;
 
      public SwerveWheel[] wheelArr = new SwerveWheel[4];
 
