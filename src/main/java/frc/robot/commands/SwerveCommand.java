@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveDriveTrain;
@@ -8,7 +7,6 @@ import frc.robot.util.IO;
 
 public class SwerveCommand extends CommandBase {
     private final SwerveDriveTrain swerveDriveTrain;
-    private boolean isLimeLockToggle = false;
     
     public SwerveCommand(SwerveDriveTrain subsystem) {
         swerveDriveTrain = subsystem;

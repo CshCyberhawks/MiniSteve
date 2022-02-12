@@ -7,7 +7,7 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+// import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 //leaving the below imports to remember that profiledPIDControllers exist, and that feedforwards exist in case we need to use them
 // import edu.wpi.first.math.controller.ProfiledPIDController;
 // import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -32,7 +32,7 @@ public class SwerveWheel {
     private PIDController turnPidController;
     private PIDController drivePidController;
     
-    private SimpleMotorFeedforward driveFeedforward;
+    // private SimpleMotorFeedforward driveFeedforward;
 
     public SwerveWheel(int turnPort, int drivePort, int turnEncoderPort) {
 
@@ -49,7 +49,7 @@ public class SwerveWheel {
         turnPidController.enableContinuousInput(0,  360);
 
         drivePidController = new PIDController(.3, 0, 0);
-        driveFeedforward = new SimpleMotorFeedforward(.1, 473);
+        // driveFeedforward = new SimpleMotorFeedforward(.1, 473);
     }
 
     private double wrapAroundAngles(double input) {
@@ -93,7 +93,7 @@ public class SwerveWheel {
 
         // SmartDashboard.putNumber(m_turnEncoderPort + " pid value", drivePIDOutput);
 
-        double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed, speed);
+        // double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed, speed);
 
         // SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value", driveFeedForwardOutput);
 
