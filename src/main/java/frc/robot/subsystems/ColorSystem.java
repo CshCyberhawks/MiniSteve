@@ -22,7 +22,7 @@ public class ColorSystem {
     private void setColorMatch()
     {
         colorMatch.addColorMatch(Color.kRed);
-        colorMatch.addColorMatch(Color.kBlue);
+        colorMatch.addColorMatch(Color.kBlue);\
     }
     public String returnColor()
     {
@@ -43,4 +43,5 @@ public class ColorSystem {
         SmartDashboard.putString("Detected Color", colorString);
         return colorString;
     }
+    
 }
