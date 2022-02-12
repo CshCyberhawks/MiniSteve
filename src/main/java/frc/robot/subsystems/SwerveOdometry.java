@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.util.WPIUtilJNI;
 import java.lang.Math;
 
+import org.ejml.dense.row.decomposition.eig.watched.WatchedDoubleStepQREigen_FDRM;
 import org.ejml.simple.SimpleMatrix;
 
 public class SwerveOdometry extends SubsystemBase {
@@ -35,20 +36,39 @@ public class SwerveOdometry extends SubsystemBase {
     }
 
     public double[] calculateVelocities() {
-        // 4 is num_modules/number of wheels
-        SimpleMatrix moduleStatesMatrix = new SimpleMatrix(4 * 2, 1);
+        Vector2[] wheelCoords = new Vector2[4];
+        double totalX = 0;
+        double totalY = 0;
 
         for (int i = 0; i < 4; i++) {
+            double wheelAngle = Robot.swerveSystem.wheelArr[i].turnValue;
             double wheelSpeed = Robot.swerveSystem.wheelArr[i].currentDriveSpeed;
-            double wheelAngle = Robot.swerveSystem.wheelArr[i].rawTurnValue;
 
-            moduleStatesMatrix.set(i * 2, 0, wheelSpeed * Math.cos(wheelAngle));
-            moduleStatesMatrix.set(i * 2 + 1, wheelSpeed * Math.sin(wheelAngle));
+            if (i == 0 || i == 2) {
+                wheelSpeed = -wheelSpeed;
+            }
+            double[] cartCoords = Robot.swerveSystem.polarToCartesian(wheelAngle, wheelSpeed);
+
+            SmartDashboard.putNumber(i + " wheel x", cartCoords[0]);
+            SmartDashboard.putNumber(i + " wheel y", cartCoords[1]);
+
+            wheelCoords[i] = new Vector2(cartCoords[0], cartCoords[1]);
+
+            totalX += cartCoords[0];
+            totalY += cartCoords[1];
+
         }
 
-        SimpleMatrix chassisSpeedVector = Robot.swerveSystem.forwardKinematics.mult(moduleStatesMatrix);
+        SmartDashboard.putNumber("averagedX ", totalX);
+        SmartDashboard.putNumber("averagedY ", totalY);
 
-        return new double[] { chassisSpeedVector.get(0, 0), chassisSpeedVector.get(1, 0) };
+        double[] robotPolar = Robot.swerveSystem.cartesianToPolar(totalX, totalY);
+        robotPolar[0] += Gyro.getAngle();
+
+        double[] robotVelocities = Robot.swerveSystem.polarToCartesian(robotPolar[0], robotPolar[1]);
+
+        // return new double[] { totalX, totalY };
+        return new double[] { robotVelocities[0], robotVelocities[1] };
     }
 
     public void updatePosition() {

@@ -31,15 +31,6 @@ public class SwerveDriveTrain extends SubsystemBase {
           frontRight = new SwerveWheel(Constants.frontRightTurnMotor, Constants.frontRightDriveMotor,
                     Constants.frontRightEncoder);
 
-          // matrix setup for the dimensions of the wheels
-          // 8 because 4 wheels * 2
-          inverseKinematics = new SimpleMatrix(8, 3);
-          for (int i = 0; i < 4; i++) {
-               inverseKinematics.setRow(i * 2 + 0, 0, 1, 0, -Constants.width);
-               inverseKinematics.setRow(i * 2 + 1, 0, 0, 1, Constants.length);
-          }
-          forwardKinematics = inverseKinematics.pseudoInverse();
-
           wheelArr[0] = backLeft;
           wheelArr[1] = backRight;
           wheelArr[2] = frontLeft;

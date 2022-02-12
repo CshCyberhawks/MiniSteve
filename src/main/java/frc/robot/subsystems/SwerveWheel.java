@@ -70,9 +70,6 @@ public class SwerveWheel {
         speed = convertToMetersPerSecond(speed * 3000); // Converting the speed to m/s with a max rpm of 3000 (GEar
         // ratio is 7:1)
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " angle input", angle);
-        SmartDashboard.putNumber(m_turnEncoderPort + " speed input", speed);
-
         currentDriveSpeed = convertToMetersPerSecond(driveEncoder.getVelocity());
         turnValue = wrapAroundAngles(turnEncoder.get());
         rawTurnValue = turnEncoder.get();
@@ -85,7 +82,7 @@ public class SwerveWheel {
             speed = -speed;
         }
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", rawTurnValue);
+        SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", turnValue);
 
         SmartDashboard.putNumber(m_turnEncoderPort + " drive encoder ", currentDriveSpeed);
 
@@ -99,11 +96,6 @@ public class SwerveWheel {
 
         // SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value",
         // driveFeedForwardOutput);
-
-        SmartDashboard.putNumber(m_turnEncoderPort + " drive set", MathUtil.clamp(drivePIDOutput /*
-                                                                                                  * +
-                                                                                                  * driveFeedForwardOutput
-                                                                                                  */, -.7, .7));
         // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
         // 70% speed is about 5.6 feet/second
