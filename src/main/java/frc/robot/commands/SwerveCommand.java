@@ -24,7 +24,7 @@ public class SwerveCommand extends CommandBase {
     public void execute() {
         if (IO.getJoystickButton8())
             Gyro.setOffset();
-        swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoy2X());
+        swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoy2X(), -IO.getJoy2Y());
     }
 
     // Called once the command ends or is interrupted.

@@ -67,7 +67,7 @@ public class SwerveWheel {
     }
 
     public void drive(double speed, double angle) {
-        speed = convertToMetersPerSecond(speed * 3000); // Converting the speed to m/s with a max rpm of 3000 (GEar
+        speed = convertToMetersPerSecond(speed * 5000); // Converting the speed to m/s with a max rpm of 3000 (GEar
         // ratio is 7:1)
 
         currentDriveSpeed = convertToMetersPerSecond(driveEncoder.getVelocity());

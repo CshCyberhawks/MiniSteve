@@ -1,12 +1,15 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.util.FieldPosition;
 import frc.robot.util.Gyro;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.lang.Math;
+import edu.wpi.first.util.WPIUtilJNI;
 
-import org.ejml.simple.SimpleMatrix;
 
 public class SwerveDriveTrain extends SubsystemBase {
      public SwerveWheel backLeft;
@@ -14,14 +17,21 @@ public class SwerveDriveTrain extends SubsystemBase {
      public SwerveWheel frontLeft;
      public SwerveWheel frontRight;
      public Gyro gyro;
-     public SimpleMatrix forwardKinematics;
-     public SimpleMatrix inverseKinematics;
+     public double throttle = 0.0;	
+
+     public PIDController xPID;
+     public PIDController yPID;
 
      public SwerveWheel[] wheelArr = new SwerveWheel[4];
 
      public boolean isTwisting = false;
 
+     private double lastUpdateTime = 1;
+
      public SwerveDriveTrain() {
+          xPID = new PIDController(100, 0, 0);
+          yPID = new PIDController(100, 0, 0);
+
           backLeft = new SwerveWheel(Constants.backLeftTurnMotor, Constants.backLeftDriveMotor,
                     Constants.backLeftEncoder);
           backRight = new SwerveWheel(Constants.backRightTurnMotor, Constants.backRightDriveMotor,
@@ -86,13 +96,38 @@ public class SwerveDriveTrain extends SubsystemBase {
           return ret;
      }
 
-     public void drive(double inputX, double inputY, double inputTwist) {
+     public void drive(double inputX, double inputY, double inputTwist, double throttleChange) {
+          double timeNow = WPIUtilJNI.now() * 1.0e-6;
+          double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
 
-          isTwisting = inputTwist != 0;
+	  throttle += throttleChange * 10 * period;
 
+	  SmartDashboard.putNumber("throttle ", throttle)
           SmartDashboard.putNumber("drive inputX ", inputX);
           SmartDashboard.putNumber("drive inputY ", inputY);
           SmartDashboard.putNumber("drive inputTwist ", inputTwist);
+
+          FieldPosition robotPos = Robot.swo.getPosition();
+
+          // 7.3 f/s
+          // below .292 controls speed
+          // take speed in ft/s
+          // convert to swos(6 in)
+          // multiply by 0.02 (update loop)
+          double pidInputX = xPID.calculate(robotPos.positionCoord.x,
+                    robotPos.positionCoord.x + (inputX * (24.72 * period)));
+          double pidInputY = yPID.calculate(robotPos.positionCoord.y,
+                    robotPos.positionCoord.y + (inputY * (24.72 * period)));
+
+          inputX = pidInputX * throttle;
+          inputY = pidInputY * throttle;
+
+	  
+
+          SmartDashboard.putNumber("testInputX ", pidInputX);
+          SmartDashboard.putNumber("testInputY ", pidInputY);
+
+          isTwisting = inputTwist != 0;
 
           double gyroAngle = Gyro.getAngle();
           SmartDashboard.putNumber("gyro val", gyroAngle);
@@ -121,5 +156,7 @@ public class SwerveDriveTrain extends SubsystemBase {
           backLeft.drive(-backLeftSpeed, backLeftAngle);
           frontRight.drive(frontRightSpeed, frontRightAngle);
           frontLeft.drive(-frontLeftSpeed, frontLeftAngle);
+
+          lastUpdateTime = timeNow;
      }
 }

@@ -52,4 +52,9 @@ public class IO {
     public static double getJoy2X() {
         return MathClass.calculateDeadzone(joystick2.getX(), deadzoneVal);
     }
+
+    public static double getJoy2Y() {
+	return MathClass.calculateDeadzone(joystick2.getY(), deadzoneVal);
+    }
+
 }

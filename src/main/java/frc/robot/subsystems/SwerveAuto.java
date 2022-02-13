@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+
 import frc.robot.util.MathClass;
 import frc.robot.util.FieldPosition;
 import frc.robot.util.Gyro;
@@ -24,38 +25,49 @@ public class SwerveAuto {
     }
 
     public boolean isAtDesiredPosition() {
-        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().positionCoord.x) - Math.abs(desiredPosition.positionCoord.x), positionStopRange) == 0) {
-            if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().positionCoord.y) - Math.abs(desiredPosition.positionCoord.y), positionStopRange) == 0) {
-                isAtPosition = true;
+        if (MathClass.calculateDeadzone(
+                Math.abs(Robot.swo.getPosition().positionCoord.x) - Math.abs(desiredPosition.positionCoord.x),
+                positionStopRange) == 0) {
+            if (MathClass.calculateDeadzone(
+                    Math.abs(Robot.swo.getPosition().positionCoord.y) - Math.abs(desiredPosition.positionCoord.y),
+                    positionStopRange) == 0) {
                 return true;
             }
         }
-        isAtPosition = false;
         return false;
     }
 
     public boolean isAtDesiredAngle() {
-        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().angle) - Math.abs(desiredPosition.angle), 5) == 0) {
-            isAtAngle = true;
+        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().angle) - Math.abs(desiredPosition.angle),
+                5) == 0) {
             return true;
         }
-            isAtAngle = false;
-            return false;
+        return false;
     }
 
-    public double[] translate() {
-        double inputX = MathUtil.clamp(desiredPosition.positionCoord.x - Robot.swo.getPosition().positionCoord.x, -1, 1);
-        double inputY = MathUtil.clamp(desiredPosition.positionCoord.y - Robot.swo.getPosition().positionCoord.y, -1, 1);
-
-        double[] ret = {inputX, inputY};
-        return isAtPosition ? new double[] {0, 0} : ret;
+    public boolean isAtDesiredPosAng() {
+        return isAtPosition && isAtAngle;
     }
 
     public void drive() {
+        isAtPosition = isAtDesiredPosition();
+        isAtAngle = isAtDesiredAngle();
+
         double[] translateInputs = translate();
         double twistInput = twist();
+        SmartDashboard.putNumber(" auto twistVal ", twistInput);
 
-        Robot.swerveSystem.drive(translateInputs[0], translateInputs[1], 0/*twistInput*/);
+        Robot.swerveSystem.drive(translateInputs[0], translateInputs[1], twistInput, 0);
+    }
+
+    public double[] translate() {
+        double inputX = MathUtil.clamp(desiredPosition.positionCoord.x - Robot.swo.getPosition().positionCoord.x, -1,
+                1);
+        double inputY = MathUtil.clamp(desiredPosition.positionCoord.y - Robot.swo.getPosition().positionCoord.y, -1,
+                1);
+
+        double[] ret = { inputX, inputY };
+        return isAtPosition ? new double[] { 0, 0 } : ret;
     }
 
     public double twist() {
@@ -63,15 +75,11 @@ public class SwerveAuto {
         return isAtAngle ? 0 : twistValue;
     }
 
-    public boolean isAtDesiredPosAng() {
-        return isAtDesiredPosition() && isAtDesiredAngle();
-    }
-
     public void kill() {
         Robot.swerveSystem.backRight.kill();
         Robot.swerveSystem.backLeft.kill();
         Robot.swerveSystem.frontRight.kill();
-        Robot.swerveSystem.frontLeft.kill();  
+        Robot.swerveSystem.frontLeft.kill();
     }
 
 }
