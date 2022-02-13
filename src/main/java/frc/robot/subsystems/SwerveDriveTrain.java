@@ -10,14 +10,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.lang.Math;
 import edu.wpi.first.util.WPIUtilJNI;
 
-
 public class SwerveDriveTrain extends SubsystemBase {
      public SwerveWheel backLeft;
      public SwerveWheel backRight;
      public SwerveWheel frontLeft;
      public SwerveWheel frontRight;
      public Gyro gyro;
-     public double throttle = 0.0;	
+     public double throttle = 0.0;
 
      public PIDController xPID;
      public PIDController yPID;
@@ -100,9 +99,9 @@ public class SwerveDriveTrain extends SubsystemBase {
           double timeNow = WPIUtilJNI.now() * 1.0e-6;
           double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
 
-	  throttle += throttleChange * 10 * period;
+          throttle += throttleChange * 10 * period;
 
-	  SmartDashboard.putNumber("throttle ", throttle)
+          SmartDashboard.putNumber("throttle ", throttle);
           SmartDashboard.putNumber("drive inputX ", inputX);
           SmartDashboard.putNumber("drive inputY ", inputY);
           SmartDashboard.putNumber("drive inputTwist ", inputTwist);
@@ -121,8 +120,6 @@ public class SwerveDriveTrain extends SubsystemBase {
 
           inputX = pidInputX * throttle;
           inputY = pidInputY * throttle;
-
-	  
 
           SmartDashboard.putNumber("testInputX ", pidInputX);
           SmartDashboard.putNumber("testInputY ", pidInputY);
