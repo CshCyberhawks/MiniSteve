@@ -41,15 +41,15 @@ public class IO {
     }
 
     public static double getXboxLeftY() {
-        return Math.abs(xbox.getLeftY()) > deadzone ? xbox.getLeftY() : 0;
+        return deadZone(xbox.getLeftY());
     }
 
     public static double getXboxLeftX() {
-        return Math.abs(xbox.getLeftX()) > deadzone ? xbox.getLeftX() : 0;
+        return deadZone(xbox.getLeftX());
     }
 
     public static double getXboxRightX() {
-        return Math.abs(xbox.getRightX()) > deadzone ? xbox.getRightX() : 0;
+        return deadZone(xbox.getRightX());
     }
 
     public static double getJoy2X() {
