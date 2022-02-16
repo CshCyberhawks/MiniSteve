@@ -4,6 +4,7 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.util.FieldPosition;
 import frc.robot.util.Gyro;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,8 +29,8 @@ public class SwerveDriveTrain extends SubsystemBase {
      private double lastUpdateTime = 1;
 
      public SwerveDriveTrain() {
-          xPID = new PIDController(100, 0, 0);
-          yPID = new PIDController(100, 0, 0);
+          xPID = new PIDController(8, 0, 0);
+          yPID = new PIDController(8, 0, 0);
 
           backLeft = new SwerveWheel(Constants.backLeftTurnMotor, Constants.backLeftDriveMotor,
                     Constants.backLeftEncoder);
@@ -99,7 +100,8 @@ public class SwerveDriveTrain extends SubsystemBase {
           double timeNow = WPIUtilJNI.now() * 1.0e-6;
           double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
 
-          throttle += throttleChange * 10 * period;
+          // mult by 10 is just a guess
+          throttle = MathUtil.clamp(throttle += MathUtil.clamp(throttleChange / 200, -.1, .1), .05, 1);
 
           SmartDashboard.putNumber("throttle ", throttle);
           SmartDashboard.putNumber("drive inputX ", inputX);
@@ -119,7 +121,7 @@ public class SwerveDriveTrain extends SubsystemBase {
                     robotPos.positionCoord.y + (inputY * (24.72 * period)));
 
           inputX = pidInputX * throttle;
-          inputY = pidInputY * throttle;
+          inputY = pidInputY  * throttle;
 
           SmartDashboard.putNumber("testInputX ", pidInputX);
           SmartDashboard.putNumber("testInputY ", pidInputY);
@@ -134,10 +136,7 @@ public class SwerveDriveTrain extends SubsystemBase {
                     inputTwist);
           double[] frontLeftVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("frontLeft"),
                     inputTwist);
-          double[] backRightVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("backRight"),
-                    inputTwist);
-          double[] backLeftVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("backLeft"), inputTwist);
-
+          double[] backRightVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("backRight"), inputTwist); double[] backLeftVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("backLeft"), inputTwist);
           double frontRightSpeed = frontRightVector[1];
           double frontLeftSpeed = frontLeftVector[1];
           double backRightSpeed = backRightVector[1];

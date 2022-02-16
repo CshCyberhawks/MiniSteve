@@ -21,12 +21,12 @@ public final class Constants {
     public static final int backLeftTwistMult = 1; 
     
     //twist speed mults for each motor
-    public static final HashMap<String, Integer> twistSpeedMap = new HashMap<>(){{
-        put("frontRight", -1);
-        put("frontLeft", 1);
-        put("backRight", -1);
-        put("backLeft", 1);
-    }};
+    public static final HashMap<String, Double> twistSpeedMap = new HashMap<>(){{
+        put("frontRight", -.4);
+        put("frontLeft", .4);
+        put("backRight", -.4);
+        put("backLeft", .4);
+    }}; 
 
     //twist angles for each motor
     public static final HashMap<String, Integer> twistAngleMap = new HashMap<>(){{
