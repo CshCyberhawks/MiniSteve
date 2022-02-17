@@ -17,7 +17,7 @@ public class SwerveDriveTrain extends SubsystemBase {
      public SwerveWheel frontLeft;
      public SwerveWheel frontRight;
      public Gyro gyro;
-     public double throttle = 0.0;
+     public double throttle = 0.35;
 
      public PIDController xPID;
      public PIDController yPID;

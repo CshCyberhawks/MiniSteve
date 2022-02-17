@@ -82,10 +82,6 @@ public class SwerveWheel {
             speed = -speed;
         }
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", turnValue);
-
-        SmartDashboard.putNumber(m_turnEncoderPort + " drive encoder ", currentDriveSpeed);
-
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
 
         double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, speed);
