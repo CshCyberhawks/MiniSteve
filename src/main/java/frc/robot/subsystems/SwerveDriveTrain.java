@@ -115,10 +115,16 @@ public class SwerveDriveTrain extends SubsystemBase {
           // take speed in ft/s
           // convert to swos(6 in)
           // multiply by 0.02 (update loop)
-          double pidInputX = xPID.calculate(robotPos.positionCoord.x,
-                    robotPos.positionCoord.x + (inputX * (24.72 * period)));
-          double pidInputY = yPID.calculate(robotPos.positionCoord.y,
-                    robotPos.positionCoord.y + (inputY * (24.72 * period)));
+	 double pidPredictX = robotPos.positionCoord.x + (inputX * (24.72 * period));
+	 double pidPredictY = robotPos.positionCoord.y + (inputY * (24.72 * period));
+
+	 SmartDashboard.putNumber("pidPredictX", pidPredictX);
+	 SmartDashboard.putNumber("pidPredictY", pidPredictY);
+
+          double pidInputX = xPID.calculate(robotPos.positionCoord.x, pidPredictX);
+          double pidInputY = yPID.calculate(robotPos.positionCoord.y, pidPredictY);
+
+	
 
           inputX = pidInputX * throttle;
           inputY = pidInputY  * throttle;

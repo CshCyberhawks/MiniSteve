@@ -6,6 +6,7 @@ package frc.robot;
 
 import org.ejml.dense.fixed.CommonOps_DDF2;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -54,7 +55,7 @@ public class Robot extends TimedRobot {
     //CameraServer.startAutomaticCapture();
     swerveSystem = new SwerveDriveTrain();
     swo = new SwerveOdometry(new FieldPosition(0, 0, 0));
-
+    CameraServer.startAutomaticCapture();
     
   }
 
