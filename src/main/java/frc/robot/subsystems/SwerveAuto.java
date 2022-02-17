@@ -71,7 +71,7 @@ public class SwerveAuto {
     }
 
     public double twist() {
-        double twistValue = MathUtil.clamp(desiredPosition.angle - Robot.swo.getPosition().angle, -1, 1);
+        double twistValue = MathUtil.clamp(Robot.swo.getPosition().angle - desiredPosition.angle, -1, 1);
         return isAtAngle ? 0 : twistValue;
     }
 
