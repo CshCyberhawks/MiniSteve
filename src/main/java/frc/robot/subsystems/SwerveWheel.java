@@ -31,6 +31,8 @@ public class SwerveWheel {
     
     private PIDController turnPidController;
     private PIDController drivePidController;
+
+    private double oldAngle = 0;
     
     // private SimpleMotorFeedforward driveFeedforward;
 
@@ -66,6 +68,7 @@ public class SwerveWheel {
     }
 
     public void drive(double speed, double angle) {
+        oldAngle = angle;
         speed = convertToMetersPerSecond(speed * 5000); //Converting the speed to m/s with a max rpm of 3000 (Gear ratio is 7:1)
 
         SmartDashboard.putNumber(m_turnEncoderPort + " angle input", angle);
@@ -113,5 +116,9 @@ public class SwerveWheel {
         if (!turnPidController.atSetpoint()) {
            turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -.7, .7));
         }
+    }
+
+    public void preserveAngle() {
+        drive(0, oldAngle);
     }
 }
