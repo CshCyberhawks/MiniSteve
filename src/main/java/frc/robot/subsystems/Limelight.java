@@ -13,8 +13,10 @@ public class Limelight extends SubsystemBase {
     private static NetworkTableEntry tx = table.getEntry("tx"); //The horizontal offset between the crosshair and target in degrees
     private static NetworkTableEntry ty = table.getEntry("ty"); //The vertical offset between the crosshair and target in degrees
     private static NetworkTableEntry ta = table.getEntry("ta"); //Percentage of image (filled by target?)
-    
-    public Limelight() {}
+    private static NetworkTableEntry tc = table.getEntry("tc"); //HSV color underneath the crosshair region as a NumberArray 
+    public Limelight() {
+
+    }
 
     public static double getHorizontalOffset() {
         return tx.getDouble(0.0);
@@ -31,7 +33,11 @@ public class Limelight extends SubsystemBase {
     public static double getTarget() {
         return tv.getDouble(0.0);
     }
-
+    public static Number[] getColor()
+    {
+        return tc.getNumberArray(new Number[] {-1});
+    }
+    
     //public static double getDistance() {
     //    return getArea();
     //}
