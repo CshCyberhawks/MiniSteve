@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.lang.Math;
 import edu.wpi.first.util.WPIUtilJNI;
+import frc.robot.util.Vector2;
 
 public class SwerveDriveTrain extends SubsystemBase {
      public SwerveWheel backLeft;
@@ -21,6 +22,8 @@ public class SwerveDriveTrain extends SubsystemBase {
 
      public PIDController xPID;
      public PIDController yPID;
+
+     public Vector2 predictedOdometry;
 
      public SwerveWheel[] wheelArr = new SwerveWheel[4];
 
@@ -45,6 +48,8 @@ public class SwerveDriveTrain extends SubsystemBase {
           wheelArr[1] = backRight;
           wheelArr[2] = frontLeft;
           wheelArr[3] = frontRight;
+
+	  predictedOdometry = new Vector2(0, 0);
 
           Gyro.setOffset();
      }
@@ -99,6 +104,11 @@ public class SwerveDriveTrain extends SubsystemBase {
      public void drive(double inputX, double inputY, double inputTwist, double throttleChange) {
           double timeNow = WPIUtilJNI.now() * 1.0e-6;
           double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
+
+
+	  	  
+	  SmartDashboard.putNumber("predictedOdometry.x ", predictedOdometry.x);
+	  SmartDashboard.putNumber("predictedOdometry.y ", predictedOdometry.y);
 
           // mult by 10 is just a guess
           throttle = MathUtil.clamp(throttle += MathUtil.clamp(throttleChange / 200, -.1, .1), .05, 1);
@@ -159,6 +169,10 @@ public class SwerveDriveTrain extends SubsystemBase {
           frontRight.drive(frontRightSpeed, frontRightAngle);
           frontLeft.drive(-frontLeftSpeed, frontLeftAngle);
 
+	 predictedOdometry.x += inputX * 24.72 * period;
+	 predictedOdometry.y += inputY * 24.72 * period;
+
+	  
           lastUpdateTime = timeNow;
      }
 }
