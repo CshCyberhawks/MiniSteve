@@ -12,6 +12,7 @@ public class Limelight extends SubsystemBase {
     private static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     private static NetworkTableEntry tx = table.getEntry("tx"); //The horizontal offset between the crosshair and target in degrees
     private static NetworkTableEntry ty = table.getEntry("ty"); //The vertical offset between the crosshair and target in degrees
+    private static NetworkTableEntry tc = table.getEntry("tc"); 
     private static LinearFilter filter = LinearFilter.highPass(0.1, 0.02);
     
     public Limelight() {}
@@ -23,7 +24,10 @@ public class Limelight extends SubsystemBase {
     public static double getVerticalOffset() {
         return ty.getDouble(0.0);
     }
-
+    public static String getHSVColor()
+    {
+        return tc.getString("");
+    }
     //(target height - limelight height) / tanget(limelight angle + target vertical offset)
     public static double getDistance() {
         return ((18.5 - 9.875) / (Math.tan(Math.toRadians(0 + getVerticalOffset()))));    
