@@ -5,7 +5,7 @@
 package frc.robot;
 
 import java.util.HashMap;
-import java.util.Map;
+// import java.util.Map;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -56,6 +56,7 @@ public final class Constants {
     public static final int rightShootMotor = 13;
     public static final int leftShootMotor = 12;
     public static final int topShootMotor = 11;
+    public static final int traversalMotor = 10;
 
     //Dimensions
     public static final double length = .53;

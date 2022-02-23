@@ -62,17 +62,17 @@ public class SwerveWheel {
            
     }
 
-    private double[] optimizeWheelPositions(double angle, double encoderValue) {
-        double[] ret  = {1, angle};
-        double change = Math.abs(angle - encoderValue);
+    // private double[] optimizeWheelPositions(double angle, double encoderValue) {
+    //     double[] ret  = {1, angle};
+    //     double change = Math.abs(angle - encoderValue);
 
-        if ((change / 180) >= 1) {
-            ret[0] = -1;
-            ret[1] = angle % 180;
-        }
+    //     if ((change / 180) >= 1) {
+    //         ret[0] = -1;
+    //         ret[1] = angle % 180;
+    //     }
 
-        return ret;
-    }
+    //     return ret;
+    // }
 
     public void drive(double speed, double angle) {
         SmartDashboard.putNumber(m_turnEncoderPort + " angle input", angle);
