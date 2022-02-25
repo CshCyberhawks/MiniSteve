@@ -21,7 +21,7 @@ public class ShootSystem extends SubsystemBase {
     private CANSparkMax bottomLeftMotor;
     private VictorSPX traversalMotor;
     private double topMotorMult = 1.2;
-    private double traversalMult = 1;
+    private double traversalMult = 1.2;
     private RelativeEncoder topEncoder;
     // private RelativeEncoder traversalEncoder;
     private RelativeEncoder rightEncoder;
@@ -37,21 +37,20 @@ public class ShootSystem extends SubsystemBase {
         topEncoder = topMotor.getEncoder();
         rightEncoder = bottomRightMotor.getEncoder();
         leftEncoder = bottomLeftMotor.getEncoder();
-        motorController = new PIDController(0.01, 0, 0);
+        //motorController = new PIDController(0.01, 0, 0);
     }
     public void shoot(double power) {
-        double topPIDOut = motorController.calculate(topEncoder.getVelocity(), power * topMotorMult);
         //double traversalPIDOUt = motorController.calculate(traverseEncoder.getVelocity(), power * traversalMult);
-        topMotor.set(topPIDOut);
+        topMotor.set(power);
         traversalMotor.set(ControlMode.PercentOutput, power * traversalMult);
         setBottom(power);
     }
 
     //Syncing of bottom 2 motors
     private void setBottom(double power) {
-        double leftPIDOut = motorController.calculate(leftEncoder.getVelocity(), power);
-        double rightPIDOut = motorController.calculate(rightEncoder.getVelocity(), power);
-        bottomLeftMotor.set(leftPIDOut);//power
-        bottomRightMotor.set(-rightPIDOut);
+        // double leftPIDOut = motorController.calculate(leftEncoder.getVelocity(), power);
+        // double rightPIDOut = motorController.calculate(rightEncoder.getVelocity(), power);
+        bottomLeftMotor.set(power);//power
+        bottomRightMotor.set(-power);
     }
 }
