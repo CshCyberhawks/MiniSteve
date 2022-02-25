@@ -56,7 +56,7 @@ public final class Constants {
     public static final int rightShootMotor = 13;
     public static final int leftShootMotor = 12;
     public static final int topShootMotor = 11;
-    public static final int traversalMotor = 10;
+    public static final int traversalMotor = 16;
 
     //Dimensions
     public static final double length = .53;
