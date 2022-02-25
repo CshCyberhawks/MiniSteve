@@ -3,6 +3,9 @@ package frc.robot.subsystems;
 // import javax.print.CancelablePrintJob;
 
 import com.revrobotics.CANSparkMax;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+// import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
@@ -16,7 +19,7 @@ public class ShootSystem extends SubsystemBase {
     private CANSparkMax topMotor;
     private CANSparkMax bottomRightMotor;
     private CANSparkMax bottomLeftMotor;
-    private CANSparkMax traversalMotor;
+    private VictorSPX traversalMotor;
     private double topMotorMult = 1.2;
     private double traversalMult = 1;
     private RelativeEncoder topEncoder;
@@ -29,7 +32,7 @@ public class ShootSystem extends SubsystemBase {
         topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         bottomLeftMotor = new CANSparkMax(Constants.leftShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         bottomRightMotor = new CANSparkMax(Constants.rightShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
-        traversalMotor = new CANSparkMax(Constants.traversalMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        traversalMotor = new VictorSPX(Constants.traversalMotor);
         // traversalEncoder = traversalMotor.getEncoder();
         topEncoder = topMotor.getEncoder();
         rightEncoder = bottomRightMotor.getEncoder();
@@ -40,7 +43,7 @@ public class ShootSystem extends SubsystemBase {
         double topPIDOut = motorController.calculate(topEncoder.getVelocity(), power * topMotorMult);
         //double traversalPIDOUt = motorController.calculate(traverseEncoder.getVelocity(), power * traversalMult);
         topMotor.set(topPIDOut);
-        traversalMotor.set(power * traversalMult);
+        traversalMotor.set(ControlMode.PercentOutput, power * traversalMult);
         setBottom(power);
     }
 
