@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.commands.ShootCommand;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShootSystem;
 // import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
@@ -28,7 +29,7 @@ import frc.robot.subsystems.ShootSystem;
 public class Robot extends TimedRobot {
   // private DriveSystem driveSystem;
   private Command m_autonomousCommand;
-
+  private Limelight limelight;
   //private OldSwerveDriveTrain swerveSystem;
   // private SwerveDriveTrain swerveSystem;
   private ShootSystem shootSystem;
@@ -43,7 +44,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     // m_robotContainer = new RobotContainer();
- 
+    limelight = new Limelight();
     shootSystem = new ShootSystem();
     //driveSystem = new DriveSystem();
     CameraServer.startAutomaticCapture();

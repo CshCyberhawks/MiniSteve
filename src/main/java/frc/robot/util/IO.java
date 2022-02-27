@@ -54,4 +54,20 @@ public class IO {
     public static boolean getXboxRightBumper() {
         return xbox.getRightBumper();
     }
+    public static double getXboxLeftTrigger()
+    {
+        return xbox.getLeftTriggerAxis();
+    }
+    public static boolean getXboxLeftBumper()
+    {
+        return xbox.getLeftBumper();
+    }
+    public static boolean getXboxXButton()
+    {
+        return xbox.getXButtonPressed();
+    }
+    public static boolean getXboxAButton()
+    {
+        return xbox.getAButton();
+    }
 }

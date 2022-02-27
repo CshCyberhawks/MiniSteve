@@ -33,9 +33,9 @@ public class Limelight extends SubsystemBase {
     public static double getTarget() {
         return tv.getDouble(0.0);
     }
-    public static Number[] getColor()
-    {
-        return tc.getNumberArray(new Number[] {-1});
+    public static double[] getColor()
+    {  
+       return tc.getDoubleArray(new double[] {-1});
     }
 
     //public static double getDistance() {
@@ -46,7 +46,7 @@ public class Limelight extends SubsystemBase {
     public void periodic() {
         //Values needed from final robot before implemented
         //double distanceFromTarget = (10 - 10) / Math.tan(0 + getVerticalOffset());
-
+        SmartDashboard.putNumberArray("Limelight color", getColor());
         SmartDashboard.putNumber("Limelight hasValidTarget", getTarget());
         SmartDashboard.putNumber("Limelight horrizontalOffset", getHorizontalOffset());
         SmartDashboard.putNumber("Limelight verticalOffset", getVerticalOffset());

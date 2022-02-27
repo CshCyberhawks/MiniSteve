@@ -9,7 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
-import edu.wpi.first.math.controller.PIDController;
+// import edu.wpi.first.math.controller.PIDController;
 // import edu.wpi.first.wpilibj.Encoder;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,9 +19,9 @@ public class ShootSystem extends SubsystemBase {
     private CANSparkMax topMotor;
     private CANSparkMax bottomRightMotor;
     private CANSparkMax bottomLeftMotor;
-    // private VictorSPX traversalMotor;
+    private VictorSPX traversalMotor;
     private double topMotorMult = 1.2;
-    private double traversalMult = 1.2;
+    private double traversalMult = 2;
     // private RelativeEncoder topEncoder;
     // private RelativeEncoder traversalEncoder;
     // private RelativeEncoder rightEncoder;
@@ -32,7 +32,7 @@ public class ShootSystem extends SubsystemBase {
         topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         bottomLeftMotor = new CANSparkMax(Constants.leftShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         bottomRightMotor = new CANSparkMax(Constants.rightShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
-        // traversalMotor = new VictorSPX(Constants.traversalMotor);
+        traversalMotor = new VictorSPX(Constants.traversalMotor);
         // traversalEncoder = traversalMotor.getEncoder();
         // topEncoder = topMotor.getEncoder();
         // rightEncoder = bottomRightMotor.getEncoder();
@@ -41,11 +41,13 @@ public class ShootSystem extends SubsystemBase {
     }
     public void shoot(double power) {
         //double traversalPIDOUt = motorController.calculate(traverseEncoder.getVelocity(), power * traversalMult);
-        topMotor.set(-power);
-        // traversalMotor.set(ControlMode.PercentOutput, 1);
+        topMotor.set(-power * topMotorMult);
         setBottom(power);
     }
-
+    public void traverse(double power)
+    {
+        traversalMotor.set(ControlMode.PercentOutput,power * traversalMult);
+    }
     //Syncing of bottom 2 motors
     private void setBottom(double power) {
         // double leftPIDOut = motorController.calculate(leftEncoder.getVelocity(), power);
