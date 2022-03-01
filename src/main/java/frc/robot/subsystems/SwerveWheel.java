@@ -9,6 +9,8 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+
 //leaving the below imports to remember that profiledPIDControllers exist, and that feedforwards exist in case we need to use them
 // import edu.wpi.first.math.controller.ProfiledPIDController;
 // import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -37,6 +39,9 @@ public class SwerveWheel {
     private PIDController drivePidController;
 
     private SimpleMotorFeedforward driveFeedforward;
+    
+    private TrapezoidProfile.Constraints tConstraints = new TrapezoidProfile.Constraints(0, 0);
+
 
     public SwerveWheel(int turnPort, int drivePort, int turnEncoderPort) {
 
