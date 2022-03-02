@@ -87,9 +87,9 @@ public class SwerveWheel {
             speed = -speed;
         }
 
-        if (Math.abs(speed - lastSpeed) > maxAcceleration) {
-            speed = lastSpeed + maxAcceleration;
-        }
+        // if (Math.abs(speed - lastSpeed) > maxAcceleration) {
+        // speed = lastSpeed + maxAcceleration;
+        // }
 
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
 
