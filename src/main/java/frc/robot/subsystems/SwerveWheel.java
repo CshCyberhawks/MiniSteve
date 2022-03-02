@@ -33,7 +33,8 @@ public class SwerveWheel {
 
     private int m_turnEncoderPort;
 
-    private double maxAcceleration = .05;
+    //below is in m/s
+    private double maxAcceleration = .1;
     private double lastSpeed = 0;
 
     public double turnValue;
@@ -105,6 +106,7 @@ public class SwerveWheel {
 
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
 
+        //maybe reason why gradual deecleration isn't working is because the PID controller is trying to slow down by going opposite direction in stead of just letting wheels turn? maybe we need to skip the PID for slowing down? maybe needs more tuning? 
         double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, speed);
 
         // SmartDashboard.putNumber(m_turnEncoderPort + " pid value", drivePIDOutput);

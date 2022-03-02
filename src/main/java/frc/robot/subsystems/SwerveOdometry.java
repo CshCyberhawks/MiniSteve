@@ -49,10 +49,11 @@ public class SwerveOdometry extends SubsystemBase {
             }
 
 	    //Undoes the wheel optimization
-	    if (wheelSpeed < 0) {
-		    wheelSpeed = -wheelSpeed;
-		    wheelAngle = (wheelAngle + 180) % 360;
-	    }
+        //commented out to see if it will work without optimization
+	    //if (wheelSpeed < 0) {
+		//    wheelSpeed = -wheelSpeed;
+		//    wheelAngle = (wheelAngle + 180) % 360;
+	    //}
 
             double[] cartCoords = Robot.swerveSystem.polarToCartesian(wheelAngle, wheelSpeed);
 
@@ -70,6 +71,7 @@ public class SwerveOdometry extends SubsystemBase {
         SmartDashboard.putNumber("averagedY ", totalY);
 
         double[] robotPolar = Robot.swerveSystem.cartesianToPolar(totalX, totalY);
+        //maybe below is done incorrectly / is unnecessary? also possible that it should be subtracting gyro not adding
         robotPolar[0] += Gyro.getAngle();
 
         double[] robotVelocities = Robot.swerveSystem.polarToCartesian(robotPolar[0], robotPolar[1]);
