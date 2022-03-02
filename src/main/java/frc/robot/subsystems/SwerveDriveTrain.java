@@ -105,6 +105,14 @@ public class SwerveDriveTrain extends SubsystemBase {
         double timeNow = WPIUtilJNI.now() * 1.0e-6;
         double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
 
+        if (inputX == 0 && inputY == 0 && inputTwist == 0) {
+            backRight.preserveAngle();
+            backLeft.preserveAngle();
+            frontRight.preserveAngle();
+            frontLeft.preserveAngle();
+            return;
+        }
+
         SmartDashboard.putNumber("predictedOdometry.x ", predictedOdometry.x);
         SmartDashboard.putNumber("predictedOdometry.y ", predictedOdometry.y);
 
@@ -123,11 +131,11 @@ public class SwerveDriveTrain extends SubsystemBase {
         // take speed in ft/s
         // convert to swos(6 in)
         // multiply by 0.02 (update loop)
-        // double pidPredictX = robotPos.positionCoord.x + (inputX * (24.72 * period));
-        // double pidPredictY = robotPos.positionCoord.y + (inputY * (24.72 * period));
+        double pidPredictX = robotPos.positionCoord.x + (inputX * (24.72 * period));
+        double pidPredictY = robotPos.positionCoord.y + (inputY * (24.72 * period));
 
-        double pidPredictX = predictedOdometry.x + (inputX * (24.72 * period));
-        double pidPredictY = predictedOdometry.y + (inputY * (24.72 * period));
+        // double pidPredictX = predictedOdometry.x + (inputX * (24.72 * period));
+        // double pidPredictY = predictedOdometry.y + (inputY * (24.72 * period));
 
         SmartDashboard.putNumber("pidPredictX", pidPredictX);
         SmartDashboard.putNumber("pidPredictY", pidPredictY);
@@ -135,8 +143,8 @@ public class SwerveDriveTrain extends SubsystemBase {
         double pidInputX = xPID.calculate(robotPos.positionCoord.x, pidPredictX);
         double pidInputY = yPID.calculate(robotPos.positionCoord.y, pidPredictY);
 
-        // inputX = pidInputX * throttle;
-        // inputY = pidInputY * throttle;
+        inputX = pidInputX * throttle;
+        inputY = pidInputY * throttle;
 
         SmartDashboard.putNumber("testInputX ", pidInputX);
         SmartDashboard.putNumber("testInputY ", pidInputY);

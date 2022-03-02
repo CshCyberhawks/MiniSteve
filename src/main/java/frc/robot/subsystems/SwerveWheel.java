@@ -29,6 +29,8 @@ public class SwerveWheel {
     private TurnEncoder turnEncoder;
     private RelativeEncoder driveEncoder;
 
+    private double oldAngle = 0;
+
     private int m_turnEncoderPort;
 
     private double maxAcceleration = .05;
@@ -72,8 +74,12 @@ public class SwerveWheel {
     }
 
     public void drive(double speed, double angle) {
-        speed = convertToMetersPerSecond(speed * 5000); // Converting the speed to m/s with a max rpm of 3000 (GEar
+        oldAngle = angle;
+
+        speed = convertToMetersPerSecond(speed * 5000); // Converting the speed to m/s with a max rpm of 5000 (GEar
         // ratio is 7:1)
+
+        SmartDashboard.putNumber("pre accel/decel speed", speed);
 
         currentDriveSpeed = convertToMetersPerSecond(driveEncoder.getVelocity());
         turnValue = wrapAroundAngles(turnEncoder.get());
@@ -87,9 +93,15 @@ public class SwerveWheel {
             speed = -speed;
         }
 
-        if (Math.abs(speed - lastSpeed) > maxAcceleration) {
-            speed = lastSpeed + maxAcceleration;
+        if (Math.abs(speed) - lastSpeed > maxAcceleration && speed != 0) {
+            speed = speed < 0 ? -(Math.abs(lastSpeed) + maxAcceleration) : lastSpeed + maxAcceleration;
         }
+
+        else if (Math.abs(lastSpeed) - Math.abs(speed) > maxAcceleration && speed != 0) {
+            speed = speed < 0 ? -(Math.abs(lastSpeed) - maxAcceleration) : lastSpeed - maxAcceleration;
+        }
+
+        SmartDashboard.putNumber("post accel/decel speed", speed);
 
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
 
@@ -103,13 +115,18 @@ public class SwerveWheel {
         // driveFeedForwardOutput);
         // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
+        SmartDashboard.putNumber("driveSet", MathUtil.clamp(drivePIDOutput, -1, 1));
         // 70% speed is about 5.6 feet/second
         driveMotor.set(MathUtil.clamp(drivePIDOutput /* + driveFeedForwardOutput */, -1, 1));
         if (!turnPidController.atSetpoint()) {
             turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -.7, .7));
         }
 
-        lastSpeed = speed;
+        lastSpeed = Math.abs(speed);
+    }
+
+    public void preserveAngle() {
+        drive(0, oldAngle);
     }
 
     public void kill() {
