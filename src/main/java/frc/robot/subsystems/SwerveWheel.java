@@ -31,6 +31,9 @@ public class SwerveWheel {
 
     private int m_turnEncoderPort;
 
+    private double maxAcceleration = .05;
+    private double lastSpeed = 0;
+
     public double turnValue;
     public double currentDriveSpeed;
     public double rawTurnValue;
@@ -39,9 +42,6 @@ public class SwerveWheel {
     private PIDController drivePidController;
 
     private SimpleMotorFeedforward driveFeedforward;
-    
-    private TrapezoidProfile.Constraints tConstraints = new TrapezoidProfile.Constraints(0, 0);
-
 
     public SwerveWheel(int turnPort, int drivePort, int turnEncoderPort) {
 
@@ -87,6 +87,10 @@ public class SwerveWheel {
             speed = -speed;
         }
 
+        if (Math.abs(speed - lastSpeed) > maxAcceleration) {
+            speed = lastSpeed + maxAcceleration;
+        }
+
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
 
         double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, speed);
@@ -104,6 +108,8 @@ public class SwerveWheel {
         if (!turnPidController.atSetpoint()) {
             turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -.7, .7));
         }
+
+        lastSpeed = speed;
     }
 
     public void kill() {
