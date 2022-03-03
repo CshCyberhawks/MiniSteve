@@ -111,10 +111,8 @@ public class SwerveWheel {
         // SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value",
         // driveFeedForwardOutput);
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " drive set", MathUtil.clamp(drivePIDOutput /*
-                                                                                                  * +
-                                                                                                  * driveFeedForwardOutput
-                                                                                                  */, -.7, .7));
+        SmartDashboard.putNumber(m_turnEncoderPort + " drive set", MathUtil.clamp(drivePIDOutput, -.7, .7));
+
         // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
         // 70% speed is about 5.6 feet/second
