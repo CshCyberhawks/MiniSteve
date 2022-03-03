@@ -80,14 +80,11 @@ public class SwerveWheel {
         speed = convertToMetersPerSecond(speed * 5000); // Converting the speed to m/s with a max rpm of 5000 (GEar
         // ratio is 7:1)
 
-        SmartDashboard.putNumber("pre accel/decel speed", speed);
-
         currentDriveSpeed = convertToMetersPerSecond(driveEncoder.getVelocity());
         turnValue = wrapAroundAngles(turnEncoder.get());
         rawTurnValue = turnEncoder.get();
         angle = wrapAroundAngles(angle);
 
-        SmartDashboard.putNumber("currentDriveSpeed", currentDriveSpeed);
 
         lastSpeed = currentDriveSpeed;
 
@@ -109,38 +106,26 @@ public class SwerveWheel {
         SmartDashboard.putNumber("post accel/decel speed", speed);
 
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
-
-        // maybe reason why gradual deecleration isn't working is because the PID
-        // controller is trying to slow down by going opposite direction in stead of
-        // just letting wheels turn? maybe we need to skip the PID for slowing down?
-        // maybe needs more tuning?
         double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, speed);
-
-        // SmartDashboard.putNumber(m_turnEncoderPort + " pid value", drivePIDOutput);
-
         double driveFeedForwardOutput = driveFeedforward.calculate(speed);
-
-        // SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value",
-        // driveFeedForwardOutput);
-        // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
         // 70% speed is about 5.6 feet/second
 
         SmartDashboard.putNumber("speed", speed);
 
-        double driveSet = drivePIDOutput + driveFeedForwardOutput;
+        double driveMotorSet = drivePIDOutput + driveFeedForwardOutput;
+        double turnMotorSet = turnPIDController.atSetpoint() ? 0 : turnPIDOutput;
 
         SmartDashboard.putNumber("driveFeedForwardOutput", driveFeedForwardOutput);
 
-        driveMotor.set(MathUtil.clamp(driveSet, -1, 1));
-        if (!turnPidController.atSetpoint()) {
-            turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -.7, .7));
-        }
+        return new double[] {driveMotorSet, angleMotorSet}
 
     }
 
     public void drive(double driveSet, double turnSet) {
-
+        driveMotor.set(MathUtil.clamp(driveSet, -1, 1));
+        
+        turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnSetturnPIDOutput, 1, 1));
     }
 
     public void preserveAngle() {

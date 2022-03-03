@@ -172,11 +172,26 @@ public class SwerveDriveTrain extends SubsystemBase {
         double backRightAngle = backRightVector[0];
         double backLeftAngle = backLeftVector[0];
 
-        // sets the speed and angle of each motor
-        backRight.drive(backRightSpeed, backRightAngle);
-        backLeft.drive(-backLeftSpeed, backLeftAngle);
-        frontRight.drive(frontRightSpeed, frontRightAngle);
-        frontLeft.drive(-frontLeftSpeed, frontLeftAngle);
+        double[] backRightSets = backRight.calculateDrive(backRightSpeed, backRightAngle); 
+        double[] backLeftSets = backLeft.calculateDrive(-backLeftSpeed, backLeftAngle);
+        double[] frontRightSets = frontRight.calculateDrive(frontRightSpeed, frontRightAngle);
+        double[] frontLeftSets = frontLeft.calculateDrive(-frontLeftSpeed, frontLeftAngle);
+
+        double[] wheelSpeeds = new double[4] {
+            backRightSets[0], backLeftSets[0], frontRightSets[0], frontLeftSets[0]
+        };
+
+        double[] wheelAngles = new double[4] {
+           backRightSets[1], backLeftSets[1], frontRightSets[1], frontLeftSets[1]
+        }
+
+        wheelSpeeds = MathClass.normalizeSpeeds(wheelSpeeds, 1, -1);
+        wheelAngles = MathClass.normalizeSpeeds(wheelAngles, 1, -1);
+
+        backRight.drive(wheelSpeeds[0], wheelAngles[0]);
+        backLeft.drive(wheelSpeeds[1], wheelAngles[1]);
+        frontRight.drive(wheelSpeeds[2], wheelAngles[2]);
+        frontLeft.drive(wheelSpeeds[3], wheelAngles[3]);
 
         predictedOdometry.x += inputX * 24.72 * period;
         predictedOdometry.y += inputY * 24.72 * period;
