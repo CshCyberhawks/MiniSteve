@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import frc.robot.util.MathClass;
 import frc.robot.util.TurnEncoder;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -33,7 +34,7 @@ public class SwerveWheel {
 
     private int m_turnEncoderPort;
 
-    //below is in m/s
+    // below is in m/s
     private double maxAcceleration = .1;
     private double lastSpeed = 0;
 
@@ -60,7 +61,7 @@ public class SwerveWheel {
         turnPidController.setTolerance(4);
         turnPidController.enableContinuousInput(0, 360);
 
-        drivePidController = new PIDController(.3, 0, 0);
+        drivePidController = new PIDController(0, 0, 0);
         driveFeedforward = new SimpleMotorFeedforward(.1, 473);
     }
 
@@ -74,9 +75,8 @@ public class SwerveWheel {
         return ((2 * Math.PI * radius) / 60) * (rpm / 7);
     }
 
-    public void drive(double speed, double angle) {
+    public double[] calculateDrive(double speed, double angle) {
         oldAngle = angle;
-
         speed = convertToMetersPerSecond(speed * 5000); // Converting the speed to m/s with a max rpm of 5000 (GEar
         // ratio is 7:1)
 
@@ -87,6 +87,10 @@ public class SwerveWheel {
         rawTurnValue = turnEncoder.get();
         angle = wrapAroundAngles(angle);
 
+        SmartDashboard.putNumber("currentDriveSpeed", currentDriveSpeed);
+
+        lastSpeed = currentDriveSpeed;
+
         // Optimization Code stolen from
         // https://github.com/Frc2481/frc-2015/blob/master/src/Components/SwerveModule.cpp
         if (Math.abs(angle - turnValue) > 90 && Math.abs(angle - turnValue) < 270) {
@@ -94,7 +98,7 @@ public class SwerveWheel {
             speed = -speed;
         }
 
-        if (Math.abs(speed) - lastSpeed > maxAcceleration && speed != 0) {
+        if (Math.abs(speed) - Math.abs(lastSpeed) > maxAcceleration && speed != 0) {
             speed = speed < 0 ? -(Math.abs(lastSpeed) + maxAcceleration) : lastSpeed + maxAcceleration;
         }
 
@@ -106,25 +110,37 @@ public class SwerveWheel {
 
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
 
-        //maybe reason why gradual deecleration isn't working is because the PID controller is trying to slow down by going opposite direction in stead of just letting wheels turn? maybe we need to skip the PID for slowing down? maybe needs more tuning? 
+        // maybe reason why gradual deecleration isn't working is because the PID
+        // controller is trying to slow down by going opposite direction in stead of
+        // just letting wheels turn? maybe we need to skip the PID for slowing down?
+        // maybe needs more tuning?
         double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, speed);
 
         // SmartDashboard.putNumber(m_turnEncoderPort + " pid value", drivePIDOutput);
 
-        double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed, speed);
+        double driveFeedForwardOutput = driveFeedforward.calculate(speed);
 
         // SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value",
         // driveFeedForwardOutput);
         // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
-        SmartDashboard.putNumber("driveSet", MathUtil.clamp(drivePIDOutput, -1, 1));
         // 70% speed is about 5.6 feet/second
-        driveMotor.set(MathUtil.clamp(drivePIDOutput /* + driveFeedForwardOutput */, -1, 1));
+
+        SmartDashboard.putNumber("speed", speed);
+
+        double driveSet = drivePIDOutput + driveFeedForwardOutput;
+
+        SmartDashboard.putNumber("driveFeedForwardOutput", driveFeedForwardOutput);
+
+        driveMotor.set(MathUtil.clamp(driveSet, -1, 1));
         if (!turnPidController.atSetpoint()) {
             turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -.7, .7));
         }
 
-        lastSpeed = Math.abs(speed);
+    }
+
+    public void drive(double driveSet, double turnSet) {
+
     }
 
     public void preserveAngle() {
