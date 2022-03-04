@@ -56,8 +56,8 @@ public class SwerveAuto {
         double[] translateInputs = translate();
         double twistInput = twist();
         SmartDashboard.putNumber(" auto twistVal ", twistInput);
-	SmartDashboard.putBoolean("isAtAngle", isAtAngle);
-	SmartDashboard.putBoolean("isAtDesiredPos", isAtPosition);
+	    SmartDashboard.putBoolean("isAtAngle", isAtAngle);
+	    SmartDashboard.putBoolean("isAtDesiredPos", isAtPosition);
 	
 
         Robot.swerveSystem.drive(translateInputs[0], translateInputs[1], twistInput, 0);
