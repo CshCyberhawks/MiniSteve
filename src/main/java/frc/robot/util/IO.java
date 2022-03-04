@@ -8,17 +8,17 @@ public class IO {
     // private static Joystick joystick = new Joystick(0);
     
     private static XboxController xbox = new XboxController(1);
+    private static Joystick joystick = new Joystick(0);
 
     private static double deadzone = 0.3;
 
     public static double deadZone(double input) {
         return Math.abs(input) > deadzone ? input : 0;
     }
-
-    // public static double[] getPolarCoords() {
-    //     double[] ret = {deadZone(joystick.getDirectionDegrees()), deadZone(joystick.getMagnitude()), deadZone(joystick.getTwist())};
-    //     return ret;
-    // }
+    public static double[] getPolarCoords() {
+        double[] ret = {-deadZone(joystick.getDirectionDegrees()), deadZone(joystick.getMagnitude()), deadZone(joystick.getTwist())};
+        return ret;
+    }
 
     // public static double getJoyY() {
     //     SmartDashboard.putNumber("Joystick Y", joystick.getY());
@@ -38,36 +38,22 @@ public class IO {
     public static double getXboxLeftY() {
         return Math.abs(xbox.getLeftY()) > deadzone ? xbox.getLeftY() : 0;
     }
-
     public static double getXboxLeftX() {
         return Math.abs(xbox.getLeftX()) > deadzone ? xbox.getLeftX() : 0;
     }
-
     public static double getXboxRightX() {
         return Math.abs(xbox.getRightX()) > deadzone ? xbox.getRightX() : 0;
     }
-
-    public static double getXboxRightTrigger() {
-        return xbox.getRightTriggerAxis();
-    }
-
     public static boolean getXboxRightBumper() {
-        return xbox.getRightBumper();
+        return (xbox.getRightBumperPressed() ? xbox.getRightBumper() : false);
     }
-    public static double getXboxLeftTrigger()
-    {
-        return xbox.getLeftTriggerAxis();
+    public static boolean getXboxLeftBumper() {
+        return (xbox.getLeftBumperPressed() ? xbox.getLeftBumper() : false);
     }
-    public static boolean getXboxLeftBumper()
-    {
-        return xbox.getLeftBumper();
+    public static double getXboxLeftTrigger() {
+        return Math.abs(xbox.getLeftTriggerAxis()) > deadzone ? xbox.getLeftTriggerAxis() : 0;
     }
-    public static boolean getXboxXButton()
-    {
-        return xbox.getXButtonPressed();
-    }
-    public static boolean getXboxAButton()
-    {
-        return xbox.getAButton();
+    public static boolean getXboxXButton() {
+        return (xbox.getXButtonPressed() ? xbox.getXButton() : false);
     }
 }

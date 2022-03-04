@@ -95,8 +95,7 @@ public class SwerveWheel {
 
 
         driveMotor.set((drivePIDOutput + driveFeedForwardOutput) * 1.2);
-        if (!turnPidController.atSetpoint()) {
+        if (!turnPidController.atSetpoint())
             turnMotor.set(ControlMode.PercentOutput, turnPIDOutput);
-        }
     }
 }
