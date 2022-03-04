@@ -53,6 +53,9 @@ public class IO {
     public static double getXboxLeftTrigger() {
         return Math.abs(xbox.getLeftTriggerAxis()) > deadzone ? xbox.getLeftTriggerAxis() : 0;
     }
+    public static double getXboxRightTrigger() {
+        return Math.abs(xbox.getRightTriggerAxis()) > deadzone ? xbox.getRightTriggerAxis() : 0;
+    }
     public static boolean getXboxXButton() {
         return (xbox.getXButtonPressed() ? xbox.getXButton() : false);
     }
