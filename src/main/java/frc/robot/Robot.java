@@ -7,7 +7,15 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 // import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import com.revrobotics.ColorSensorV3;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorMatch;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+<<<<<<< HEAD
 
 // import com.revrobotics.CANSparkMax;
 // import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -17,6 +25,10 @@ import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShootSystem;
 // import frc.robot.subsystems.SwerveDriveTrain;
+=======
+import frc.robot.subsystems.IntakeSystem;
+import frc.robot.subsystems.SwerveDriveTrain;
+>>>>>>> origin/ClimbingSystem
 //import frc.robot.subsystems.SwerveSubsystem;
 // import frc.robot.util.IO;
 
@@ -29,10 +41,24 @@ import frc.robot.subsystems.ShootSystem;
 public class Robot extends TimedRobot {
   // private DriveSystem driveSystem;
   private Command m_autonomousCommand;
+<<<<<<< HEAD
   private Limelight limelight;
   //private OldSwerveDriveTrain swerveSystem;
   // private SwerveDriveTrain swerveSystem;
   private ShootSystem shootSystem;
+=======
+  
+  private final I2C.Port port = I2C.Port.kMXP
+  ; //Check Later
+  
+  private final ColorSensorV3 colorSensor = new ColorSensorV3(port);
+  
+  private final ColorMatch colorMatch = new ColorMatch();
+  
+  //private OldSwerveDriveTrain swerveSystem;
+  private SwerveDriveTrain swerveSystem;
+  private IntakeSystem intakeSystem;
+>>>>>>> origin/ClimbingSystem
   // private RobotContainer m_robotContainer;
 
   /**
@@ -44,8 +70,13 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     // m_robotContainer = new RobotContainer();
+<<<<<<< HEAD
     limelight = new Limelight();
     shootSystem = new ShootSystem();
+=======
+    colorMatch.addColorMatch(Color.kRed);
+    colorMatch.addColorMatch(Color.kBlue);
+>>>>>>> origin/ClimbingSystem
     //driveSystem = new DriveSystem();
     CameraServer.startAutomaticCapture();
   }
@@ -59,10 +90,25 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    Color foundColor = colorSensor.getColor();
+    String colorString;
+    ColorMatchResult result = colorMatch.matchClosestColor(foundColor);
+    
+    if (result.color == Color.kBlue)
+      colorString = "Blue";
+    else if (result.color == Color.kRed)
+      colorString = "Red";
+    else 
+      colorString = "Unknown";
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+    SmartDashboard.putNumber("Red", foundColor.red); //check with 
+    SmartDashboard.putNumber("Green", foundColor.green);
+    SmartDashboard.putNumber("Blue", foundColor.blue);
+    SmartDashboard.putNumber("Confidence", result.confidence);
+    SmartDashboard.putString("Detected Color", colorString);
     CommandScheduler.getInstance().run();
   }
 
@@ -90,7 +136,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+<<<<<<< HEAD
     // swerveSystem = new SwerveDriveTrain();
+=======
+    swerveSystem = new SwerveDriveTrain();
+    intakeSystem = new IntakeSystem();
+>>>>>>> origin/ClimbingSystem
 
     shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
     //swerveSystem.setDefaultCommand(new OldSwerveCommand(swerveSystem));

@@ -4,6 +4,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+
+import com.revrobotics.ColorSensorV3;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorMatch;
 import java.util.HashMap;
 // import java.util.Map;
 
@@ -37,9 +45,6 @@ public final class Constants {
         put("backLeft", -135);
     }};
  
-
-
-
     //TalonSRX Motors
     public static final int frontRightTurnMotor = 1;
     public static final int frontLeftTurnMotor = 5;
@@ -71,5 +76,6 @@ public final class Constants {
     public static final int backRightEncoder = 2;
     public static final int backLeftEncoder = 3;
 
+    //Encoder offsets
     public static final double[] turnEncoderOffsets = {345, 260.4, 255, 8};
 }

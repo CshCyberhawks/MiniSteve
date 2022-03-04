@@ -15,10 +15,17 @@ public class IO {
         return Math.abs(input) > deadzone ? input : 0;
     }
 
+<<<<<<< HEAD
     // public static double[] getPolarCoords() {
     //     double[] ret = {deadZone(joystick.getDirectionDegrees()), deadZone(joystick.getMagnitude()), deadZone(joystick.getTwist())};
     //     return ret;
     // }
+=======
+    public static double[] getPolarCoords() {
+        double[] ret = {-deadZone(joystick.getDirectionDegrees()), deadZone(joystick.getMagnitude()), deadZone(joystick.getTwist())};
+        return ret;
+    }
+>>>>>>> origin/ClimbingSystem
 
     // public static double getJoyY() {
     //     SmartDashboard.putNumber("Joystick Y", joystick.getY());
@@ -46,6 +53,7 @@ public class IO {
     public static double getXboxRightX() {
         return Math.abs(xbox.getRightX()) > deadzone ? xbox.getRightX() : 0;
     }
+<<<<<<< HEAD
 
     public static double getXboxRightTrigger() {
         return xbox.getRightTriggerAxis();
@@ -69,5 +77,24 @@ public class IO {
     public static boolean getXboxAButton()
     {
         return xbox.getAButton();
+=======
+    public static double getXboxRightTrigger() {
+        return Math.abs(xbox.getRightTriggerAxis()) > deadzone ? xbox.getRightTriggerAxis() : 0;
+    }
+    public static boolean getXboxRightBumper() {
+        return (xbox.getRightBumperPressed() ? xbox.getRightBumper() : false);
+    }
+    public static boolean getXboxLeftBumper()
+    {
+        return (xbox.getLeftBumperPressed() ? xbox.getLeftBumper() : false);
+    }
+    public static double getXboxLeftTrigger()
+    {
+        return Math.abs(xbox.getLeftTriggerAxis()) > deadzone ? xbox.getLeftTriggerAxis() : 0;
+    }
+    public static boolean getXboxXButton()
+    {
+        return (xbox.getXButtonPressed() ? xbox.getXButton() : false);
+>>>>>>> origin/ClimbingSystem
     }
 }
