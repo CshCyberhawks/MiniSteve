@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.lang.Math;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.robot.util.Vector2;
+import frc.robot.util.MathClass;
 
 public class SwerveDriveTrain extends SubsystemBase {
     public SwerveWheel backLeft;
@@ -118,8 +119,8 @@ public class SwerveDriveTrain extends SubsystemBase {
         }
 
         double highestSpeed = Math.max(inputX, inputY) > Math.abs(Math.min(inputX, inputY))
-            ? Math.max(inputX, inputY)
-            : Math.abs(Math.min(inputX, inputY));
+                ? Math.max(inputX, inputY)
+                : Math.abs(Math.min(inputX, inputY));
         double constantScaler = 24.72 * highestSpeed;
 
         SmartDashboard.putNumber("predictedOdometry.x ", predictedOdometry.x);
@@ -178,18 +179,18 @@ public class SwerveDriveTrain extends SubsystemBase {
         double backRightAngle = backRightVector[0];
         double backLeftAngle = backLeftVector[0];
 
-        double[] backRightSets = backRight.calculateDrive(backRightSpeed, backRightAngle); 
+        double[] backRightSets = backRight.calculateDrive(backRightSpeed, backRightAngle);
         double[] backLeftSets = backLeft.calculateDrive(-backLeftSpeed, backLeftAngle);
         double[] frontRightSets = frontRight.calculateDrive(frontRightSpeed, frontRightAngle);
         double[] frontLeftSets = frontLeft.calculateDrive(-frontLeftSpeed, frontLeftAngle);
 
-        double[] wheelSpeeds = new double[4] {
-            backRightSets[0], backLeftSets[0], frontRightSets[0], frontLeftSets[0]
+        double[] wheelSpeeds = {
+                backRightSets[0], backLeftSets[0], frontRightSets[0], frontLeftSets[0]
         };
 
-        double[] wheelAngles = new double[4] {
-           backRightSets[1], backLeftSets[1], frontRightSets[1], frontLeftSets[1]
-        }
+        double[] wheelAngles = {
+                backRightSets[1], backLeftSets[1], frontRightSets[1], frontLeftSets[1]
+        };
 
         wheelSpeeds = MathClass.normalizeSpeeds(wheelSpeeds, 1, -1);
         wheelAngles = MathClass.normalizeSpeeds(wheelAngles, 1, -1);

@@ -85,7 +85,6 @@ public class SwerveWheel {
         rawTurnValue = turnEncoder.get();
         angle = wrapAroundAngles(angle);
 
-
         lastSpeed = currentDriveSpeed;
 
         // Optimization Code stolen from
@@ -114,18 +113,17 @@ public class SwerveWheel {
         SmartDashboard.putNumber("speed", speed);
 
         double driveMotorSet = drivePIDOutput + driveFeedForwardOutput;
-        double turnMotorSet = turnPIDController.atSetpoint() ? 0 : turnPIDOutput;
+        double turnMotorSet = turnPidController.atSetpoint() ? 0 : turnPIDOutput;
 
         SmartDashboard.putNumber("driveFeedForwardOutput", driveFeedForwardOutput);
 
-        return new double[] {driveMotorSet, angleMotorSet}
+        return new double[] { driveMotorSet, turnMotorSet };
 
     }
 
     public void drive(double driveSet, double turnSet) {
         driveMotor.set(MathUtil.clamp(driveSet, -1, 1));
-        
-        turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnSetturnPIDOutput, 1, 1));
+        turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnSet, 1, 1));
     }
 
     public void preserveAngle() {
