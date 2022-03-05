@@ -1,12 +1,12 @@
 package frc.robot.util;
 
 public class Polar {
-    public double theta;
-    public double r;
+    private double theta;
+    private double r;
 
     public Polar() {
-        this.theta = 0;
-        this.r = 0;
+        theta = 0;
+        r = 0;
     }
 
     public Polar(double theta, double r) {
@@ -14,7 +14,23 @@ public class Polar {
         this.r = r;
     }
 
+    public double getTheta() {
+        return theta;
+    }
+
+    public double getR() {
+        return r;
+    }
+
+    public void setTheta(double theta) {
+        this.theta = theta;
+    }
+
+    public void setR(double r) {
+        this.r = r;
+    }
+
     public boolean equals(Polar other) {
-        return (theta == other.theta && r == other.r);
+        return (theta == other.getTheta() && r == other.getR());
     }
 }

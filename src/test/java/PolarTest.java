@@ -13,7 +13,7 @@ public class PolarTest {
 
     @Test
     public void checkPolarValues() {
-        assertEquals(90, polarCord.theta, 0.001);
-        assertEquals(1.5, polarCord.r, 0.001);
+        assertEquals(90, polarCord.getTheta(), 0.001);
+        assertEquals(1.5, polarCord.getR(), 0.001);
     }
 }

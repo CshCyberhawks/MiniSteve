@@ -36,9 +36,6 @@ public final class Constants {
         put("backLeft", -135);
     }};
  
-
-
-
     //TalonSRX Motors
     public static final int frontRightTurnMotor = 5;
     public static final int frontLeftTurnMotor = 2;
@@ -50,6 +47,12 @@ public final class Constants {
     public static final int frontLeftDriveMotor = 8; 
     public static final int backRightDriveMotor = 9;   
     public static final int backLeftDriveMotor = 7;
+
+    //Shoot System Motors
+    public static final int rightShootMotor = 13;
+    public static final int leftShootMotor = 12;
+    public static final int topShootMotor = 11;
+    public static final int traversalMotor = 16;
 
     //Dimensions
     public static final double length = .53;
@@ -64,5 +67,5 @@ public final class Constants {
     public static final int backRightEncoder = 1;
     public static final int backLeftEncoder = 2;
 
-    public static final double[] turnEncoderOffsets = {256, 346, 171, 95};
+    public static final int[] turnEncoderOffsets = {256, 346, 171, 95};
 }

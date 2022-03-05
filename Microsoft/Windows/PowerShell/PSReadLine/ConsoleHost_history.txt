@@ -1,1 +1,12 @@
+<<<<<<< HEAD
+git merge SuperSteve
+git branch
+git stash
+git merge SuperSteve
+git merge
+git ac "idk"
+git config --global alias.ac "!git add -A && git commit -m"
+git ac
+=======
 git pull
+>>>>>>> origin
