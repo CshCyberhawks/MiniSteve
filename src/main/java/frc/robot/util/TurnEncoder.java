@@ -1,18 +1,15 @@
 package frc.robot.util;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.math.filter.LinearFilter;
 import frc.robot.Constants;
 
 public class TurnEncoder {
     private AnalogInput encoder;
-    private LinearFilter filter;
     private int encoderPort;
 
     public TurnEncoder(int port) {
         encoder = new AnalogInput(port);
         encoderPort = port;
-        filter = LinearFilter.movingAverage(1);
     }
 
     private double voltageToDegrees(double input) {

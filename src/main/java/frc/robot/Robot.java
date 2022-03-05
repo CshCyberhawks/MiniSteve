@@ -25,7 +25,10 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShootSystem;
 // import frc.robot.subsystems.SwerveDriveTrain;
 import frc.robot.subsystems.IntakeSystem;
+// import frc.robot.subsystems.Limelight;
+import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.SwerveDriveTrain;
+import edu.wpi.first.cameraserver.CameraServer;
 //import frc.robot.subsystems.SwerveSubsystem;
 // import frc.robot.util.IO;
 
@@ -38,22 +41,11 @@ import frc.robot.subsystems.SwerveDriveTrain;
 public class Robot extends TimedRobot {
   // private DriveSystem driveSystem;
   private Command m_autonomousCommand;
-  private Limelight limelight;
-  //private OldSwerveDriveTrain swerveSystem;
-  // private SwerveDriveTrain swerveSystem;
   private ShootSystem shootSystem;
-  
-  private final I2C.Port port = I2C.Port.kMXP
-  ; //Check Later
-  
-  private final ColorSensorV3 colorSensor = new ColorSensorV3(port);
-  
-  private final ColorMatch colorMatch = new ColorMatch();
-  
   //private OldSwerveDriveTrain swerveSystem;
   private SwerveDriveTrain swerveSystem;
-  private IntakeSystem intakeSystem;
-  // private RobotContainer m_robotContainer;
+
+  // private Limelight limelight;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -63,12 +55,11 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    CameraServer.startAutomaticCapture();
     // m_robotContainer = new RobotContainer();
     shootSystem = new ShootSystem();
-    colorMatch.addColorMatch(Color.kRed);
-    colorMatch.addColorMatch(Color.kBlue);
-    //driveSystem = new DriveSystem();
     CameraServer.startAutomaticCapture();
+    swerveSystem = new SwerveDriveTrain();
   }
 
   /**
@@ -80,25 +71,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    Color foundColor = colorSensor.getColor();
-    String colorString;
-    ColorMatchResult result = colorMatch.matchClosestColor(foundColor);
-    
-    if (result.color == Color.kBlue)
-      colorString = "Blue";
-    else if (result.color == Color.kRed)
-      colorString = "Red";
-    else 
-      colorString = "Unknown";
+
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    SmartDashboard.putNumber("Red", foundColor.red); //check with 
-    SmartDashboard.putNumber("Green", foundColor.green);
-    SmartDashboard.putNumber("Blue", foundColor.blue);
-    SmartDashboard.putNumber("Confidence", result.confidence);
-    SmartDashboard.putString("Detected Color", colorString);
     CommandScheduler.getInstance().run();
   }
 
@@ -115,9 +92,8 @@ public class Robot extends TimedRobot {
     //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
+    if (m_autonomousCommand != null)
       m_autonomousCommand.schedule();
-    }
   }
 
   /** This function is called periodically during autonomous. */
@@ -130,21 +106,20 @@ public class Robot extends TimedRobot {
 
     shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
     //swerveSystem.setDefaultCommand(new OldSwerveCommand(swerveSystem));
+    swerveSystem.setDefaultCommand(new SwerveCommand(swerveSystem));
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
+    if (m_autonomousCommand != null)
       m_autonomousCommand.cancel();
-    }
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {
-    // swerveSystem.drive(IO.getPolarCoords());
-  }
+  public void teleopPeriodic() {}
+
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
@@ -155,7 +130,5 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {
-    // motor.set(0.5);
-  }
+  public void testPeriodic() {}
 }
