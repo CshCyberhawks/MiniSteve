@@ -56,14 +56,15 @@ public class MathClass {
 
         double max = getMax(speeds);
         double min = getMin(speeds);
+        double divSpeed = Math.abs(min) > max ? Math.abs(min) : max;
         double highestSpeed = max > maxSpeed ? maxSpeed : max;
         double lowestSpeed = min < minSpeed ? minSpeed : min;
 
         for (int i = 0; i < speeds.length; i++) {
             if (max > maxSpeed && speeds[i] > 0) {
-                retSpeeds[i] = speeds[i] / max * highestSpeed;
+                retSpeeds[i] = speeds[i] / divSpeed * highestSpeed;
             } else if (min < minSpeed && speeds[i] < 0) {
-                retSpeeds[i] = speeds[i] / min * lowestSpeed;
+                retSpeeds[i] = speeds[i] / -divSpeed * lowestSpeed;
             }
         }
 
