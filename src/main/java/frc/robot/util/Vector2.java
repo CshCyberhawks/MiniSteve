@@ -18,6 +18,16 @@ public class Vector2 {
         return (x == other.x && y == other.y);
     }
 
+    public void set(double newX, double newY) {
+        x = newX;
+        y = newY;
+    }
+
+    public void set(Vector2 vec) {
+        x = vec.x;
+        y = vec.y;
+    }
+
     public Vector2 add(Vector2 other) {
         return new Vector2(x + other.x, y + other.y);
     }
