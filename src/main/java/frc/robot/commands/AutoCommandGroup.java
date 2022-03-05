@@ -12,7 +12,7 @@ public class AutoCommandGroup extends SequentialCommandGroup {
         // then it will wait 1 second before moving the robot back to its starting
         // position
         addCommands(
-                new AutoGoTo(new FieldPosition(4, 0, 0))
+                new AutoGoTo(new FieldPosition(20, 0, 0))
         // new Wait(1000),
         // new AutoGoTo(new FieldPosition(0, 0, 0))
         );

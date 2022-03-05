@@ -101,9 +101,11 @@ public class SwerveDriveTrain extends SubsystemBase {
         return ret;
     }
 
-    public void drive(double inputX, double inputY, double inputTwist, double throttleChange) {
+    public void drive(double inputX, double inputY, double inputTwist, double throttleChange, String mode) {
         double timeNow = WPIUtilJNI.now() * 1.0e-6;
         double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
+
+        throttle = MathUtil.clamp(throttle += MathUtil.clamp(throttleChange / 200, -.1, .1), .05, 1);
 
         if (inputX == 0 && inputY == 0 && inputTwist == 0) {
             backRight.preserveAngle();
@@ -120,9 +122,6 @@ public class SwerveDriveTrain extends SubsystemBase {
 
         SmartDashboard.putNumber("predictedOdometry.x ", predictedOdometry.x);
         SmartDashboard.putNumber("predictedOdometry.y ", predictedOdometry.y);
-
-        // mult by 10 is just a guess
-        throttle = MathUtil.clamp(throttle += MathUtil.clamp(throttleChange / 200, -.1, .1), .05, 1);
 
         SmartDashboard.putNumber("throttle ", throttle);
         SmartDashboard.putNumber("drive inputX ", inputX);
@@ -148,8 +147,11 @@ public class SwerveDriveTrain extends SubsystemBase {
         double pidInputX = xPID.calculate(robotPos.positionCoord.x, pidPredictX);
         double pidInputY = yPID.calculate(robotPos.positionCoord.y, pidPredictY);
 
-        inputX = pidInputX * throttle;
-        inputY = pidInputY * throttle;
+        // inputX = mode != "auto" ? pidInputX * throttle : pidInputX;
+        // inputY = mode != "auto" ? pidInputY * throttle : pidInputY;
+
+        inputX = mode != "auto" ? inputX * throttle : inputX;
+        inputY = mode != "auto" ? inputY * throttle : inputY;
 
         SmartDashboard.putNumber("testInputX ", pidInputX);
         SmartDashboard.putNumber("testInputY ", pidInputY);
@@ -178,14 +180,19 @@ public class SwerveDriveTrain extends SubsystemBase {
         double backLeftAngle = backLeftVector[0];
 
         // sets the speed and angle of each motor
-        backRight.drive(backRightSpeed, backRightAngle);
-        backLeft.drive(-backLeftSpeed, backLeftAngle);
-        frontRight.drive(frontRightSpeed, frontRightAngle);
-        frontLeft.drive(-frontLeftSpeed, frontLeftAngle);
+        backRight.drive(backRightSpeed, backRightAngle, mode);
+        backLeft.drive(-backLeftSpeed, backLeftAngle, mode);
+        frontRight.drive(frontRightSpeed, frontRightAngle, mode);
+        frontLeft.drive(-frontLeftSpeed, frontLeftAngle, mode);
 
         predictedOdometry.x += inputX * constantScaler * period;
         predictedOdometry.y += inputY * constantScaler * period;
 
         lastUpdateTime = timeNow;
     }
+
+    public void resetPredictedOdometry() {
+        predictedOdometry = new Vector2(0, 0);
+    }
+
 }

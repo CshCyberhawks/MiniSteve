@@ -74,7 +74,7 @@ public class SwerveWheel {
         return ((2 * Math.PI * radius) / 60) * (rpm / 7);
     }
 
-    public void drive(double speed, double angle) {
+    public void drive(double speed, double angle, String mode) {
         oldAngle = angle;
 
         speed = convertToMetersPerSecond(speed * 5000); // Converting the speed to m/s with a max rpm of 5000 (GEar
@@ -94,12 +94,14 @@ public class SwerveWheel {
             speed = -speed;
         }
 
-        if (Math.abs(speed) - lastSpeed > maxAcceleration && speed != 0) {
-            speed = speed < 0 ? -(Math.abs(lastSpeed) + maxAcceleration) : lastSpeed + maxAcceleration;
-        }
+        if (mode == "auto") {
+            if (Math.abs(speed) - lastSpeed > maxAcceleration && speed != 0) {
+                speed = speed < 0 ? -(Math.abs(lastSpeed) + maxAcceleration) : lastSpeed + maxAcceleration;
+            }
 
-        else if (Math.abs(lastSpeed) - Math.abs(speed) > maxAcceleration && speed != 0) {
-            speed = speed < 0 ? -(Math.abs(lastSpeed) - maxAcceleration) : lastSpeed - maxAcceleration;
+            else if (Math.abs(lastSpeed) - Math.abs(speed) > maxAcceleration && speed != 0) {
+                speed = speed < 0 ? -(Math.abs(lastSpeed) - maxAcceleration) : lastSpeed - maxAcceleration;
+            }
         }
 
         SmartDashboard.putNumber("post accel/decel speed", speed);
@@ -131,7 +133,7 @@ public class SwerveWheel {
     }
 
     public void preserveAngle() {
-        drive(0, oldAngle);
+        drive(0, oldAngle, "no");
     }
 
     public void kill() {
