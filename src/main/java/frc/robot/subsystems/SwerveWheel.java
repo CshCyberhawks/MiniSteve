@@ -7,13 +7,6 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-// import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-//leaving the below imports to remember that profiledPIDControllers exist, and that feedforwards exist in case we need to use them
-// import edu.wpi.first.math.controller.ProfiledPIDController;
-// import edu.wpi.first.math.trajectory.TrapezoidProfile;
-// import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-// import edu.wpi.first.math.geometry.Rotation2d;
-// import edu.wpi.first.math.kinematics.SwerveModuleState;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
@@ -112,9 +105,8 @@ public class SwerveWheel {
         // }
 
         driveMotor.set(MathUtil.clamp(output, -.7, .7));
-        if (!turnPidController.atSetpoint()) {
+        if (!turnPidController.atSetpoint())
            turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -.7, .7));
-        }
     }
 
     public void preserveAngle() {

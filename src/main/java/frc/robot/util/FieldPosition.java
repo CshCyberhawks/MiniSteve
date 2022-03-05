@@ -6,14 +6,7 @@ public class FieldPosition {
     private static Gyro gyro = new Gyro();
 
     public static void update() {
-
         positionCoord.x += gyro.getVelX();
         positionCoord.y += gyro.getVelY();
-
-        
-
-
     }
-
-
 }

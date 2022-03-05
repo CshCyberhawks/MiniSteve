@@ -30,6 +30,7 @@ public class Limelight extends SubsystemBase {
     public static double getTarget() {
         return tv.getDouble(0.0);
     }
+    
     public static double[] getColor() {  
        return tc.getDoubleArray(new double[] {-1});
     }

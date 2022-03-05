@@ -1,17 +1,9 @@
 package frc.robot.subsystems;
 
-// import javax.print.CancelablePrintJob;
-
 import com.revrobotics.CANSparkMax;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-// import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.RelativeEncoder;
-
-// import edu.wpi.first.math.controller.PIDController;
-// import edu.wpi.first.wpilibj.Encoder;
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -44,8 +36,7 @@ public class ShootSystem extends SubsystemBase {
         topMotor.set(-power * topMotorMult);
         setBottom(power);
     }
-    public void traverse(double power)
-    {
+    public void traverse(double power) {
         traversalMotor.set(ControlMode.PercentOutput,power * traversalMult);
     }
     //Syncing of bottom 2 motors

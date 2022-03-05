@@ -5,6 +5,6 @@ public class TestTest {
     @Test
     public void testEquals() {
         System.out.println("Ran test equals");
-        assertEquals(1+1, 2);
+        assertEquals(1 + 1, 2);
     }
 }
