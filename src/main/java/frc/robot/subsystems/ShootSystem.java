@@ -43,7 +43,7 @@ public class ShootSystem extends SubsystemBase {
     private void setBottom(double power) {
         // double leftPIDOut = motorController.calculate(leftEncoder.getVelocity(), power);
         // double rightPIDOut = motorController.calculate(rightEncoder.getVelocity(), power);
-        bottomLeftMotor.set(-power);//power
+        bottomLeftMotor.set(-power); //power
         bottomRightMotor.set(power);
     }
 }

@@ -42,7 +42,6 @@ public class Limelight extends SubsystemBase {
     @Override
     public void periodic() {
         //Values needed from final robot before implemented
-        //double distanceFromTarget = (10 - 10) / Math.tan(0 + getVerticalOffset());
         SmartDashboard.putNumberArray("Limelight color", getColor());
         SmartDashboard.putNumber("Limelight hasValidTarget", getTarget());
         SmartDashboard.putNumber("Limelight horrizontalOffset", getHorizontalOffset());

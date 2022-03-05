@@ -13,8 +13,9 @@ public class Gyro {
 
     public Gyro() {
         gyro = new AHRS(SPI.Port.kMXP);
-        Shuffleboard.getTab("SmartDashboard").add(gyro);
         offset = 0;
+
+        Shuffleboard.getTab("SmartDashboard").add(gyro);
     }
 
     private double wrapAroundAngles(double input) {

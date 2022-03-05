@@ -9,6 +9,11 @@ public class Polar {
         r = 0;
     }
 
+    public Polar(double theta, double r) {
+        this.theta = theta;
+        this.r = r;
+    }
+
     public double getTheta() {
         return theta;
     }
@@ -22,11 +27,6 @@ public class Polar {
     }
 
     public void setR(double r) {
-        this.r = r;
-    }
-
-    public Polar(double theta, double r) {
-        this.theta = theta;
         this.r = r;
     }
 

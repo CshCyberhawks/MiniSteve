@@ -19,12 +19,11 @@ public class SwerveWheel {
 
     private TurnEncoder turnEncoder;
     private RelativeEncoder driveEncoder;
-
-    private int m_turnEncoderPort;
-    
+  
     private PIDController turnPidController;
     private PIDController drivePidController;
 
+    private int m_turnEncoderPort;
     private double oldAngle;
     
     public SwerveWheel(int turnPort, int drivePort, int turnEncoderPort) {
@@ -62,12 +61,12 @@ public class SwerveWheel {
         oldAngle = angle;
         speed = convertToMetersPerSecond(speed * 5000); //Converting the speed to m/s with a max rpm of 3000 (Gear ratio is 7:1)
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " angle input", angle);
-        SmartDashboard.putNumber(m_turnEncoderPort + " speed input", speed);
-        SmartDashboard.putNumber(m_turnEncoderPort + " raw drive encoder value", driveEncoder.getVelocity());
+        SmartDashboard.putNumber(m_turnEncoderPort + " angle input ", angle);
+        SmartDashboard.putNumber(m_turnEncoderPort + " speed input ", speed);
+        SmartDashboard.putNumber(m_turnEncoderPort + " raw drive encoder value ", driveEncoder.getVelocity());
 
         double currentDriveSpeed = convertToMetersPerSecond(driveEncoder.getVelocity());
-        double turnValue = wrapAroundAngles(turnEncoder.get());
+        double turnValue = wrapAroundAngles(turnEncoder.getAngle());
         angle = wrapAroundAngles(angle);
 
         // Optimization Code stolen from https://github.com/Frc2481/frc-2015/blob/master/src/Components/SwerveModule.cpp
@@ -76,7 +75,7 @@ public class SwerveWheel {
 			speed = -speed;
 		}
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", turnValue);
+        SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle ", turnValue);
         SmartDashboard.putNumber(m_turnEncoderPort + " drive encoder ", currentDriveSpeed);
 
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
@@ -86,7 +85,7 @@ public class SwerveWheel {
         // double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed, speed);
         // SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value", driveFeedForwardOutput);
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " drive set", MathUtil.clamp(drivePIDOutput /*+ driveFeedForwardOutput*/, -.7, .7));
+        SmartDashboard.putNumber(m_turnEncoderPort + " drive set ", MathUtil.clamp(drivePIDOutput /*+ driveFeedForwardOutput*/, -.7, .7));
         // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
         //70% speed is about 5.6 feet/second

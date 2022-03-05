@@ -6,15 +6,15 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClimbSystem extends SubsystemBase{
-    private CANSparkMax leftclimbMotor;
-    private CANSparkMax rightclimbMotor;
+    private CANSparkMax leftClimbMotor;
+    private CANSparkMax rightClimbMotor;
     
     public ClimbSystem() {
-        leftclimbMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
-        rightclimbMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
+        leftClimbMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
+        rightClimbMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
     }
     public void climb(double speed) {
-        leftclimbMotor.set(speed);
-        rightclimbMotor.set(speed);
+        leftClimbMotor.set(speed);
+        rightClimbMotor.set(speed);
     }
 }

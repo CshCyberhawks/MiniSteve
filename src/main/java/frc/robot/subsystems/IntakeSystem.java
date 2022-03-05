@@ -5,8 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.IO;
 
-public class IntakeSystem extends SubsystemBase {
-    
+public class IntakeSystem extends SubsystemBase { 
     private TalonSRX motor;
     
     public IntakeSystem() {
