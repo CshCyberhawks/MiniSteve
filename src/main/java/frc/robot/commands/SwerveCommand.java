@@ -6,7 +6,7 @@ import frc.robot.subsystems.SwerveDriveTrain;
 import frc.robot.util.IO;
 
 public class SwerveCommand extends CommandBase {
-    private final SwerveDriveTrain swerveDriveTrain;
+    private SwerveDriveTrain swerveDriveTrain;
     
     public SwerveCommand(SwerveDriveTrain subsystem) {
         swerveDriveTrain = subsystem;
@@ -21,8 +21,7 @@ public class SwerveCommand extends CommandBase {
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
-    public void execute() {
-        
+    public void execute() { 
         if (IO.getJoystickButton8())
             swerveDriveTrain.gyro.setOffset();
         if (IO.getJoyButton3())
@@ -39,10 +38,6 @@ public class SwerveCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return false;
-    }
-
-    public void centerWithLimelight() {
-        
     }
 
     public static double deadzone(double input) {

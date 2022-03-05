@@ -8,6 +8,7 @@ public class ShootCommand extends CommandBase {
     private final ShootSystem shootSystem;
     private final double speedMult = .33;
     private final double traversalPower = .95;
+    
     public ShootCommand(ShootSystem subsystem) {
         shootSystem = subsystem;
         addRequirements(subsystem);

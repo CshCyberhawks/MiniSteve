@@ -5,8 +5,8 @@ public class Polar {
     public double r;
 
     public Polar() {
-        this.theta = 0;
-        this.r = 0;
+        theta = 0;
+        r = 0;
     }
 
     public Polar(double theta, double r) {

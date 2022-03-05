@@ -7,10 +7,10 @@ import frc.robot.util.IO;
 
 public class IntakeSystem extends SubsystemBase {
     
-    private TalonSRX motor = new TalonSRX(0);
+    private TalonSRX motor;
     
     public IntakeSystem() {
-        //= new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
+        motor = new TalonSRX(0);
     }
 
     @Override
@@ -19,6 +19,5 @@ public class IntakeSystem extends SubsystemBase {
             motor.set(ControlMode.PercentOutput, IO.getXboxLeftTrigger());
         else if (IO.getXboxLeftBumper())
             motor.set(ControlMode.PercentOutput, -0.5);
-    }
-    
+    }   
 }

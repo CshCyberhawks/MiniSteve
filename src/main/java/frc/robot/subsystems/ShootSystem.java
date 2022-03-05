@@ -12,8 +12,8 @@ public class ShootSystem extends SubsystemBase {
     private CANSparkMax bottomRightMotor;
     private CANSparkMax bottomLeftMotor;
     private VictorSPX traversalMotor;
-    private double topMotorMult = 1.2;
-    private double traversalMult = 2;
+    private final double topMotorMult = 1.2;
+    private final double traversalMult = 2;
     // private RelativeEncoder topEncoder;
     // private RelativeEncoder traversalEncoder;
     // private RelativeEncoder rightEncoder;

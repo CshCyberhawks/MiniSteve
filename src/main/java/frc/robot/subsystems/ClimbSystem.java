@@ -10,9 +10,8 @@ public class ClimbSystem extends SubsystemBase{
     private CANSparkMax rightclimbMotor;
     
     public ClimbSystem() {
-        leftclimbMotor = new CANSparkMax(0,CANSparkMaxLowLevel.MotorType.kBrushless);
-        rightclimbMotor = new CANSparkMax(0,CANSparkMaxLowLevel.MotorType.kBrushless);
-
+        leftclimbMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
+        rightclimbMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
     }
     public void climb(double speed) {
         leftclimbMotor.set(speed);
