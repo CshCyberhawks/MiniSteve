@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.lang.Math;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.robot.util.Vector2;
-import frc.robot.util.MathClass;
 
 public class SwerveDriveTrain extends SubsystemBase {
     public SwerveWheel backLeft;
@@ -53,10 +52,6 @@ public class SwerveDriveTrain extends SubsystemBase {
         predictedOdometry = new Vector2(0, 0);
 
         Gyro.setOffset();
-    }
-
-    public void resetPredictedPosition() {
-        predictedOdometry = new Vector2(0, 0);
     }
 
     public double[] polarToCartesian(double theta, double r) {
@@ -118,11 +113,6 @@ public class SwerveDriveTrain extends SubsystemBase {
             return;
         }
 
-        double highestSpeed = Math.max(inputX, inputY) > Math.abs(Math.min(inputX, inputY))
-                ? Math.max(inputX, inputY)
-                : Math.abs(Math.min(inputX, inputY));
-        double constantScaler = 24.72 * highestSpeed;
-
         SmartDashboard.putNumber("predictedOdometry.x ", predictedOdometry.x);
         SmartDashboard.putNumber("predictedOdometry.y ", predictedOdometry.y);
 
@@ -141,8 +131,11 @@ public class SwerveDriveTrain extends SubsystemBase {
         // take speed in ft/s
         // convert to swos(6 in)
         // multiply by 0.02 (update loop)
-        double pidPredictX = predictedOdometry.x + (inputX * (constantScaler * period));
-        double pidPredictY = predictedOdometry.y + (inputY * (constantScaler * period));
+        double pidPredictX = robotPos.positionCoord.x + (inputX * (24.72 * period));
+        double pidPredictY = robotPos.positionCoord.y + (inputY * (24.72 * period));
+
+        // double pidPredictX = predictedOdometry.x + (inputX * (24.72 * period));
+        // double pidPredictY = predictedOdometry.y + (inputY * (24.72 * period));
 
         SmartDashboard.putNumber("pidPredictX", pidPredictX);
         SmartDashboard.putNumber("pidPredictY", pidPredictY);
@@ -150,8 +143,8 @@ public class SwerveDriveTrain extends SubsystemBase {
         double pidInputX = xPID.calculate(robotPos.positionCoord.x, pidPredictX);
         double pidInputY = yPID.calculate(robotPos.positionCoord.y, pidPredictY);
 
-        // inputX = pidInputX * throttle;
-        // inputY = pidInputY * throttle;
+        inputX = pidInputX * throttle;
+        inputY = pidInputY * throttle;
 
         SmartDashboard.putNumber("testInputX ", pidInputX);
         SmartDashboard.putNumber("testInputY ", pidInputY);
@@ -179,29 +172,14 @@ public class SwerveDriveTrain extends SubsystemBase {
         double backRightAngle = backRightVector[0];
         double backLeftAngle = backLeftVector[0];
 
-        double[] backRightSets = backRight.calculateDrive(backRightSpeed, backRightAngle);
-        double[] backLeftSets = backLeft.calculateDrive(-backLeftSpeed, backLeftAngle);
-        double[] frontRightSets = frontRight.calculateDrive(frontRightSpeed, frontRightAngle);
-        double[] frontLeftSets = frontLeft.calculateDrive(-frontLeftSpeed, frontLeftAngle);
+        // sets the speed and angle of each motor
+        backRight.drive(backRightSpeed, backRightAngle);
+        backLeft.drive(-backLeftSpeed, backLeftAngle);
+        frontRight.drive(frontRightSpeed, frontRightAngle);
+        frontLeft.drive(-frontLeftSpeed, frontLeftAngle);
 
-        double[] wheelSpeeds = {
-                backRightSets[0], backLeftSets[0], frontRightSets[0], frontLeftSets[0]
-        };
-
-        double[] wheelAngles = {
-                backRightSets[1], backLeftSets[1], frontRightSets[1], frontLeftSets[1]
-        };
-
-        wheelSpeeds = MathClass.normalizeSpeeds(wheelSpeeds, 1, -1);
-        wheelAngles = MathClass.normalizeSpeeds(wheelAngles, 1, -1);
-
-        backRight.drive(wheelSpeeds[0], wheelAngles[0]);
-        backLeft.drive(wheelSpeeds[1], wheelAngles[1]);
-        frontRight.drive(wheelSpeeds[2], wheelAngles[2]);
-        frontLeft.drive(wheelSpeeds[3], wheelAngles[3]);
-
-        predictedOdometry.x += inputX * constantScaler * period;
-        predictedOdometry.y += inputY * constantScaler * period;
+        predictedOdometry.x += inputX * 24.72 * period;
+        predictedOdometry.y += inputY * 24.72 * period;
 
         lastUpdateTime = timeNow;
     }
