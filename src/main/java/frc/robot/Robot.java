@@ -47,7 +47,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -79,7 +78,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
-    //swerveSystem.setDefaultCommand(new OldSwerveCommand(swerveSystem));
     swerveSystem.setDefaultCommand(new SwerveCommand(swerveSystem));
 
     // This makes sure that the autonomous stops running when
@@ -99,8 +97,6 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }
-
-  // private CANSparkMax motor = new CANSparkMax(12, MotorType.kBrushless);
 
   /** This function is called periodically during test mode. */
   @Override
