@@ -41,24 +41,21 @@ public class SwerveOdometry extends SubsystemBase {
         double totalY = 0;
 
         for (int i = 0; i < 4; i++) {
-            double wheelAngle = Robot.swerveSystem.wheelArr[i].turnValue;
             double wheelSpeed = Robot.swerveSystem.wheelArr[i].currentDriveSpeed;
-	    
+            double wheelAngle = wheelSpeed != 0 ? Robot.swerveSystem.wheelArr[i].turnValue : 0;
+
             if (i == 0 || i == 2) {
                 wheelSpeed = -wheelSpeed;
             }
 
-	    //Undoes the wheel optimization
-        //commented out to see if it will work without optimization
-	    //if (wheelSpeed < 0) {
-		//    wheelSpeed = -wheelSpeed;
-		//    wheelAngle = (wheelAngle + 180) % 360;
-	    //}
+            // Undoes the wheel optimization
+            // commented out to see if it will work without optimization
+            // if (wheelSpeed < 0) {
+            // wheelSpeed = -wheelSpeed;
+            // wheelAngle = (wheelAngle + 180) % 360;
+            // }
 
             double[] cartCoords = Robot.swerveSystem.polarToCartesian(wheelAngle, wheelSpeed);
-
-            SmartDashboard.putNumber(i + " wheel x", cartCoords[0]);
-            SmartDashboard.putNumber(i + " wheel y", cartCoords[1]);
 
             wheelCoords[i] = new Vector2(cartCoords[0], cartCoords[1]);
 
@@ -67,11 +64,9 @@ public class SwerveOdometry extends SubsystemBase {
 
         }
 
-        SmartDashboard.putNumber("averagedX ", totalX);
-        SmartDashboard.putNumber("averagedY ", totalY);
-
         double[] robotPolar = Robot.swerveSystem.cartesianToPolar(totalX, totalY);
-        //maybe below is done incorrectly / is unnecessary? also possible that it should be subtracting gyro not adding
+        // maybe below is done incorrectly / is unnecessary? also possible that it
+        // should be subtracting gyro not adding
         robotPolar[0] += Gyro.getAngle();
 
         double[] robotVelocities = Robot.swerveSystem.polarToCartesian(robotPolar[0], robotPolar[1]);
@@ -85,9 +80,6 @@ public class SwerveOdometry extends SubsystemBase {
         double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
 
         double[] velocities = calculateVelocities();
-
-        SmartDashboard.putNumber(" velocitiyx ", velocities[0]);
-        SmartDashboard.putNumber(" velocitiyy ", velocities[1]);
 
         fieldPosition.positionCoord.x += velocities[0] * period;
         fieldPosition.positionCoord.y += velocities[1] * period;

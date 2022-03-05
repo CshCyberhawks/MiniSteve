@@ -45,7 +45,7 @@ public class SwerveWheel {
     private PIDController turnPidController;
     private PIDController drivePidController;
 
-    private SimpleMotorFeedforward driveFeedforward;
+    // private SimpleMotorFeedforward driveFeedforward;
 
     public SwerveWheel(int turnPort, int drivePort, int turnEncoderPort) {
 
@@ -57,12 +57,12 @@ public class SwerveWheel {
 
         m_turnEncoderPort = turnEncoderPort;
 
-        turnPidController = new PIDController(.01, 0, 0);
+        turnPidController = new PIDController(0.01, 0, 0);
         turnPidController.setTolerance(4);
         turnPidController.enableContinuousInput(0, 360);
 
         drivePidController = new PIDController(0, 0, 0);
-        driveFeedforward = new SimpleMotorFeedforward(.1, 473);
+        // driveFeedforward = new SimpleMotorFeedforward(.1, 473);
     }
 
     private double wrapAroundAngles(double input) {
@@ -76,7 +76,10 @@ public class SwerveWheel {
     }
 
     public double[] calculateDrive(double speed, double angle) {
+
         oldAngle = angle;
+
+        SmartDashboard.putNumber("speedPreM/S", speed);
         speed = convertToMetersPerSecond(speed * 5000); // Converting the speed to m/s with a max rpm of 5000 (GEar
         // ratio is 7:1)
 
@@ -89,45 +92,56 @@ public class SwerveWheel {
 
         // Optimization Code stolen from
         // https://github.com/Frc2481/frc-2015/blob/master/src/Components/SwerveModule.cpp
+
         if (Math.abs(angle - turnValue) > 90 && Math.abs(angle - turnValue) < 270) {
             angle = ((int) angle + 180) % 360;
             speed = -speed;
         }
 
-        if (Math.abs(speed) - Math.abs(lastSpeed) > maxAcceleration && speed != 0) {
-            speed = speed < 0 ? -(Math.abs(lastSpeed) + maxAcceleration) : lastSpeed + maxAcceleration;
-        }
-
-        else if (Math.abs(lastSpeed) - Math.abs(speed) > maxAcceleration && speed != 0) {
-            speed = speed < 0 ? -(Math.abs(lastSpeed) - maxAcceleration) : lastSpeed - maxAcceleration;
-        }
-
-        SmartDashboard.putNumber("post accel/decel speed", speed);
+        /*
+         * if (Math.abs(speed) - Math.abs(lastSpeed) > maxAcceleration && speed != 0) {
+         * speed = speed < 0 ? -(Math.abs(lastSpeed) + maxAcceleration) : lastSpeed +
+         * maxAcceleration;
+         * }
+         * 
+         * else if (Math.abs(lastSpeed) - Math.abs(speed) > maxAcceleration && speed !=
+         * 0) {
+         * speed = speed < 0 ? -(Math.abs(lastSpeed) - maxAcceleration) : lastSpeed -
+         * maxAcceleration;
+         * }
+         */
 
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
         double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, speed);
-        double driveFeedForwardOutput = driveFeedforward.calculate(speed);
+        // double driveFeedForwardOutput = driveFeedforward.calculate(speed);
 
         // 70% speed is about 5.6 feet/second
 
-        SmartDashboard.putNumber("speed", speed);
+        double driveMotorSet = speed; // drivePIDOutput + speed;
+        double turnMotorSet = turnPIDOutput;
 
-        double driveMotorSet = drivePIDOutput + driveFeedForwardOutput;
-        double turnMotorSet = turnPidController.atSetpoint() ? 0 : turnPIDOutput;
+        SmartDashboard.putNumber("driveMotorSet " + m_turnEncoderPort, driveMotorSet);
+        SmartDashboard.putNumber("turnMotorSet " + m_turnEncoderPort, turnMotorSet);
 
-        SmartDashboard.putNumber("driveFeedForwardOutput", driveFeedForwardOutput);
+        // SmartDashboard.putNumber("driveFeedForwardOutput", driveFeedForwardOutput);
 
         return new double[] { driveMotorSet, turnMotorSet };
 
     }
 
     public void drive(double driveSet, double turnSet) {
-        driveMotor.set(MathUtil.clamp(driveSet, -1, 1));
-        turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnSet, 1, 1));
+        SmartDashboard.putNumber("finalTurnSet", turnSet);
+        SmartDashboard.putNumber("finalDriveSet", driveSet);
+        driveMotor.set(driveSet);
+        if (!turnPidController.atSetpoint()) {
+            turnMotor.set(ControlMode.PercentOutput, turnSet);
+        }
     }
 
     public void preserveAngle() {
-        drive(0, oldAngle);
+        double[] preserveOutputs = calculateDrive(0, oldAngle);
+        SmartDashboard.putNumber("preserveOutputsAngle", preserveOutputs[1]);
+        drive(0, preserveOutputs[1]);
     }
 
     public void kill() {
