@@ -113,6 +113,11 @@ public class SwerveDriveTrain extends SubsystemBase {
             return;
         }
 
+        double highestSpeed = Math.max(inputX, inputY) > Math.abs(Math.min(inputX, inputY))
+                ? Math.max(inputX, inputY)
+                : Math.abs(Math.min(inputX, inputY));
+        double constantScaler = 24.72 * highestSpeed;
+
         SmartDashboard.putNumber("predictedOdometry.x ", predictedOdometry.x);
         SmartDashboard.putNumber("predictedOdometry.y ", predictedOdometry.y);
 
@@ -131,8 +136,8 @@ public class SwerveDriveTrain extends SubsystemBase {
         // take speed in ft/s
         // convert to swos(6 in)
         // multiply by 0.02 (update loop)
-        double pidPredictX = robotPos.positionCoord.x + (inputX * (24.72 * period));
-        double pidPredictY = robotPos.positionCoord.y + (inputY * (24.72 * period));
+        double pidPredictX = predictedOdometry.x + (inputX * (constantScaler * period));
+        double pidPredictY = predictedOdometry.y + (inputY * (constantScaler * period));
 
         // double pidPredictX = predictedOdometry.x + (inputX * (24.72 * period));
         // double pidPredictY = predictedOdometry.y + (inputY * (24.72 * period));
@@ -178,8 +183,8 @@ public class SwerveDriveTrain extends SubsystemBase {
         frontRight.drive(frontRightSpeed, frontRightAngle);
         frontLeft.drive(-frontLeftSpeed, frontLeftAngle);
 
-        predictedOdometry.x += inputX * 24.72 * period;
-        predictedOdometry.y += inputY * 24.72 * period;
+        predictedOdometry.x += inputX * constantScaler * period;
+        predictedOdometry.y += inputY * constantScaler * period;
 
         lastUpdateTime = timeNow;
     }
