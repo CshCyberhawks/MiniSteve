@@ -33,8 +33,8 @@ public class SwerveWheel {
 
     private int m_turnEncoderPort;
 
-    // below is in m/s
-    private double maxAcceleration = .1;
+    // below is in m / 20 ms
+    private double maxAcceleration = .05;
     private double lastSpeed = 0;
 
     public double turnValue;
@@ -76,6 +76,12 @@ public class SwerveWheel {
 
     public void drive(double speed, double angle, String mode) {
         oldAngle = angle;
+
+        if (mode == "tele") {
+            maxAcceleration = 0.05;
+        } else if (mode == "auto") {
+            maxAcceleration = 0.01;
+        }
 
         currentDriveSpeed = convertToMetersPerSecond(driveEncoder.getVelocity());
         turnValue = wrapAroundAngles(turnEncoder.get());

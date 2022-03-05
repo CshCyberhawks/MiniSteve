@@ -105,7 +105,9 @@ public class SwerveDriveTrain extends SubsystemBase {
         double timeNow = WPIUtilJNI.now() * 1.0e-6;
         double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
 
-        throttle = MathUtil.clamp(throttle += MathUtil.clamp(throttleChange / 200, -.1, .1), .05, 1);
+        throttle = MathUtil.clamp(throttle += MathUtil.clamp(throttleChange / 125, -.1, .1), .05, 1);
+
+        SmartDashboard.putNumber("throttle ", throttle);
 
         if (inputX == 0 && inputY == 0 && inputTwist == 0) {
             backRight.preserveAngle();
@@ -123,7 +125,6 @@ public class SwerveDriveTrain extends SubsystemBase {
         SmartDashboard.putNumber("predictedOdometry.x ", predictedOdometry.x);
         SmartDashboard.putNumber("predictedOdometry.y ", predictedOdometry.y);
 
-        SmartDashboard.putNumber("throttle ", throttle);
         SmartDashboard.putNumber("drive inputX ", inputX);
         SmartDashboard.putNumber("drive inputY ", inputY);
         SmartDashboard.putNumber("drive inputTwist ", inputTwist);
