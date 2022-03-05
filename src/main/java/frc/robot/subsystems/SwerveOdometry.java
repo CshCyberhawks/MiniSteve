@@ -73,7 +73,7 @@ public class SwerveOdometry extends SubsystemBase {
         double[] robotPolar = Robot.swerveSystem.cartesianToPolar(totalX, totalY);
         // maybe below is done incorrectly / is unnecessary? also possible that it
         // should be subtracting gyro not adding
-        robotPolar[0] += Gyro.getAngle();
+        robotPolar[0] -= Gyro.getAngle();
 
         double[] robotVelocities = Robot.swerveSystem.polarToCartesian(robotPolar[0], robotPolar[1]);
 

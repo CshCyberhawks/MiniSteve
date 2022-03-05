@@ -60,7 +60,7 @@ public class SwerveWheel {
         turnPidController.setTolerance(4);
         turnPidController.enableContinuousInput(0, 360);
 
-        drivePidController = new PIDController(.3, 0, 0);
+        drivePidController = new PIDController(0.01, 0, 0);
         driveFeedforward = new SimpleMotorFeedforward(.1, 473);
     }
 
@@ -77,11 +77,6 @@ public class SwerveWheel {
     public void drive(double speed, double angle, String mode) {
         oldAngle = angle;
 
-        speed = convertToMetersPerSecond(speed * 5000); // Converting the speed to m/s with a max rpm of 5000 (GEar
-        // ratio is 7:1)
-
-        SmartDashboard.putNumber("pre accel/decel speed", speed);
-
         currentDriveSpeed = convertToMetersPerSecond(driveEncoder.getVelocity());
         turnValue = wrapAroundAngles(turnEncoder.get());
         rawTurnValue = turnEncoder.get();
@@ -94,17 +89,26 @@ public class SwerveWheel {
             speed = -speed;
         }
 
-        if (mode == "auto") {
-            if (Math.abs(speed) - lastSpeed > maxAcceleration && speed != 0) {
-                speed = speed < 0 ? -(Math.abs(lastSpeed) + maxAcceleration) : lastSpeed + maxAcceleration;
-            }
+        SmartDashboard.putNumber("inputSpeed", speed);
+        SmartDashboard.putNumber("lastSpeed", lastSpeed);
 
-            else if (Math.abs(lastSpeed) - Math.abs(speed) > maxAcceleration && speed != 0) {
-                speed = speed < 0 ? -(Math.abs(lastSpeed) - maxAcceleration) : lastSpeed - maxAcceleration;
+        if (Math.abs(speed - lastSpeed) > maxAcceleration) {
+            if (speed > lastSpeed) {
+                speed = lastSpeed + maxAcceleration;
+            } else {
+                speed = lastSpeed - maxAcceleration;
             }
         }
 
-        SmartDashboard.putNumber("post accel/decel speed", speed);
+        lastSpeed = speed;
+
+        SmartDashboard.putNumber("speedPreM/S post grad", speed);
+
+        speed = convertToMetersPerSecond(speed * 5000); // Converting the speed to m/s with a max rpm of 5000 (GEar
+        // ratio is 7:1)
+
+        SmartDashboard.putNumber("speed", speed);
+        SmartDashboard.putNumber("currentDriveSpeed", currentDriveSpeed);
 
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
 
@@ -116,20 +120,20 @@ public class SwerveWheel {
 
         // SmartDashboard.putNumber(m_turnEncoderPort + " pid value", drivePIDOutput);
 
-        double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed, speed);
+        // double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed,
+        // speed);
 
         // SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value",
         // driveFeedForwardOutput);
         // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
-        SmartDashboard.putNumber("driveSet", MathUtil.clamp(drivePIDOutput, -1, 1));
+        SmartDashboard.putNumber("driveSet", (speed / 3.777) + drivePIDOutput);
+        SmartDashboard.putNumber("turnSet", turnPIDOutput);
         // 70% speed is about 5.6 feet/second
-        driveMotor.set(MathUtil.clamp(drivePIDOutput /* + driveFeedForwardOutput */, -1, 1));
+        driveMotor.set(MathUtil.clamp((speed / 3.777) + drivePIDOutput, -1, 1));
         if (!turnPidController.atSetpoint()) {
-            turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -.7, .7));
+            turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -1, 1));
         }
-
-        lastSpeed = Math.abs(speed);
     }
 
     public void preserveAngle() {
