@@ -23,7 +23,7 @@ public class SwerveDriveTrain extends SubsystemBase {
     public PIDController xPID;
     public PIDController yPID;
 
-    public Vector2 predictedOdometry;
+    public Vector2 predictedVelocity;
 
     public SwerveWheel[] wheelArr = new SwerveWheel[4];
 
@@ -34,10 +34,12 @@ public class SwerveDriveTrain extends SubsystemBase {
     private double lastUpdateTime = -1;
 
     double maxSwos = 13.9458;
+    double maxMeters = 3.777;
 
     public SwerveDriveTrain() {
-        xPID = new PIDController(.01, 0, 0);
-        yPID = new PIDController(.01, 0, 0);
+        // p = 10 gets oscillation
+        xPID = new PIDController(5, 0, 0);
+        yPID = new PIDController(5, 0, 0);
 
         backLeft = new SwerveWheel(Constants.backLeftTurnMotor, Constants.backLeftDriveMotor,
                 Constants.backLeftEncoder);
@@ -53,7 +55,7 @@ public class SwerveDriveTrain extends SubsystemBase {
         wheelArr[2] = frontLeft;
         wheelArr[3] = frontRight;
 
-        predictedOdometry = new Vector2(0, 0);
+        predictedVelocity = new Vector2(0, 0);
 
         Gyro.setOffset();
     }
@@ -116,8 +118,8 @@ public class SwerveDriveTrain extends SubsystemBase {
         SmartDashboard.putNumber("throttle ", throttle);
         SmartDashboard.putNumber("gyro val", gyroAngle);
 
-        SmartDashboard.putNumber("predictedOdometry.x ", predictedOdometry.x);
-        SmartDashboard.putNumber("predictedOdometry.y ", predictedOdometry.y);
+        SmartDashboard.putNumber("predictedOdometry.x ", predictedVelocity.x);
+        SmartDashboard.putNumber("predictedOdometry.y ", predictedVelocity.y);
 
         if (inputX == 0 && inputY == 0 && inputTwist == 0) {
             backRight.preserveAngle();
@@ -137,8 +139,6 @@ public class SwerveDriveTrain extends SubsystemBase {
         // random decimal below is the max speed of robot in swos
         // double constantScaler = 13.9458 * highestSpeed;
 
-        SmartDashboard.putNumber("drive inputX ", inputX);
-        SmartDashboard.putNumber("drive inputY ", inputY);
         SmartDashboard.putNumber("drive inputTwist ", inputTwist);
 
         FieldPosition robotPos = Robot.swo.getPosition();
@@ -146,14 +146,20 @@ public class SwerveDriveTrain extends SubsystemBase {
         inputX = mode != "auto" ? inputX * throttle : inputX;
         inputY = mode != "auto" ? inputY * throttle : inputY;
 
-        double pidPredictX = predictedOdometry.x + (inputX * maxSwos * period);
-        double pidPredictY = predictedOdometry.y + (inputY * maxSwos * period);
+        SmartDashboard.putNumber("drive inputX ", inputX);
+        SmartDashboard.putNumber("drive inputY ", inputY);
 
-        double pidInputX = xPID.calculate(robotPos.positionCoord.x, pidPredictX) / maxSwos;
-        double pidInputY = yPID.calculate(robotPos.positionCoord.y, pidPredictY) / maxSwos;
+        double pidPredictX = inputX * maxSwos * period;
+        double pidPredictY = inputY * maxSwos * period;
 
-        // inputX = mode != "auto" ? pidInputX * throttle : pidInputX;
-        // inputY = mode != "auto" ? pidInputY * throttle : pidInputY;
+        SmartDashboard.putNumber("pidPredictX ", pidPredictX);
+        SmartDashboard.putNumber("pidPredictY ", pidPredictY);
+
+        double pidInputX = xPID.calculate(Robot.swo.getVelocities()[0], pidPredictX) / maxSwos;
+        double pidInputY = yPID.calculate(Robot.swo.getVelocities()[1], pidPredictY) / maxSwos;
+
+        // inputX = pidInputX;
+        // inputY = pidInputY;
 
         SmartDashboard.putNumber("testInputX ", pidInputX);
         SmartDashboard.putNumber("testInputY ", pidInputY);
@@ -186,14 +192,14 @@ public class SwerveDriveTrain extends SubsystemBase {
         frontRight.drive(frontRightSpeed, frontRightAngle, mode);
         frontLeft.drive(-frontLeftSpeed, frontLeftAngle, mode);
 
-        predictedOdometry.x += inputX * maxSwos * period;
-        predictedOdometry.y += inputY * maxSwos * period;
+        predictedVelocity.x = inputX * maxSwos * period;
+        predictedVelocity.y = inputY * maxSwos * period;
 
         lastUpdateTime = timeNow;
     }
 
     public void resetPredictedOdometry() {
-        predictedOdometry = new Vector2(0, 0);
+        predictedVelocity = new Vector2(0, 0);
     }
 
 }
