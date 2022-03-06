@@ -100,6 +100,7 @@ public class SwerveDriveTrain extends SubsystemBase {
         // Args are theta, r
         // Vector math adds the translation and twisting cartesian coordinates before
         // turning them into polar and returning
+        // can average below instead of add - need to look into it
         double[] ret = cartesianToPolar(driveCoordinate[0] + twistCoordinate[0],
                 driveCoordinate[1] + twistCoordinate[1]);
         return ret;
