@@ -4,10 +4,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.SwerveCommand;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveDriveTrain;
 import edu.wpi.first.cameraserver.CameraServer;
 //import frc.robot.subsystems.SwerveSubsystem;
@@ -21,9 +25,12 @@ import edu.wpi.first.cameraserver.CameraServer;
 public class Robot extends TimedRobot {
   // private DriveSystem driveSystem;
   private Command m_autonomousCommand;
-  
+  // private Alliance teamColor;
   //private OldSwerveDriveTrain swerveSystem;
   private SwerveDriveTrain swerveSystem;
+  private int IRSensorPort = 20; //something - DIO
+  private DigitalInput sensor; 
+  private boolean lastState;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -33,9 +40,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    teamColor = DriverStation.getAlliance();
     CameraServer.startAutomaticCapture();
     // m_robotContainer = new RobotContainer();
- 
+    
     //driveSystem = new DriveSystem();
     swerveSystem = new SwerveDriveTrain();
   }
@@ -89,16 +97,32 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+      
+    
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() { // KitKat
+    //Beam Break Code
+    sensor = new DigitalInput(IRSensorPort);
+    // check if the sensor beam is broken
+    // if it is, the sensorState is LOW:
+    boolean sensorState = sensor.get();
+    if (sensorState && !lastState) { 
+      //it's unbroken!
+    } 
+    if (!sensorState && lastState) {
+      //it's broken!
+    }
+    lastState = sensorState;
+  }
 
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+    
 
   }
 
