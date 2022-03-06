@@ -52,7 +52,7 @@ public class SwerveWheel {
     }
 
     public double convertToMetersPerSecond(double rpm) {
-        double radius = 0.0505;
+        final double radius = 0.0505;
         // Gear ratio is 7:1
         return ((2 * Math.PI * radius) / 60) * (rpm / 7);
     }

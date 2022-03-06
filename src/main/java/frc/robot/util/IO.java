@@ -50,6 +50,10 @@ public class IO {
         return deadZone(xbox.getRightX());
     }
 
+    public static boolean getXboxYButton() {
+        return xbox.getYButton();
+    }
+
     public static double getJoy2X() {
         return deadZone(joystick2.getX());
     }
@@ -76,5 +80,9 @@ public class IO {
     
     public static boolean getXboxXButton() {
         return (xbox.getXButtonPressed() ? xbox.getXButton() : false);
+    }
+
+    public static boolean getXboxAButton() {
+        return xbox.getAButton();
     }
 }
