@@ -95,9 +95,7 @@ public class SwerveWheel {
             speed = -speed;
         }
 
-        SmartDashboard.putNumber("inputSpeed", speed);
-        SmartDashboard.putNumber("lastSpeed", lastSpeed);
-
+        // if (mode == "tele") {
         if (Math.abs(speed - lastSpeed) > maxAcceleration) {
             if (speed > lastSpeed) {
                 speed = lastSpeed + maxAcceleration;
@@ -105,16 +103,12 @@ public class SwerveWheel {
                 speed = lastSpeed - maxAcceleration;
             }
         }
+        // }
 
         lastSpeed = speed;
 
-        SmartDashboard.putNumber("speedPreM/S post grad", speed);
-
         speed = convertToMetersPerSecond(speed * 5000); // Converting the speed to m/s with a max rpm of 5000 (GEar
         // ratio is 7:1)
-
-        SmartDashboard.putNumber("speed", speed);
-        SmartDashboard.putNumber("currentDriveSpeed", currentDriveSpeed);
 
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
 

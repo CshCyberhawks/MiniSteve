@@ -22,6 +22,7 @@ public class SwerveOdometry extends SubsystemBase {
     private FieldPosition fieldPosition;
 
     private double lastUpdateTime = 1;
+    private double[] robotVelocities;
 
     public SwerveOdometry(FieldPosition _fieldPosition) {
         fieldPosition = _fieldPosition;
@@ -75,7 +76,7 @@ public class SwerveOdometry extends SubsystemBase {
         // should be subtracting gyro not adding
         robotPolar[0] -= Gyro.getAngle();
 
-        double[] robotVelocities = Robot.swerveSystem.polarToCartesian(robotPolar[0], robotPolar[1]);
+        robotVelocities = Robot.swerveSystem.polarToCartesian(robotPolar[0], robotPolar[1]);
 
         // return new double[] { totalX, totalY };
         return new double[] { robotVelocities[0], robotVelocities[1] };
@@ -87,8 +88,8 @@ public class SwerveOdometry extends SubsystemBase {
 
         double[] velocities = calculateVelocities();
 
-        SmartDashboard.putNumber(" velocitiyx ", velocities[0]);
-        SmartDashboard.putNumber(" velocitiyy ", velocities[1]);
+        SmartDashboard.putNumber(" velocitiyX ", velocities[0]);
+        SmartDashboard.putNumber(" velocitiyY ", velocities[1]);
 
         fieldPosition.positionCoord.x += velocities[0] * period;
         fieldPosition.positionCoord.y += velocities[1] * period;
@@ -99,6 +100,10 @@ public class SwerveOdometry extends SubsystemBase {
         SmartDashboard.putNumber("fieldPosX ", fieldPosition.positionCoord.x);
         SmartDashboard.putNumber("fieldPosY ", fieldPosition.positionCoord.y);
         SmartDashboard.putNumber("fieldPosAngle ", fieldPosition.angle);
+    }
+
+    public double[] getVelocities() {
+        return robotVelocities;
     }
 
 }

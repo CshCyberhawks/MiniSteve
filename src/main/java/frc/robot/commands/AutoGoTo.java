@@ -21,7 +21,9 @@ public class AutoGoTo extends CommandBase {
 
     @Override
     public void initialize() {
-        // desired position = x in swos (6 inches), y in swos, and twist in degrees
+        // desired position = x in swos
+        // (https://www.notion.so/Odometry-baacd114086e4218a5eedb5ef45a223f) (.27
+        // meters), y in swos, and twist in degrees
         // (based on
         // robot staring position)
         Robot.swerveAuto.setDesiredPosition(desiredPosition);

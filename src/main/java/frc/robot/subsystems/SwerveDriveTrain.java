@@ -29,11 +29,15 @@ public class SwerveDriveTrain extends SubsystemBase {
 
     public boolean isTwisting = false;
 
-    private double lastUpdateTime = 1;
+    // I do this to prevent large jumps in value with first run of loop in predicted
+    // odometry
+    private double lastUpdateTime = -1;
+
+    double maxSwos = 13.9458;
 
     public SwerveDriveTrain() {
-        xPID = new PIDController(8, 0, 0);
-        yPID = new PIDController(8, 0, 0);
+        xPID = new PIDController(.01, 0, 0);
+        yPID = new PIDController(.01, 0, 0);
 
         backLeft = new SwerveWheel(Constants.backLeftTurnMotor, Constants.backLeftDriveMotor,
                 Constants.backLeftEncoder);
@@ -86,12 +90,12 @@ public class SwerveDriveTrain extends SubsystemBase {
         return ret;
     }
 
-    public double[] calculateDrive(double x1, double y1, double theta2, double r2) {
+    public double[] calculateDrive(double x1, double y1, double theta2, double r2, double twistMult) {
         // X is 0 and Y is 1
         // Gets the cartesian coordinate of the robot's joystick translation inputs
         double[] driveCoordinate = fieldOriented(x1, y1, Gyro.getAngle());
         // Turns the twist constant + joystick twist input into a cartesian coordinates
-        double[] twistCoordinate = polarToCartesian(theta2, r2);
+        double[] twistCoordinate = polarToCartesian(theta2, r2 * twistMult);
 
         // Args are theta, r
         // Vector math adds the translation and twisting cartesian coordinates before
@@ -104,26 +108,33 @@ public class SwerveDriveTrain extends SubsystemBase {
     public void drive(double inputX, double inputY, double inputTwist, double throttleChange, String mode) {
         double timeNow = WPIUtilJNI.now() * 1.0e-6;
         double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
+        double gyroAngle = Gyro.getAngle();
 
         throttle = MathUtil.clamp(throttle += MathUtil.clamp(throttleChange / 125, -.1, .1), .05, 1);
 
         SmartDashboard.putNumber("throttle ", throttle);
+        SmartDashboard.putNumber("gyro val", gyroAngle);
+
+        SmartDashboard.putNumber("predictedOdometry.x ", predictedOdometry.x);
+        SmartDashboard.putNumber("predictedOdometry.y ", predictedOdometry.y);
 
         if (inputX == 0 && inputY == 0 && inputTwist == 0) {
             backRight.preserveAngle();
             backLeft.preserveAngle();
             frontRight.preserveAngle();
             frontLeft.preserveAngle();
+            lastUpdateTime = timeNow;
             return;
         }
 
-        double highestSpeed = Math.max(inputX, inputY) > Math.abs(Math.min(inputX, inputY))
-                ? Math.max(inputX, inputY)
-                : Math.abs(Math.min(inputX, inputY));
-        double constantScaler = 24.72 * highestSpeed;
-
-        SmartDashboard.putNumber("predictedOdometry.x ", predictedOdometry.x);
-        SmartDashboard.putNumber("predictedOdometry.y ", predictedOdometry.y);
+        /*
+         * double highestSpeed = Math.max(inputX, inputY) > Math.abs(Math.min(inputX,
+         * inputY))
+         * ? Math.max(inputX, inputY)
+         * : Math.abs(Math.min(inputX, inputY));
+         */
+        // random decimal below is the max speed of robot in swos
+        // double constantScaler = 13.9458 * highestSpeed;
 
         SmartDashboard.putNumber("drive inputX ", inputX);
         SmartDashboard.putNumber("drive inputY ", inputY);
@@ -131,44 +142,32 @@ public class SwerveDriveTrain extends SubsystemBase {
 
         FieldPosition robotPos = Robot.swo.getPosition();
 
-        // 7.3 f/s
-        // below .292 controls speed
-        // take speed in ft/s
-        // convert to swos(6 in)
-        // multiply by 0.02 (update loop)
-        double pidPredictX = predictedOdometry.x + (inputX * (constantScaler * period));
-        double pidPredictY = predictedOdometry.y + (inputY * (constantScaler * period));
+        inputX = mode != "auto" ? inputX * throttle : inputX;
+        inputY = mode != "auto" ? inputY * throttle : inputY;
 
-        // double pidPredictX = predictedOdometry.x + (inputX * (24.72 * period));
-        // double pidPredictY = predictedOdometry.y + (inputY * (24.72 * period));
+        double pidPredictX = predictedOdometry.x + (inputX * maxSwos * period);
+        double pidPredictY = predictedOdometry.y + (inputY * maxSwos * period);
 
-        SmartDashboard.putNumber("pidPredictX", pidPredictX);
-        SmartDashboard.putNumber("pidPredictY", pidPredictY);
-
-        double pidInputX = xPID.calculate(robotPos.positionCoord.x, pidPredictX);
-        double pidInputY = yPID.calculate(robotPos.positionCoord.y, pidPredictY);
+        double pidInputX = xPID.calculate(robotPos.positionCoord.x, pidPredictX) / maxSwos;
+        double pidInputY = yPID.calculate(robotPos.positionCoord.y, pidPredictY) / maxSwos;
 
         // inputX = mode != "auto" ? pidInputX * throttle : pidInputX;
         // inputY = mode != "auto" ? pidInputY * throttle : pidInputY;
-
-        inputX = mode != "auto" ? inputX * throttle : inputX;
-        inputY = mode != "auto" ? inputY * throttle : inputY;
 
         SmartDashboard.putNumber("testInputX ", pidInputX);
         SmartDashboard.putNumber("testInputY ", pidInputY);
 
         isTwisting = inputTwist != 0;
 
-        double gyroAngle = Gyro.getAngle();
-        SmartDashboard.putNumber("gyro val", gyroAngle);
-
         // calculates the speed and angle for each motor
         double[] frontRightVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("frontRight"),
-                inputTwist);
+                inputTwist, Constants.twistSpeedMap.get("frontRight"));
         double[] frontLeftVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("frontLeft"),
-                inputTwist);
-        double[] backRightVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("backRight"), inputTwist);
-        double[] backLeftVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("backLeft"), inputTwist);
+                inputTwist, Constants.twistSpeedMap.get("frontLeft"));
+        double[] backRightVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("backRight"), inputTwist,
+                Constants.twistSpeedMap.get("backRight"));
+        double[] backLeftVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("backLeft"), inputTwist,
+                Constants.twistSpeedMap.get("backLeft"));
 
         double frontRightSpeed = frontRightVector[1];
         double frontLeftSpeed = frontLeftVector[1];
@@ -186,8 +185,8 @@ public class SwerveDriveTrain extends SubsystemBase {
         frontRight.drive(frontRightSpeed, frontRightAngle, mode);
         frontLeft.drive(-frontLeftSpeed, frontLeftAngle, mode);
 
-        predictedOdometry.x += inputX * constantScaler * period;
-        predictedOdometry.y += inputY * constantScaler * period;
+        predictedOdometry.x += inputX * maxSwos * period;
+        predictedOdometry.y += inputY * maxSwos * period;
 
         lastUpdateTime = timeNow;
     }
