@@ -96,11 +96,11 @@ public class SwerveAuto {
             SmartDashboard.putNumber("autoX", translateInputs[0]);
             SmartDashboard.putNumber("autoY", translateInputs[1]);
 
-            // translateInputs[0] *= Math.abs(trapXProfile.calculate(trapTime).velocity);
-            // translateInputs[1] *= Math.abs(trapYProfile.calculate(trapTime).velocity);
+            translateInputs[0] *= Math.abs(trapXProfile.calculate(trapTime).velocity);
+            translateInputs[1] *= Math.abs(trapYProfile.calculate(trapTime).velocity);
 
-            translateInputs[0] = trapXProfile.calculate(trapTime).velocity;
-            translateInputs[1] = trapYProfile.calculate(trapTime).velocity;
+            // translateInputs[0] = trapXProfile.calculate(trapTime).velocity;
+            // translateInputs[1] = trapYProfile.calculate(trapTime).velocity;
 
             SmartDashboard.putNumber("trapXOutput", translateInputs[0]);
             SmartDashboard.putNumber("trapYOutput", translateInputs[1]);
