@@ -12,9 +12,10 @@ public class IO {
 
     private static double deadzoneVal = 0.3;
 
-
     public static double[] getPolarCoords() {
-        double[] ret = {-MathClass.calculateDeadzone(joystick.getDirectionDegrees(), deadzoneVal), MathClass.calculateDeadzone(joystick.getMagnitude(), deadzoneVal), MathClass.calculateDeadzone(joystick.getTwist(), deadzoneVal)};
+        double[] ret = { -MathClass.calculateDeadzone(joystick.getDirectionDegrees(), deadzoneVal),
+                MathClass.calculateDeadzone(joystick.getMagnitude(), deadzoneVal),
+                MathClass.calculateDeadzone(joystick.getTwist(), deadzoneVal) };
         return ret;
     }
 
@@ -29,8 +30,12 @@ public class IO {
     }
 
     public static double getJoyTwist() {
-       SmartDashboard.putNumber("Joystick Twist", joystick.getTwist());
-       return MathClass.calculateDeadzone(joystick.getTwist(), deadzoneVal);
+        SmartDashboard.putNumber("Joystick Twist", joystick.getTwist());
+        return MathClass.calculateDeadzone(joystick.getTwist(), deadzoneVal);
+    }
+
+    public static boolean getJoystickButton5() {
+        return joystick.getRawButtonPressed(5);
     }
 
     public static boolean getJoystickButton8() {
@@ -54,7 +59,7 @@ public class IO {
     }
 
     public static double getJoy2Y() {
-	return MathClass.calculateDeadzone(joystick2.getY(), deadzoneVal);
+        return MathClass.calculateDeadzone(joystick2.getY(), deadzoneVal);
     }
 
 }

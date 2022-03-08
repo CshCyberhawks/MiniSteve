@@ -21,7 +21,7 @@ public class SwerveAuto {
 
     // both below args are in m/s - first is velocity (35% of max robot velocity of
     // 3.77), and a max accel of .05 m/s
-    private TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(1.31, 0.05);
+    private TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(0.5, 0.01);
     private TrapezoidProfile.State trapXCurrentState = new TrapezoidProfile.State(0, 0);
     private TrapezoidProfile.State trapXDesiredState;
     private TrapezoidProfile.State trapYCurrentState = new TrapezoidProfile.State(0, 0);
@@ -33,6 +33,11 @@ public class SwerveAuto {
         desiredPosition = _desiredPosition;
         trapXDesiredState = new TrapezoidProfile.State(desiredPosition.positionCoord.x, 0);
         trapYDesiredState = new TrapezoidProfile.State(desiredPosition.positionCoord.y, 0);
+
+        SmartDashboard.putNumber("Desired Angle", desiredPosition.angle);
+        SmartDashboard.putNumber("Desired X", desiredPosition.positionCoord.x);
+        SmartDashboard.putNumber("Desired Y", desiredPosition.positionCoord.y);
+
         startTime = WPIUtilJNI.now() * 1.0e-6;
     }
 
@@ -79,6 +84,10 @@ public class SwerveAuto {
 
         if (!isAtPosition) {
             System.out.println("isTranslating");
+
+            SmartDashboard.putNumber("Trap X Desired State", trapXDesiredState.velocity);
+            SmartDashboard.putNumber("Trap Y Desired State", trapYDesiredState.velocity);
+
             TrapezoidProfile trapXProfile = new TrapezoidProfile(trapConstraints, trapXDesiredState, trapXCurrentState);
             TrapezoidProfile trapYProfile = new TrapezoidProfile(trapConstraints, trapYDesiredState, trapYCurrentState);
 
@@ -90,10 +99,13 @@ public class SwerveAuto {
             // translateInputs[0] *= Math.abs(trapXProfile.calculate(trapTime).velocity);
             // translateInputs[1] *= Math.abs(trapYProfile.calculate(trapTime).velocity);
 
+            translateInputs[0] = trapXProfile.calculate(trapTime).velocity;
+            translateInputs[1] = trapYProfile.calculate(trapTime).velocity;
+
             SmartDashboard.putNumber("trapXOutput", translateInputs[0]);
             SmartDashboard.putNumber("trapYOutput", translateInputs[1]);
 
-            Robot.swerveSystem.drive(translateInputs[0] * .1, translateInputs[1] * .1, 0, 0, "auto");
+            Robot.swerveSystem.drive(translateInputs[0], translateInputs[1], 0, 0, "auto");
         }
         if (isAtPosition && !isAtAngle) {
             System.out.println("isTwisting");

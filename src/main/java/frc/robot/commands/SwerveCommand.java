@@ -1,6 +1,8 @@
 package frc.robot.commands;
 
+import edu.wpi.first.hal.simulation.RoboRioDataJNI;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.subsystems.SwerveDriveTrain;
 import frc.robot.util.Gyro;
 import frc.robot.util.IO;
@@ -22,9 +24,12 @@ public class SwerveCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        if (IO.getJoystickButton5())
+            Robot.swo.resetPos();
         if (IO.getJoystickButton8())
             Gyro.setOffset();
         swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoy2X(), -IO.getJoy2Y(), "tele");
+        Robot.swo.getPosition();
     }
 
     // Called once the command ends or is interrupted.
