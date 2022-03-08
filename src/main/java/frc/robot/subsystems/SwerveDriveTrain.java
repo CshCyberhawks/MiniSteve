@@ -38,8 +38,8 @@ public class SwerveDriveTrain extends SubsystemBase {
 
     public SwerveDriveTrain() {
         // p = 10 gets oscillation
-        xPID = new PIDController(5, 0, 0);
-        yPID = new PIDController(5, 0, 0);
+        xPID = new PIDController(10, 0, 1);
+        yPID = new PIDController(10, 0, 1);
 
         backLeft = new SwerveWheel(Constants.backLeftTurnMotor, Constants.backLeftDriveMotor,
                 Constants.backLeftEncoder);
@@ -118,9 +118,6 @@ public class SwerveDriveTrain extends SubsystemBase {
         SmartDashboard.putNumber("throttle ", throttle);
         SmartDashboard.putNumber("gyro val", gyroAngle);
 
-        SmartDashboard.putNumber("predictedOdometry.x ", predictedVelocity.x);
-        SmartDashboard.putNumber("predictedOdometry.y ", predictedVelocity.y);
-
         if (inputX == 0 && inputY == 0 && inputTwist == 0) {
             backRight.preserveAngle();
             backLeft.preserveAngle();
@@ -141,28 +138,25 @@ public class SwerveDriveTrain extends SubsystemBase {
 
         SmartDashboard.putNumber("drive inputTwist ", inputTwist);
 
-        FieldPosition robotPos = Robot.swo.getPosition();
+        // FieldPosition robotPos = Robot.swo.getPosition();
 
         inputX = mode != "auto" ? inputX * throttle : inputX;
         inputY = mode != "auto" ? inputY * throttle : inputY;
+        inputTwist = mode != "auto" ? inputTwist * throttle : inputTwist;
 
         SmartDashboard.putNumber("drive inputX ", inputX);
         SmartDashboard.putNumber("drive inputY ", inputY);
 
-        double pidPredictX = inputX * maxSwos * period;
-        double pidPredictY = inputY * maxSwos * period;
+        // double pidPredictX = inputX * maxSwos * period;
+        // double pidPredictY = inputY * maxSwos * period;
 
-        SmartDashboard.putNumber("pidPredictX ", pidPredictX);
-        SmartDashboard.putNumber("pidPredictY ", pidPredictY);
+        // double pidInputX = xPID.calculate(Robot.swo.getVelocities()[0], pidPredictX)
+        // / maxSwos;
+        // double pidInputY = yPID.calculate(Robot.swo.getVelocities()[1], pidPredictY)
+        // / maxSwos;
 
-        double pidInputX = xPID.calculate(Robot.swo.getVelocities()[0], pidPredictX) / maxSwos;
-        double pidInputY = yPID.calculate(Robot.swo.getVelocities()[1], pidPredictY) / maxSwos;
-
-        // inputX = pidInputX;
-        // inputY = pidInputY;
-
-        SmartDashboard.putNumber("testInputX ", pidInputX);
-        SmartDashboard.putNumber("testInputY ", pidInputY);
+        // inputX += pidInputX;
+        // inputY += pidInputY;
 
         isTwisting = inputTwist != 0;
 
@@ -192,14 +186,14 @@ public class SwerveDriveTrain extends SubsystemBase {
         frontRight.drive(frontRightSpeed, frontRightAngle, mode);
         frontLeft.drive(-frontLeftSpeed, frontLeftAngle, mode);
 
-        predictedVelocity.x = inputX * maxSwos * period;
-        predictedVelocity.y = inputY * maxSwos * period;
+        // predictedVelocity.x = inputX * maxSwos * period;
+        // predictedVelocity.y = inputY * maxSwos * period;
 
         lastUpdateTime = timeNow;
     }
 
-    public void resetPredictedOdometry() {
-        predictedVelocity = new Vector2(0, 0);
-    }
+    // public void resetPredictedOdometry() {
+    // predictedVelocity = new Vector2(0, 0);
+    // }
 
 }

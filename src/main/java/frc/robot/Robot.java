@@ -92,7 +92,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         swo.resetPos();
-        swerveSystem.resetPredictedOdometry();
+        // swerveSystem.resetPredictedOdometry();
     }
 
     @Override

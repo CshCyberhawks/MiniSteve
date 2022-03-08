@@ -27,10 +27,10 @@ public final class Constants {
     // twist speed mults for each motor
     public static final HashMap<String, Double> twistSpeedMap = new HashMap<>() {
         {
-            put("frontRight", .8);
-            put("frontLeft", .8);
-            put("backRight", .8);
-            put("backLeft", .8);
+            put("frontRight", .5);
+            put("frontLeft", .5);
+            put("backRight", .5);
+            put("backLeft", .5);
         }
     };
 

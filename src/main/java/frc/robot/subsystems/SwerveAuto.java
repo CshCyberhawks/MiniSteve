@@ -15,7 +15,7 @@ import frc.robot.Robot;
 
 public class SwerveAuto {
     private FieldPosition desiredPosition;
-    private double positionStopRange = 0.05;
+    private double positionStopRange = .1;
     private boolean isAtPosition = false;
     private boolean isAtAngle = false;
 
@@ -40,22 +40,21 @@ public class SwerveAuto {
         if (MathClass.calculateDeadzone(
                 Math.abs(Robot.swo.getPosition().positionCoord.x) - Math.abs(desiredPosition.positionCoord.x),
                 positionStopRange) == 0) {
-            return true;
-            /*
-             * if (MathClass.calculateDeadzone(
-             * Math.abs(Robot.swo.getPosition().positionCoord.y) -
-             * Math.abs(desiredPosition.positionCoord.y),
-             * positionStopRange) == 0) {
-             * return true;
-             * }
-             */
+
+            if (MathClass.calculateDeadzone(
+                    Math.abs(Robot.swo.getPosition().positionCoord.y) -
+                            Math.abs(desiredPosition.positionCoord.y),
+                    positionStopRange) == 0) {
+                return true;
+            }
+
         }
         return false;
     }
 
     public boolean isAtDesiredAngle() {
         if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().angle) - Math.abs(desiredPosition.angle),
-                10) == 0) {
+                4) == 0) {
             return true;
         }
         return false;
@@ -72,28 +71,36 @@ public class SwerveAuto {
         isAtPosition = isAtDesiredPosition();
         isAtAngle = isAtDesiredAngle();
 
-        TrapezoidProfile trapXProfile = new TrapezoidProfile(trapConstraints, trapXDesiredState, trapXCurrentState);
-        TrapezoidProfile trapYProfile = new TrapezoidProfile(trapConstraints, trapYDesiredState, trapYCurrentState);
-
-        double[] translateInputs = translate();
-
-        // SmartDashboard.putNumber("trapProfileXCalculated",
-        // trapXProfile.calculate(trapTime).velocity);
-        // SmartDashboard.putNumber("trapProfileYCalculated",
-        // trapYProfile.calculate(trapTime).velocity);
-
-        translateInputs[0] *= trapXProfile.calculate(trapTime).position;
-        translateInputs[1] *= trapYProfile.calculate(trapTime).position;
-
         // translateInputs[0] = MathUtil.clamp(translateInputs[0], -.2, .2);
         // translateInputs[1] = MathUtil.clamp(translateInputs[1], -.2, .2);
 
-        double twistInput = twist();
-        SmartDashboard.putNumber(" auto twistVal ", twistInput);
         SmartDashboard.putBoolean("isAtAngle", isAtAngle);
         SmartDashboard.putBoolean("isAtDesiredPos", isAtPosition);
 
-        Robot.swerveSystem.drive(translateInputs[0] * .1, translateInputs[1] * .1, /* twistInput */0, 0, "auto");
+        if (!isAtPosition) {
+            System.out.println("isTranslating");
+            TrapezoidProfile trapXProfile = new TrapezoidProfile(trapConstraints, trapXDesiredState, trapXCurrentState);
+            TrapezoidProfile trapYProfile = new TrapezoidProfile(trapConstraints, trapYDesiredState, trapYCurrentState);
+
+            double[] translateInputs = translate();
+
+            SmartDashboard.putNumber("autoX", translateInputs[0]);
+            SmartDashboard.putNumber("autoY", translateInputs[1]);
+
+            // translateInputs[0] *= Math.abs(trapXProfile.calculate(trapTime).velocity);
+            // translateInputs[1] *= Math.abs(trapYProfile.calculate(trapTime).velocity);
+
+            SmartDashboard.putNumber("trapXOutput", translateInputs[0]);
+            SmartDashboard.putNumber("trapYOutput", translateInputs[1]);
+
+            Robot.swerveSystem.drive(translateInputs[0] * .1, translateInputs[1] * .1, 0, 0, "auto");
+        }
+        if (isAtPosition && !isAtAngle) {
+            System.out.println("isTwisting");
+            double twistInput = twist();
+            SmartDashboard.putNumber(" auto twistVal ", twistInput);
+            Robot.swerveSystem.drive(0, 0, twistInput, 0, "auto");
+        }
 
         trapXCurrentState = new TrapezoidProfile.State(Robot.swo.getPosition().positionCoord.x,
                 Robot.swo.getVelocities()[0]);

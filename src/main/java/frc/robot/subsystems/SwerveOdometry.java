@@ -95,11 +95,11 @@ public class SwerveOdometry extends SubsystemBase {
         fieldPosition.positionCoord.y += velocities[1] * period;
         fieldPosition.angle = Gyro.getAngle();
 
-        lastUpdateTime = timeNow;
-
         SmartDashboard.putNumber("fieldPosX ", fieldPosition.positionCoord.x);
         SmartDashboard.putNumber("fieldPosY ", fieldPosition.positionCoord.y);
         SmartDashboard.putNumber("fieldPosAngle ", fieldPosition.angle);
+
+        lastUpdateTime = timeNow;
     }
 
     public double[] getVelocities() {
