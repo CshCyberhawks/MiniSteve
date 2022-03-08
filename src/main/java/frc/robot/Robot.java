@@ -30,7 +30,7 @@ import frc.robot.util.IO;
 public class Robot extends TimedRobot {
   // private DriveSystem driveSystem;
   private Command m_autonomousCommand;
-  private DigitalInput dio  = new DigitalInput(Constants.breakBeamChannel);
+  private DigitalInput breakBeam  = new DigitalInput(Constants.breakBeamChannel);
   private final I2C.Port port = I2C.Port.kMXP; //Check Later
   
   private final ColorSensorV3 colorSensor = new ColorSensorV3(port);
@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    boolean isCircuitOpen = dio.get();
+    boolean isCircuitOpen = breakBeam.get();
     Color foundColor = colorSensor.getColor();
     String colorString;
     ColorMatchResult result = colorMatch.matchClosestColor(foundColor);
@@ -125,6 +125,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    
   }
 
   /** This function is called periodically during operator control. */
