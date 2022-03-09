@@ -144,6 +144,10 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         swo.updatePosition();
 
+        SmartDashboard.putNumber("Gyro Vel X", Gyro.getVelocityX());
+        SmartDashboard.putNumber("Gyro Vel Y", Gyro.getVelocityY());
+        SmartDashboard.putNumber("Gyro Accel X", Gyro.getAccelX());
+        SmartDashboard.putNumber("Gyro Accel Y", Gyro.getAccelY());
     }
 
     @Override

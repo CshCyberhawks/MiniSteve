@@ -50,10 +50,12 @@ public class Gyro {
 
     public static double getAccelX() {
         return filter.calculate(gyro.getWorldLinearAccelX());
+        // return gyro.getWorldLinearAccelX();
     }
 
     public static double getAccelY() {
         return filter.calculate(gyro.getWorldLinearAccelX());
+        // return gyro.getWorldLinearAccelX();
     }
 
     public static void calibrate() {
