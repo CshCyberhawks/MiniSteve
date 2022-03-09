@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ClimbSystem extends SubsystemBase{
+public class ClimbSystem extends SubsystemBase {
     private CANSparkMax climbMotor;
     private RelativeEncoder encoder;
     private Solenoid leftSolenoid;
@@ -22,7 +22,7 @@ public class ClimbSystem extends SubsystemBase{
         encoder = climbMotor.getEncoder();
         leftSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 1);
         rightSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 2);
-        climbPidController = new PIDController(.5, 0, 0);
+        climbPidController = new PIDController(0, 0, 0);
         lastUpdateTime = 1;
     }
 

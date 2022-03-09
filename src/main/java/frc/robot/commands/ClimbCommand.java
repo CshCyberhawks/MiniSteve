@@ -15,10 +15,7 @@ public class ClimbCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (IO.getXboxXButton())
-            climbSystem.climb(speedMult);
-        else if (IO.getXboxAButton())
-            climbSystem.climb(-speedMult);
-        climbSystem.setPneumatics(IO.getXboxYButton());
+        climbSystem.climb(IO.getXboxLeftY() * speedMult);
+        climbSystem.setPneumatics(IO.getXboxAButton());
     }
 }
