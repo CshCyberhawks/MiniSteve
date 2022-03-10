@@ -32,7 +32,6 @@ public class Robot extends TimedRobot {
   // private Alliance teamColor;
   // private OldSwerveDriveTrain swerveSystem;
   private SwerveDriveTrain swerveSystem;
-  private int IRSensorPort = 1; // something - DIO
   private DigitalInput sensor;
   private boolean lastState;
 
@@ -51,7 +50,7 @@ public class Robot extends TimedRobot {
     // m_robotContainer = new RobotContainer();
 
     // driveSystem = new DriveSystem();
-    swerveSystem = new SwerveDriveTrain();
+    // swerveSystem = new SwerveDriveTrain();
   }
 
   /**
@@ -107,7 +106,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    swerveSystem.setDefaultCommand(new SwerveCommand(swerveSystem));
+    // swerveSystem.setDefaultCommand(new SwerveCommand(swerveSystem));
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -129,7 +128,7 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
 
-    sensor = new DigitalInput(IRSensorPort);
+    sensor = new DigitalInput(0);
   }
 
   /** This function is called periodically during test mode. */
