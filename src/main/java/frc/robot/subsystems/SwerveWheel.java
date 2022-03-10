@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+
 import frc.robot.util.TurnEncoder;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -27,17 +28,17 @@ public class SwerveWheel {
     private RelativeEncoder driveEncoder;
 
     private int m_turnEncoderPort;
-    
+
     private PIDController turnPidController;
     private PIDController drivePidController;
-    
+
     private SimpleMotorFeedforward driveFeedforward;
 
     public SwerveWheel(int turnPort, int drivePort, int turnEncoderPort) {
 
         turnMotor = new TalonSRX(turnPort);
         driveMotor = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless);
-        
+
         driveEncoder = driveMotor.getEncoder();
         turnEncoder = new TurnEncoder(turnEncoderPort);
 
@@ -45,17 +46,14 @@ public class SwerveWheel {
 
         turnPidController = new PIDController(.01, 0, 0);
         turnPidController.setTolerance(4);
-        turnPidController.enableContinuousInput(0,  360);
+        turnPidController.enableContinuousInput(0, 360);
 
         drivePidController = new PIDController(.3, 0, 0);
         driveFeedforward = new SimpleMotorFeedforward(.1, 473);
     }
 
     private double wrapAroundAngles(double input) {
-        while (input < 0) {
-            input += 360;
-        }
-        return input;
+        return input < 0 ? 360 + input : input;
     }
 
     public double convertToMetersPerSecond(double rpm) {
@@ -64,8 +62,29 @@ public class SwerveWheel {
         return ((2 * Math.PI * radius) / 60) * (rpm / 7);
     }
 
+    public double convertCentiMeterSecond(double rpm) {
+        double diameter = 0.00101;// 101 millimeters
+        return ((rpm / 7) * ((Math.PI * diameter) / 60)) / 100;
+
+        // 7:1 (Motor to wheel)
+
+    }
+
+    // private double[] optimizeWheelPositions(double angle, double encoderValue) {
+    // double[] ret = {1, angle};
+    // double change = Math.abs(angle - encoderValue);
+
+    // if ((change / 180) >= 1) {
+    // ret[0] = -1;
+    // ret[1] = angle % 180;
+    // }
+
+    // return ret;
+    // }
+
     public void drive(double speed, double angle) {
-        speed = convertToMetersPerSecond(speed * 3000); //Converting the speed to m/s with a max rpm of 3000 (GEar ratio is 7:1)
+        speed = convertToMetersPerSecond(speed * 3000); // Converting the speed to m/s with a max rpm of 3000 (GEar
+                                                        // ratio is 7:1)
 
         SmartDashboard.putNumber(m_turnEncoderPort + " angle input", angle);
         SmartDashboard.putNumber(m_turnEncoderPort + " speed input", speed);
@@ -76,33 +95,38 @@ public class SwerveWheel {
         double turnValue = wrapAroundAngles(turnEncoder.get());
         angle = wrapAroundAngles(angle);
 
-        // Optimization Code stolen from https://github.com/Frc2481/frc-2015/blob/master/src/Components/SwerveModule.cpp
+        // Optimization Code stolen from
+        // https://github.com/Frc2481/frc-2015/blob/master/src/Components/SwerveModule.cpp
         if (Math.abs(angle - turnValue) > 90 && Math.abs(angle - turnValue) < 270) {
-			angle = ((int)angle + 180) % 360;
-			speed = -speed;
-		}
+            angle = ((int) angle + 180) % 360;
+            speed = -speed;
+        }
 
         SmartDashboard.putNumber(m_turnEncoderPort + " encoder angle", turnValue);
-        
+
         SmartDashboard.putNumber(m_turnEncoderPort + " drive encoder ", currentDriveSpeed);
 
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
-        
+
         double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, speed);
 
         // SmartDashboard.putNumber(m_turnEncoderPort + " pid value", drivePIDOutput);
 
         double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed, speed);
 
-        // SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value", driveFeedForwardOutput);
+        // SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value",
+        // driveFeedForwardOutput);
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " drive set", MathUtil.clamp(drivePIDOutput /*+ driveFeedForwardOutput*/, -.7, .7));
+        SmartDashboard.putNumber(m_turnEncoderPort + " drive set", MathUtil.clamp(drivePIDOutput /*
+                                                                                                  * +
+                                                                                                  * driveFeedForwardOutput
+                                                                                                  */, -.7, .7));
         // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
-        //70% speed is about 5.6 feet/second
-        driveMotor.set(MathUtil.clamp(drivePIDOutput /*+ driveFeedForwardOutput*/, -.7, .7));
+        // 70% speed is about 5.6 feet/second
+        driveMotor.set(MathUtil.clamp(drivePIDOutput /* + driveFeedForwardOutput */, -.7, .7));
         if (!turnPidController.atSetpoint()) {
-           turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -.7, .7));
+            turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -.7, .7));
         }
     }
 }

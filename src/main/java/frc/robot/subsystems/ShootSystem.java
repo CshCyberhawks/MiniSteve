@@ -1,50 +1,64 @@
 package frc.robot.subsystems;
 
+// import javax.print.CancelablePrintJob;
+
 import com.revrobotics.CANSparkMax;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+// import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.RelativeEncoder;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.math.controller.PIDController;
+// import edu.wpi.first.wpilibj.Encoder;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
-public class ShootSystem {
+public class ShootSystem extends SubsystemBase {
     private CANSparkMax topMotor;
     private CANSparkMax bottomRightMotor;
     private CANSparkMax bottomLeftMotor;
-    private Encoder topEncoder;
-    private Encoder bottomEncoder;
-    private PIDController shootPID;
-    private SimpleMotorFeedforward shootFeedFoward;
+    private VictorSPX traversalMotor;
+    private double topMotorMult = 1.2;
+    private double traversalMult = 2;
+    // private RelativeEncoder topEncoder;
+    // private RelativeEncoder traversalEncoder;
+    // private RelativeEncoder rightEncoder;
+    // private RelativeEncoder leftEncoder;
+    // private PIDController motorController;
 
-    public ShootSystem(int topMotorPort, int bottomLeftMotorPort, int bottomRightMotorPort) {
-        topMotor = new CANSparkMax(topMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-        bottomLeftMotor = new CANSparkMax(bottomLeftMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-        bottomRightMotor = new CANSparkMax(bottomRightMotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
-
-        topEncoder = new Encoder(0, 0);
-        bottomEncoder = new Encoder(0, 0);
-
-        shootPID = new PIDController(0, 0, 0);
-        shootFeedFoward = new SimpleMotorFeedforward(0, 473);
-
-        SmartDashboard.putNumber("Top Shoot Encoder", topEncoder.getRate());
-        SmartDashboard.putNumber("Bottom Shoot Encoder", bottomEncoder.getRate());
+    public ShootSystem() {
+        topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        bottomLeftMotor = new CANSparkMax(Constants.leftShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        bottomRightMotor = new CANSparkMax(Constants.rightShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        traversalMotor = new VictorSPX(Constants.traversalMotor);
+        // traversalEncoder = traversalMotor.getEncoder();
+        // topEncoder = topMotor.getEncoder();
+        // rightEncoder = bottomRightMotor.getEncoder();
+        // leftEncoder = bottomLeftMotor.getEncoder();
+        // motorController = new PIDController(0.01, 0, 0);
     }
 
     public void shoot(double power) {
-        double shootPIDOutput = shootPID.calculate(0, 0);
-        double shootFeedFowardOutput = shootFeedFoward.calculate(power, 0);
-
-        topMotor.set(shootPIDOutput + shootFeedFowardOutput);
-        setBottom(shootPIDOutput + shootFeedFowardOutput);
-
-        SmartDashboard.putNumber("Motor Power", power);
+        // double traversalPIDOUt =
+        // motorController.calculate(traverseEncoder.getVelocity(), power *
+        // traversalMult);
+        topMotor.set(-power * topMotorMult);
+        setBottom(power);
     }
 
-    //Syncing of bottom 2 motors
-    private void setBottom(double input) {
-        bottomLeftMotor.set(input);
-        bottomRightMotor.set(input);
+    public void traverse(double power) {
+        traversalMotor.set(ControlMode.PercentOutput, power * traversalMult);
+    }
+
+    // Syncing of bottom 2 motors
+    private void setBottom(double power) {
+        // double leftPIDOut = motorController.calculate(leftEncoder.getVelocity(),
+        // power);
+        // double rightPIDOut = motorController.calculate(rightEncoder.getVelocity(),
+        // power);
+        bottomLeftMotor.set(-power);// power
+        bottomRightMotor.set(power);
     }
 }

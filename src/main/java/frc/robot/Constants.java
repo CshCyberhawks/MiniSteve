@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.HashMap;
+// import java.util.Map;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -55,6 +56,12 @@ public final class Constants {
     public static final int frontLeftDriveMotor = 8;
     public static final int backRightDriveMotor = 9;
     public static final int backLeftDriveMotor = 7;
+
+    // Shoot System Motors
+    public static final int rightShootMotor = 13;
+    public static final int leftShootMotor = 12;
+    public static final int topShootMotor = 11;
+    public static final int traversalMotor = 16;
 
     // Dimensions
     public static final double length = .53;

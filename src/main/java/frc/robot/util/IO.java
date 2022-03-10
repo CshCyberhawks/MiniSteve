@@ -1,8 +1,8 @@
 package frc.robot.util;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 
 public class IO {
     private static Joystick joystick = new Joystick(0);
@@ -17,7 +17,8 @@ public class IO {
     }
 
     public static double[] getPolarCoords() {
-        double[] ret = {-deadZone(joystick.getDirectionDegrees()), deadZone(joystick.getMagnitude()), deadZone(joystick.getTwist())};
+        double[] ret = { -deadZone(joystick.getDirectionDegrees()), deadZone(joystick.getMagnitude()),
+                deadZone(joystick.getTwist()) };
         return ret;
     }
 
@@ -32,8 +33,8 @@ public class IO {
     }
 
     public static double getJoyTwist() {
-       SmartDashboard.putNumber("Joystick Twist", joystick.getTwist());
-       return deadZone(joystick.getTwist());
+        SmartDashboard.putNumber("Joystick Twist", joystick.getTwist());
+        return deadZone(joystick.getTwist());
     }
 
     public static boolean getJoystickButton8() {
@@ -58,5 +59,29 @@ public class IO {
 
     public static boolean getJoyButton3() {
         return joystick.getRawButton(3);
+    }
+
+    public static double getXboxRightTrigger() {
+        return xbox.getRightTriggerAxis();
+    }
+
+    public static boolean getXboxRightBumper() {
+        return xbox.getRightBumper();
+    }
+
+    public static double getXboxLeftTrigger() {
+        return xbox.getLeftTriggerAxis();
+    }
+
+    public static boolean getXboxLeftBumper() {
+        return xbox.getLeftBumper();
+    }
+
+    public static boolean getXboxXButton() {
+        return xbox.getXButtonPressed();
+    }
+
+    public static boolean getXboxAButton() {
+        return xbox.getAButton();
     }
 }
