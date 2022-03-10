@@ -10,9 +10,17 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import com.revrobotics.ColorSensorV3;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorMatch;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.SwerveDriveTrain;
 import edu.wpi.first.cameraserver.CameraServer;
 //import frc.robot.subsystems.SwerveSubsystem;
@@ -24,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 // import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.ShootSystem;
 // import frc.robot.subsystems.SwerveDriveTrain;
@@ -44,12 +53,22 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   // private Alliance teamColor;
   // private OldSwerveDriveTrain swerveSystem;
-  private SwerveDriveTrain swerveSystem;
   private DigitalInput sensor;
   private boolean lastState;
   // private OldSwerveDriveTrain swerveSystem;
   // private SwerveDriveTrain swerveSystem;
   private ShootSystem shootSystem;
+
+  // private final I2C.Port port = I2C.Port.kMXP; // Check Later
+
+  // private final ColorSensorV3 colorSensor = new ColorSensorV3(port);
+
+  // private final ColorMatch colorMatch = new ColorMatch();
+
+  // private OldSwerveDriveTrain swerveSystem;
+  private SwerveDriveTrain swerveSystem;
+
+  private IntakeSystem intakeSystem;
   // private RobotContainer m_robotContainer;
 
   /**
@@ -83,6 +102,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    // Color foundColor = colorSensor.getColor();
+    // String colorString;
+    // ColorMatchResult result = colorMatch.matchClosestColor(foundColor);
+
+    // if (result.color == Color.kBlue) {
+    // colorString = "Blue";
+    // } else if (result.color == Color.kRed) {
+    // colorString = "Red";
+    // } else {
+    // colorString = "Unknown";
+    // }
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled
     // commands, running already-scheduled commands, removing finished or
@@ -90,6 +120,11 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods. This must be called from the
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
+    // SmartDashboard.putNumber("Red", foundColor.red); // check with
+    // SmartDashboard.putNumber("Green", foundColor.green);
+    // SmartDashboard.putNumber("Blue", foundColor.blue);
+    // SmartDashboard.putNumber("Confidence", result.confidence);
+    // SmartDashboard.putString("Detected Color", colorString);
     CommandScheduler.getInstance().run();
   }
 
@@ -126,6 +161,7 @@ public class Robot extends TimedRobot {
     // swerveSystem = new SwerveDriveTrain();
 
     shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
+    intakeSystem.setDefaultCommand(new IntakeCommand(intakeSystem));
     // swerveSystem.setDefaultCommand(new OldSwerveCommand(swerveSystem));
 
     // This makes sure that the autonomous stops running when
