@@ -54,8 +54,8 @@ public final class Constants {
 
     //Shoot System Motors
     public static final int rightShootMotor = 13;
-    public static final int leftShootMotor = 12;
-    public static final int topShootMotor = 11;
+    public static final int leftShootMotor = 11;
+    public static final int topShootMotor = 12;
     public static final int traversalMotor = 16;
 
     //Dimensions
