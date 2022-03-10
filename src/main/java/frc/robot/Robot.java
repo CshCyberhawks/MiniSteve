@@ -116,13 +116,25 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    sensor = new DigitalInput(IRSensorPort);
-
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() { // KitKat
+
+  }
+
+  @Override
+  public void testInit() {
+    // Cancels all running commands at the start of test mode.
+    CommandScheduler.getInstance().cancelAll();
+
+    sensor = new DigitalInput(IRSensorPort);
+  }
+
+  /** This function is called periodically during test mode. */
+  @Override
+  public void testPeriodic() {
     // Beam Break Code
     // check if the sensor beam is broken
     // if it is, the sensorState is LOW:
@@ -136,17 +148,5 @@ public class Robot extends TimedRobot {
       SmartDashboard.putBoolean("Broken", true);
     }
     lastState = sensorState;
-  }
-
-  @Override
-  public void testInit() {
-    // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
-
-  }
-
-  /** This function is called periodically during test mode. */
-  @Override
-  public void testPeriodic() {
   }
 }
