@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
   // private final ColorMatch colorMatch = new ColorMatch();
 
   // private OldSwerveDriveTrain swerveSystem;
-  private SwerveDriveTrain swerveSystem;
+  // private SwerveDriveTrain swerveSystem;
 
   private IntakeSystem intakeSystem;
   // private RobotContainer m_robotContainer;
@@ -82,9 +82,9 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     // teamColor = DriverStation.getAlliance();
-    CameraServer.startAutomaticCapture();
     // m_robotContainer = new RobotContainer();
     shootSystem = new ShootSystem();
+    intakeSystem = new IntakeSystem();
     // driveSystem = new DriveSystem();
     CameraServer.startAutomaticCapture();
   }

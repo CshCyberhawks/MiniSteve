@@ -40,6 +40,16 @@ public class ShootSystem extends SubsystemBase {
         // motorController = new PIDController(0.01, 0, 0);
     }
 
+    // Syncing of bottom 2 motors
+    private void setBottom(double power) {
+        // double leftPIDOut = motorController.calculate(leftEncoder.getVelocity(),
+        // power);
+        // double rightPIDOut = motorController.calculate(rightEncoder.getVelocity(),
+        // power);
+        bottomLeftMotor.set(-power);// power
+        bottomRightMotor.set(power);
+    }
+
     public void shoot(double power) {
         // double traversalPIDOUt =
         // motorController.calculate(traverseEncoder.getVelocity(), power *
@@ -50,15 +60,5 @@ public class ShootSystem extends SubsystemBase {
 
     public void traverse(double power) {
         traversalMotor.set(ControlMode.PercentOutput, power * traversalMult);
-    }
-
-    // Syncing of bottom 2 motors
-    private void setBottom(double power) {
-        // double leftPIDOut = motorController.calculate(leftEncoder.getVelocity(),
-        // power);
-        // double rightPIDOut = motorController.calculate(rightEncoder.getVelocity(),
-        // power);
-        bottomLeftMotor.set(-power);// power
-        bottomRightMotor.set(power);
     }
 }
