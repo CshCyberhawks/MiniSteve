@@ -53,13 +53,13 @@ public final class Constants {
         }
     };
 
-    // TalonSRX Motors
+    // Turn Motors
     public static final int frontRightTurnMotor = 5;
     public static final int frontLeftTurnMotor = 2;
     public static final int backRightTurnMotor = 1;
     public static final int backLeftTurnMotor = 3;
 
-    // CANSparkMax Motors
+    // Drive Motors
     public static final int frontRightDriveMotor = 6;
     public static final int frontLeftDriveMotor = 8;
     public static final int backRightDriveMotor = 9;
@@ -70,6 +70,9 @@ public final class Constants {
     public static final int leftShootMotor = 12;
     public static final int topShootMotor = 11;
     public static final int traversalMotor = 16;
+
+    // Intake Motors
+    public static final int intakeMotor = 0;
 
     // Dimensions
     public static final double length = .53;
