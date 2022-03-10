@@ -89,6 +89,7 @@ public class AutoSwerveWheel {
         double wheelSpeed = speedPID.calculate(currentWheelRotations, desiredWheelRotations);
         double wheelTurn = turnPID.calculate(currentTurnPosition, desiredTurnPosition);
 
+        //talonFX controlmode.position for positional control mode
         driveMotor.set(ControlMode.Velocity, wheelSpeed);
         if (!turnPID.atSetpoint()) {
             turnMotor.set(ControlMode.PercentOutput, wheelTurn);
