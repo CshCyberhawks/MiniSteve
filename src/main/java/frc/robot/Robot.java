@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommandGroup;
 import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.SwerveAuto;
+import frc.robot.subsystems.SwerveAutonomous;
 import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.SwerveOdometry;
@@ -36,6 +37,8 @@ public class Robot extends TimedRobot {
 
     // private OldSwerveDriveTrain swerveSystem;
     public static SwerveAuto swerveAuto;
+    public static SwerveAutonomous swerveAutonomous;
+
     public static SwerveDriveTrain swerveSystem;
     public static SwerveOdometry swo;
     private static SwerveCommand swerveCommand;
@@ -110,6 +113,9 @@ public class Robot extends TimedRobot {
         }
         // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         swerveAuto = new SwerveAuto();
+
+        swerveAutonomous = new SwerveAutonomous();
+
         autoCommands = new AutoCommandGroup();
 
         // schedule the autonomous command (example)
