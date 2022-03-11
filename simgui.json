@@ -2,6 +2,8 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/IntakeSystem": "Subsystem",
+      "/LiveWindow/ShootSystem": "Subsystem",
       "/LiveWindow/SwerveDriveTrain": "Subsystem",
       "/LiveWindow/SwerveWheel": "Subsystem",
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",

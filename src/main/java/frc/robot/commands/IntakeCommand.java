@@ -7,7 +7,7 @@ import frc.robot.util.IO;
 public class IntakeCommand extends CommandBase {
     private final IntakeSystem intakeSystem;
     private final double speedMult = 1;
-    
+
     public IntakeCommand(IntakeSystem subsystem) {
         intakeSystem = subsystem;
         addRequirements(subsystem);
@@ -18,11 +18,10 @@ public class IntakeCommand extends CommandBase {
         double speed = IO.getXboxLeftTrigger();
         boolean out = IO.getXboxLeftBumper();
 
-        if(speed > 0) {
-            intakeSystem.intake(speed * speedMult);
-        }
-        else if(out) {
+        if (out) {
             intakeSystem.output();
+        } else {
+            intakeSystem.intake(speed * speedMult);
         }
     }
 }

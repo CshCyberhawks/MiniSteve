@@ -72,7 +72,7 @@ public final class Constants {
     public static final int traversalMotor = 16;
 
     // Intake Motors
-    public static final int intakeMotor = 0;
+    public static final int intakeMotor = 15;
 
     // Dimensions
     public static final double length = .53;
