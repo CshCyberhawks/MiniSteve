@@ -35,7 +35,7 @@ public class SwerveAutonomous {
     private AutoSwerveWheel backLeft = new AutoSwerveWheel(0, 0, 0);
     private AutoSwerveWheel frontLeft = new AutoSwerveWheel(0, 0, 0);
 
-    private double startTime;
+    private double prevTime = 0;
 
     public void setDesiredPosition(Vector2 desiredPosition) {
         this.desiredPositionCart = desiredPosition;
@@ -46,7 +46,6 @@ public class SwerveAutonomous {
         SmartDashboard.putNumber("Desired X", desiredPosition.x);
         SmartDashboard.putNumber("Desired Y", desiredPosition.y);
 
-        startTime = WPIUtilJNI.now() * 1.0e-6;
     }
 
     public void setDesiredAngle(double desiredAngle) {
@@ -58,7 +57,7 @@ public class SwerveAutonomous {
         TrapezoidProfile trapProfile = new TrapezoidProfile(trapConstraints, trapDesiredState, trapCurrentState);
 
         double currentTime = WPIUtilJNI.now() * 1.0e-6;
-        double trapTime = currentTime - startTime;
+        double trapTime = currentTime - prevTime;
 
         double trapPosition = trapProfile.calculate(trapTime).position;
 
@@ -87,7 +86,7 @@ public class SwerveAutonomous {
 
     public boolean isAtDesiredPosition() {
         double timeNow = WPIUtilJNI.now() * 1.0e-6;
-        double trapTime = timeNow - startTime;
+        double trapTime = timeNow - prevTime;
         TrapezoidProfile positionCheckProfile = new TrapezoidProfile(trapConstraints, trapDesiredState,
                 trapCurrentState);
 
