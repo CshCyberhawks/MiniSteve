@@ -4,11 +4,18 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 // import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator.Validity;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
+// import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
+// import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+// import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 // import edu.wpi.first.math.controller.PIDController;
 // import edu.wpi.first.wpilibj.Encoder;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,6 +26,8 @@ public class ShootSystem extends SubsystemBase {
     private CANSparkMax topMotor;
     private CANSparkMax bottomRightMotor;
     private CANSparkMax bottomLeftMotor;
+    private TalonSRX intakeMotor;
+    private Solenoid intakeSolenoid;
     private VictorSPX traversalMotor;
     private double topMotorMult = 1.2;
     private double traversalMult = 2;
@@ -33,6 +42,8 @@ public class ShootSystem extends SubsystemBase {
         bottomLeftMotor = new CANSparkMax(Constants.leftShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         bottomRightMotor = new CANSparkMax(Constants.rightShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         traversalMotor = new VictorSPX(Constants.traversalMotor);
+        intakeMotor = new TalonSRX(Constants.intakeMotor);
+        intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.intakeSolenoid);
         // traversalEncoder = traversalMotor.getEncoder();
         // topEncoder = topMotor.getEncoder();
         // rightEncoder = bottomRightMotor.getEncoder();
@@ -57,7 +68,19 @@ public class ShootSystem extends SubsystemBase {
         topMotor.set(-power * topMotorMult);
         setBottom(power);
     }
-
+    public void shiftGears(double power)
+    {
+        if (power > 0) {
+            intakeSolenoid.set(false);
+        } 
+        else if (power < 0) {
+            intakeSolenoid.set(true);
+        }
+    }
+    public void intake(double power) 
+    {
+        intakeMotor.set(ControlMode.PercentOutput, power);
+    }
     public void traverse(double power) {
         traversalMotor.set(ControlMode.PercentOutput, power * traversalMult);
     }
