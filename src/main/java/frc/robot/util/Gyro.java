@@ -16,8 +16,8 @@ public class Gyro {
     }
 
     public static double getAngle() {
-        SmartDashboard.putNumber("Gyro Offset", offset);
-        return wrapAroundAngles(gyro.getYaw() - offset);
+        SmartDashboard.putNumber("Gyro raw", gyro.getYaw() - offset);
+        return wrapAroundAngles(wrapAroundAngles(gyro.getYaw()) - offset);
         // return gyro.getYaw();
     }
 

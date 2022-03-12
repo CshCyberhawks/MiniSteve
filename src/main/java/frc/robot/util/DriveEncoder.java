@@ -24,10 +24,10 @@ public class DriveEncoder {
         SmartDashboard.putNumber("deltaTime", period);
         SmartDashboard.putNumber("Raw Drive Encoder", driveMotor.getSelectedSensorVelocity());
 
-        double velocity = (driveMotor.getSelectedSensorVelocity() / 2048) * (period / .1);
+        double velocity = (driveMotor.getSelectedSensorVelocity() / 2048) * 10;
         SmartDashboard.putNumber("Drive Encoder", velocity);
         lastUpdateTime = timeNow;
-        return 0;// velocity;
+        return velocity;
     }
 
     public double getPosition() {
