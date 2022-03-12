@@ -71,8 +71,9 @@ public final class Constants {
     public static final int topShootMotor = 11;
     public static final int traversalMotor = 16;
 
-    // Intake Motors
+    // Intake System
     public static final int intakeMotor = 15;
+    public static final int intakeSolenoid = 0;
 
     // Dimensions
     public static final double length = .53;
