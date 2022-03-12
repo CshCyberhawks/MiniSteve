@@ -83,6 +83,8 @@ public class SwerveOdometry extends SubsystemBase {
         double timeNow = WPIUtilJNI.now() * 1.0e-6;
         double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
 
+        SmartDashboard.putNumber("OdoLast", lastUpdateTime);
+        SmartDashboard.putNumber("OdoNow", timeNow);
         SmartDashboard.putNumber("periodOdo", period);
 
         double[] velocities = calculateVelocities();
