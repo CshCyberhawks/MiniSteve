@@ -26,25 +26,25 @@ public class SwerveAutonomous {
 
     // both below args are in m/s - first is velocity (35% of max robot velocity of
     // 3.77), and a max accel of .05 m/s
-    private TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(0.5, 0.01);
+    private TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(1, 0.1);
     private TrapezoidProfile.State trapCurrentState = new TrapezoidProfile.State(0, 0);
     private TrapezoidProfile.State trapDesiredState;
 
-    private AutoSwerveWheel backRight = new AutoSwerveWheel(0, 0, 0);
-    private AutoSwerveWheel frontRight = new AutoSwerveWheel(0, 0, 0);
-    private AutoSwerveWheel backLeft = new AutoSwerveWheel(0, 0, 0);
-    private AutoSwerveWheel frontLeft = new AutoSwerveWheel(0, 0, 0);
+    private SwerveWheel backRight = Robot.swerveSystem.backRight;
+    private SwerveWheel frontRight = Robot.swerveSystem.frontRight;
+    private SwerveWheel backLeft = Robot.swerveSystem.backLeft;
+    private SwerveWheel frontLeft = Robot.swerveSystem.frontLeft;
 
     private double prevTime = 0;
 
     public void setDesiredPosition(Vector2 desiredPosition) {
         this.desiredPositionCart = desiredPosition;
         this.desiredPositionPolar = new PolarCoordinate(desiredPosition);
+        SmartDashboard.putNumber("desiredPositionPolarR", desiredPositionPolar.r);
 
         trapDesiredState = new TrapezoidProfile.State(desiredPositionPolar.r, 0);
 
-        SmartDashboard.putNumber("Desired X", desiredPosition.x);
-        SmartDashboard.putNumber("Desired Y", desiredPosition.y);
+        SmartDashboard.putNumber("polarAngle", desiredPositionPolar.theta);
 
     }
 
@@ -59,29 +59,39 @@ public class SwerveAutonomous {
         double currentTime = WPIUtilJNI.now() * 1.0e-6;
         double trapTime = currentTime - prevTime;
 
-        double trapPosition = trapProfile.calculate(trapTime).position;
+        TrapezoidProfile.State trapOutput = trapProfile.calculate(trapTime);
 
-        backRight.drive(desiredPositionPolar.theta, trapPosition);
-        frontRight.drive(desiredPositionPolar.theta, trapPosition);
-        backLeft.drive(desiredPositionPolar.theta, trapPosition);
-        frontLeft.drive(desiredPositionPolar.theta, trapPosition);
+        SmartDashboard.putNumber("trapVelocity", trapOutput.velocity);
+        SmartDashboard.putNumber("trapPosition", trapOutput.position);
+
+        backRight.autoDrive(desiredPositionPolar.theta, trapOutput.velocity);
+        frontRight.autoDrive(desiredPositionPolar.theta, trapOutput.velocity);
+        backLeft.autoDrive(desiredPositionPolar.theta, trapOutput.velocity);
+        frontLeft.autoDrive(desiredPositionPolar.theta, trapOutput.velocity);
 
         // position = magnitude of odometry as polar (meters)
         // velocity = odometry velocity (m/s)
 
-        double currentPosition = MathClass.cartesianToPolar(Robot.swo.getPosition().positionCoord.x,
-                Robot.swo.getPosition().positionCoord.y)[1];
-        double currentVelocity = MathClass.cartesianToPolar(Robot.swo.getVelocities()[0],
-                Robot.swo.getVelocities()[1])[1];
-        trapCurrentState = new TrapezoidProfile.State(MathClass.swoToMeters(currentPosition),
-                MathClass.swoToMeters(currentVelocity));
+        // double currentPosition =
+        // MathClass.cartesianToPolar(Robot.swo.getPosition().positionCoord.x,
+        // Robot.swo.getPosition().positionCoord.y)[1];
+        // double currentVelocity =
+        // MathClass.cartesianToPolar(Robot.swo.getVelocities()[0],
+        // Robot.swo.getVelocities()[1])[1];
+        // trapCurrentState = new
+        // TrapezoidProfile.State(MathClass.swoToMeters(currentPosition),
+        // MathClass.swoToMeters(currentVelocity));
+
+        trapCurrentState = trapOutput;
+
+        prevTime = currentTime;
     }
 
     public void twist() {
-        backRight.drive(Constants.twistAngleMap.get("backRight"), .4);
-        frontRight.drive(Constants.twistAngleMap.get("frontRight"), .4);
-        backLeft.drive(Constants.twistAngleMap.get("backLeft"), .4);
-        frontLeft.drive(Constants.twistAngleMap.get("frontLeft"), .4);
+        backRight.autoDrive(Constants.twistAngleMap.get("backRight"), .4);
+        frontRight.autoDrive(Constants.twistAngleMap.get("frontRight"), .4);
+        backLeft.autoDrive(Constants.twistAngleMap.get("backLeft"), .4);
+        frontLeft.autoDrive(Constants.twistAngleMap.get("frontLeft"), .4);
     }
 
     public boolean isAtDesiredPosition() {
@@ -90,8 +100,21 @@ public class SwerveAutonomous {
         TrapezoidProfile positionCheckProfile = new TrapezoidProfile(trapConstraints, trapDesiredState,
                 trapCurrentState);
 
-        return positionCheckProfile.calculate(trapTime).velocity == 0 ? true : false;
+        return false;// positionCheckProfile.calculate(trapTime).velocity == 0 ? true : false;
 
+    }
+
+    public boolean isAtDesiredAngle() {
+        if (Gyro.getAngle() - desiredAngle > 180) {
+            if (MathClass.calculateDeadzone((360 - Gyro.getAngle()) - desiredAngle, 4) == 0) {
+                return true;
+            }
+        } else if (Gyro.getAngle() - desiredAngle <= 180) {
+            if (MathClass.calculateDeadzone(Gyro.getAngle() - desiredAngle, 4) == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isAtDesiredAngleTest(double angle) {
@@ -107,17 +130,11 @@ public class SwerveAutonomous {
         return false;
     }
 
-    public boolean isAtDesiredAngle() {
-        if (Gyro.getAngle() - desiredAngle > 180) {
-            if (MathClass.calculateDeadzone((360 - Gyro.getAngle()) - desiredAngle, 4) == 0) {
-                return true;
-            }
-        } else if (Gyro.getAngle() - desiredAngle <= 180) {
-            if (MathClass.calculateDeadzone(Gyro.getAngle() - desiredAngle, 4) == 0) {
-                return true;
-            }
-        }
-        return false;
+    public void kill() {
+        backRight.kill();
+        frontRight.kill();
+        backLeft.kill();
+        frontLeft.kill();
     }
 
 }

@@ -4,6 +4,7 @@ import frc.robot.util.TurnEncoder;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -24,6 +25,8 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
+import frc.robot.Constants;
 import frc.robot.util.DriveEncoder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -48,6 +51,7 @@ public class SwerveWheel {
 
     private PIDController turnPidController;
     private PIDController drivePidController;
+    private PIDController speedPID;
 
     private SimpleMotorFeedforward driveFeedforward;
 
@@ -74,8 +78,16 @@ public class SwerveWheel {
         turnPidController.setTolerance(4);
         turnPidController.enableContinuousInput(0, 360);
 
+        speedPID = new PIDController(0.03, 0, 0);
+
         drivePidController = new PIDController(0.01, 0, 0);
         driveFeedforward = new SimpleMotorFeedforward(.1, 473);
+
+        if (turnEncoderPort == 2 || turnEncoderPort == 3) {
+            driveMotor.setInverted(true);
+        } else {
+            driveMotor.setInverted(false);
+        }
     }
 
     private double wrapAroundAngles(double input) {
@@ -92,6 +104,11 @@ public class SwerveWheel {
         double radius = 0.0505;
 
         return (2 * Math.PI * radius) * (rps / 7);
+    }
+
+    public double convertToWheelRotations(double meters) {
+        double wheelConstant = (2 * Math.PI * Constants.wheelRadius) / 60;
+        return 7 * meters / wheelConstant;
     }
 
     public void drive(double speed, double angle, String mode) {
@@ -146,7 +163,7 @@ public class SwerveWheel {
         // speed);
 
         // SmartDashboard.putNumber(m_turnEncoderPort + " turnEncoderValue", turnValue);
-        SmartDashboard.putNumber(m_turnEncoderPort + " driveEncoderValue", currentDriveSpeed);
+        SmartDashboard.putNumber(m_turnEncoderPort + " currentDriveSpeed", currentDriveSpeed);
         // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
         SmartDashboard.putNumber(m_turnEncoderPort + " driveSet", (speed / 3.777) + drivePIDOutput);
@@ -155,6 +172,34 @@ public class SwerveWheel {
         driveMotor.set(ControlMode.PercentOutput, MathUtil.clamp((speed / 3.777)/* + drivePIDOutput */, -1, 1));
         if (!turnPidController.atSetpoint()) {
             turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -1, 1));
+        }
+    }
+
+    public void autoDrive(double theta, double r) {
+        double inputRotations = r;
+
+        double currentTurnPosition = wrapAroundAngles(turnEncoder.get());
+        double desiredTurnPosition = wrapAroundAngles(theta);
+
+        double driveVelocity = driveEncoder.getVelocity();
+        currentDriveSpeed = convertToMetersPerSecondFromSecond(driveVelocity);
+
+        SmartDashboard.putNumber(m_turnEncoderPort + " drive speed", currentDriveSpeed);
+
+        // if (Math.abs(desiredTurnPosition - currentTurnPosition) > 90
+        // && Math.abs(desiredTurnPosition - currentTurnPosition) < 270) {
+        // desiredTurnPosition = (desiredTurnPosition + 180) % 360;
+        // wheelSpeed *= -1;
+        // }
+
+        double wheelTurn = turnPidController.calculate(currentTurnPosition, desiredTurnPosition);
+
+        SmartDashboard.putNumber(m_turnEncoderPort + " drive output", r / 3.777);
+
+        // talonFX controlmode.position for positional control mode
+        driveMotor.set(ControlMode.PercentOutput, r / 3.777);
+        if (!turnPidController.atSetpoint()) {
+            turnMotor.set(ControlMode.PercentOutput, wheelTurn);
         }
     }
 

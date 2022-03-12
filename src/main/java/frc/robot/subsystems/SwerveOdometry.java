@@ -45,9 +45,9 @@ public class SwerveOdometry extends SubsystemBase {
             double wheelAngle = Robot.swerveSystem.wheelArr[i].turnValue;
             double wheelSpeed = Robot.swerveSystem.wheelArr[i].currentDriveSpeed;
 
-            if (i == 0 || i == 2) {
-                wheelSpeed = -wheelSpeed;
-            }
+            // if (i == 0 || i == 2) {
+            // wheelSpeed = -wheelSpeed;
+            // }
 
             // Undoes the wheel optimization
             // commented out to see if it will work without optimization

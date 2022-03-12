@@ -5,12 +5,13 @@ import frc.robot.Robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.util.FieldPosition;
+import frc.robot.util.Vector2;
 
-public class AutoGoTo extends CommandBase {
-    private FieldPosition desiredPosition;
+public class AutoGoToPosition extends CommandBase {
+    private Vector2 desiredPosition;
 
-    public AutoGoTo(FieldPosition _desiredPosition) {
-        desiredPosition = _desiredPosition;
+    public AutoGoToPosition(Vector2 desiredPosition) {
+        this.desiredPosition = desiredPosition;
     }
 
     // this command will move the robot to the desired position x, y and twist
@@ -26,24 +27,23 @@ public class AutoGoTo extends CommandBase {
         // meters), y in swos, and twist in degrees
         // (based on
         // robot staring position)
-        Robot.swerveAuto.setDesiredPosition(desiredPosition);
+        Robot.swerveAutonomous.setDesiredPosition(desiredPosition);
     }
 
     @Override
     public void execute() {
-        Robot.swerveAuto.drive();
+        Robot.swerveAutonomous.translate();
     }
 
     @Override
     public void end(boolean interrupted) {
-        SmartDashboard.putBoolean("auto command finsihed", Robot.swerveAuto.isAtDesiredPosAng());
-        System.out.println("auto command finished");
-        Robot.swerveAuto.kill();
+        SmartDashboard.putBoolean("auto translate command finsihed", Robot.swerveAutonomous.isAtDesiredPosition());
+        Robot.swerveAutonomous.kill();
     }
 
     @Override
     public boolean isFinished() {
-        return Robot.swerveAuto.isAtDesiredPosAng();
+        return Robot.swerveAutonomous.isAtDesiredPosition();
     }
 
 }
