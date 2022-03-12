@@ -11,6 +11,7 @@ import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.ShootSystem;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -39,8 +40,8 @@ public class Robot extends TimedRobot {
 
   // private OldSwerveDriveTrain swerveSystem;
   // private SwerveDriveTrain swerveSystem;
-
   private IntakeSystem intakeSystem;
+  private boolean lastBreakBeamState;
   // private RobotContainer m_robotContainer;
 
   /**
@@ -106,11 +107,15 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.schedule();
   }
 
+
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    if (frontBreakBeam.get() || backBreakBeam.get() || topBreakBeam.get())
-      intakeSystem.intake(1);
+    if (frontBreakBeam.get() && !lastBreakBeamState)
+      shootSystem.traverse(.5);
+    if (!frontBreakBeam.get() && lastBreakBeamState)
+      shootSystem.traverse(0);
+    lastBreakBeamState = frontBreakBeam.get();
   }
 
   @Override
@@ -125,14 +130,12 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
+    if (m_autonomousCommand != null)
       m_autonomousCommand.cancel();
-    }
   }
 
   /** This function is called periodically during operator control. */
   @Override
-
   public void teleopPeriodic() {
     // swerveSystem.drive(IO.getPolarCoords());
   }
@@ -142,8 +145,6 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }
-
-  // private CANSparkMax motor = new CANSparkMax(12, MotorType.kBrushless);
 
   /** This function is called periodically during test mode. */
   @Override
