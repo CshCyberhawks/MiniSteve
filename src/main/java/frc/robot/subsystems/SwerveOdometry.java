@@ -61,18 +61,12 @@ public class SwerveOdometry extends SubsystemBase {
 
             double[] cartCoords = Robot.swerveSystem.polarToCartesian(wheelAngle, wheelSpeed);
 
-            SmartDashboard.putNumber(i + " wheel x", cartCoords[0]);
-            SmartDashboard.putNumber(i + " wheel y", cartCoords[1]);
-
             wheelCoords[i] = new Vector2(cartCoords[0], cartCoords[1]);
 
             totalX += cartCoords[0];
             totalY += cartCoords[1];
 
         }
-
-        SmartDashboard.putNumber("averagedX ", totalX);
-        SmartDashboard.putNumber("averagedY ", totalY);
 
         double[] robotPolar = Robot.swerveSystem.cartesianToPolar(totalX, totalY);
         // maybe below is done incorrectly / is unnecessary? also possible that it
@@ -89,10 +83,9 @@ public class SwerveOdometry extends SubsystemBase {
         double timeNow = WPIUtilJNI.now() * 1.0e-6;
         double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
 
-        double[] velocities = calculateVelocities();
+        SmartDashboard.putNumber("periodOdo", period);
 
-        SmartDashboard.putNumber(" velocitiyX ", velocities[0]);
-        SmartDashboard.putNumber(" velocitiyY ", velocities[1]);
+        double[] velocities = calculateVelocities();
 
         fieldPosition.positionCoord.x += velocities[0] * period;
         fieldPosition.positionCoord.y += velocities[1] * period;

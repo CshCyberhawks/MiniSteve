@@ -180,6 +180,11 @@ public class SwerveDriveTrain extends SubsystemBase {
         double backRightAngle = backRightVector[0];
         double backLeftAngle = backLeftVector[0];
 
+        // SmartDashboard.putNumber("frontRightAngle", frontRightAngle);
+        // SmartDashboard.putNumber("frontLeftAngle", frontLeftAngle);
+        // SmartDashboard.putNumber("backRightAngle", backRightAngle);
+        // SmartDashboard.putNumber("backLeftAngle", backLeftAngle);
+
         // sets the speed and angle of each motor
         backRight.drive(backRightSpeed, backRightAngle, mode);
         backLeft.drive(-backLeftSpeed, backLeftAngle, mode);

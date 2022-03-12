@@ -91,6 +91,7 @@ public class SwerveAutonomous {
                 trapCurrentState);
 
         return positionCheckProfile.calculate(trapTime).velocity == 0 ? true : false;
+
     }
 
     public boolean isAtDesiredAngleTest(double angle) {

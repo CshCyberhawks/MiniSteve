@@ -59,7 +59,7 @@ public class IO {
     }
 
     public static double getJoy2Y() {
-        return MathClass.calculateDeadzone(joystick2.getY(), deadzoneVal);
+        return MathClass.calculateDeadzone(joystick2.getY(), .6);
     }
 
 }

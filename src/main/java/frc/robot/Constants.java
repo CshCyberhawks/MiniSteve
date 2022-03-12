@@ -69,7 +69,7 @@ public final class Constants {
     public static final int backRightEncoder = 1;
     public static final int backLeftEncoder = 2;
 
-    public static final double[] turnEncoderOffsets = { 256, 346, 171, 95 };
+    public static final double[] turnEncoderOffsets = { 345, 96, 96, 327 };
 
     public static final double wheelRadius = 0.0505; // In meters
     public static final double wheelGearRatio = 7 / 1; // 7:1 gear ratio
