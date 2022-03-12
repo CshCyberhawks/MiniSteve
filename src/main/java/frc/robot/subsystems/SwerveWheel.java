@@ -4,6 +4,7 @@ import frc.robot.util.TurnEncoder;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.MathUtil;
@@ -26,7 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveWheel {
     private TalonSRX turnMotor;
-    private TalonFX driveMotor;
+    private WPI_TalonFX driveMotor;
     private TurnEncoder turnEncoder;
     private DriveEncoder driveEncoder;
 
@@ -50,9 +51,13 @@ public class SwerveWheel {
     public SwerveWheel(int turnPort, int drivePort, int turnEncoderPort) {
 
         turnMotor = new TalonSRX(turnPort);
-        driveMotor = new TalonFX(drivePort);
+        driveMotor = new WPI_TalonFX(drivePort);
 
-        driveEncoder = new DriveEncoder(driveMotor);
+        driveMotor.config_kP(0, 0.01);
+        driveMotor.config_kI(0, 0);
+        driveMotor.config_kD(0, 0);
+
+        // driveEncoder = new DriveEncoder(driveMotor);
         turnEncoder = new TurnEncoder(turnEncoderPort);
 
         m_turnEncoderPort = turnEncoderPort;
@@ -90,8 +95,10 @@ public class SwerveWheel {
             maxAcceleration = 0.01;
         }
 
-        currentDriveSpeed = convertToMetersPerSecondFromSecond(driveEncoder.getVelocity());
-        SmartDashboard.putNumber(m_turnEncoderPort + " wheel rotations", driveEncoder.getVelocity());
+        // currentDriveSpeed =
+        // convertToMetersPerSecondFromSecond(driveEncoder.getVelocity());
+        // SmartDashboard.putNumber(m_turnEncoderPort + " wheel rotations",
+        // driveEncoder.getVelocity());
         turnValue = wrapAroundAngles(turnEncoder.get());
         rawTurnValue = turnEncoder.get();
         angle = wrapAroundAngles(angle);

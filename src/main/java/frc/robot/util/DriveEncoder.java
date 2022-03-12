@@ -18,10 +18,12 @@ public class DriveEncoder {
     public double getVelocity() {
         double timeNow = WPIUtilJNI.now() * 1.0e-6;
         double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
+
         SmartDashboard.putNumber("Encoder Now", timeNow);
         SmartDashboard.putNumber("Encoder Last", lastUpdateTime);
         SmartDashboard.putNumber("deltaTime", period);
         SmartDashboard.putNumber("Raw Drive Encoder", driveMotor.getSelectedSensorVelocity());
+
         double velocity = (driveMotor.getSelectedSensorVelocity() / 2048) * (period / .1);
         SmartDashboard.putNumber("Drive Encoder", velocity);
         lastUpdateTime = timeNow;
