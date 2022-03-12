@@ -73,7 +73,7 @@ public final class Constants {
 
     // Intake System
     public static final int intakeMotor = 15;
-    public static final int intakeSolenoid = 0;
+    public static final int intakeSolenoid = 4;
 
     // Dimensions
     public static final double length = .53;

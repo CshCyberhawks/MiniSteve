@@ -23,16 +23,16 @@ public class IntakeSystem extends SubsystemBase {
         intakeMotor = new TalonSRX(Constants.intakeMotor);
         intakeMotor.setInverted(true);
 
-        intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.intakeSolenoid);
+        // intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.intakeSolenoid);
     }
 
     public void intake(double speed) {
         intakeMotor.set(ControlMode.PercentOutput, speed);
-        if (speed > 0) {
-            intakeSolenoid.set(true);
-        } else {
-            intakeSolenoid.set(false);
-        }
+        // if (speed > 0) {
+        //     intakeSolenoid.set(true);
+        // } else {
+        //     intakeSolenoid.set(false);
+        // }
         // bottomFeedMotor.set(speed);
         // topFeedMotor.set(speed);
         SmartDashboard.putNumber("Intake Motor Speed", speed);
