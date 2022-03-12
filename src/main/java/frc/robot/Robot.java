@@ -4,40 +4,17 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
-import com.revrobotics.ColorSensorV3;
-import com.revrobotics.ColorMatchResult;
-import com.revrobotics.ColorMatch;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.SwerveCommand;
-import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.IntakeSystem;
-import frc.robot.subsystems.SwerveDriveTrain;
-import edu.wpi.first.cameraserver.CameraServer;
-//import frc.robot.subsystems.SwerveSubsystem;
-// import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
-// import com.revrobotics.CANSparkMax;
-// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
+
+import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.ShootSystem;
-// import frc.robot.subsystems.SwerveDriveTrain;
-//import frc.robot.subsystems.SwerveSubsystem;
-// import frc.robot.util.IO;
+
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -53,17 +30,12 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   // private Alliance teamColor;
   // private OldSwerveDriveTrain swerveSystem;
-  private DigitalInput sensor;
-  private boolean lastState;
   // private OldSwerveDriveTrain swerveSystem;
   // private SwerveDriveTrain swerveSystem;
   private ShootSystem shootSystem;
-
-  // private final I2C.Port port = I2C.Port.kMXP; // Check Later
-
-  // private final ColorSensorV3 colorSensor = new ColorSensorV3(port);
-
-  // private final ColorMatch colorMatch = new ColorMatch();
+  private DigitalInput frontBreakBeam;
+  private DigitalInput backBreakBeam;
+  private DigitalInput topBreakBeam;
 
   // private OldSwerveDriveTrain swerveSystem;
   // private SwerveDriveTrain swerveSystem;
@@ -102,17 +74,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    // Color foundColor = colorSensor.getColor();
-    // String colorString;
-    // ColorMatchResult result = colorMatch.matchClosestColor(foundColor);
-
-    // if (result.color == Color.kBlue) {
-    // colorString = "Blue";
-    // } else if (result.color == Color.kRed) {
-    // colorString = "Red";
-    // } else {
-    // colorString = "Unknown";
-    // }
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled
     // commands, running already-scheduled commands, removing finished or
@@ -120,22 +81,15 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods. This must be called from the
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
-    // SmartDashboard.putNumber("Red", foundColor.red); // check with
-    // SmartDashboard.putNumber("Green", foundColor.green);
-    // SmartDashboard.putNumber("Blue", foundColor.blue);
-    // SmartDashboard.putNumber("Confidence", result.confidence);
-    // SmartDashboard.putString("Detected Color", colorString);
     CommandScheduler.getInstance().run();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {
-  }
+  public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {
-  }
+  public void disabledPeriodic() {}
 
   /**
    * This autonomous runs the autonomous command selected by your
@@ -144,16 +98,19 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+    frontBreakBeam = new DigitalInput(Constants.frontBreakBeam);
+    backBreakBeam = new DigitalInput(Constants.backBreakBeam);
+    topBreakBeam = new DigitalInput(Constants.topBreakBeam);
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
+    if (m_autonomousCommand != null)
       m_autonomousCommand.schedule();
-    }
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    if (frontBreakBeam.get() || backBreakBeam.get() || topBreakBeam.get())
+      intakeSystem.intake(1);
   }
 
   @Override
@@ -184,27 +141,11 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-
-    sensor = new DigitalInput(0);
   }
 
   // private CANSparkMax motor = new CANSparkMax(12, MotorType.kBrushless);
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {
-    // Beam Break Code
-    // check if the sensor beam is broken
-    // if it is, the sensorState is LOW:
-    boolean sensorState = sensor.get();
-    if (sensorState && !lastState) {
-      // it's unbroken!
-      SmartDashboard.putBoolean("Broken", false);
-    }
-    if (!sensorState && lastState) {
-      // it's broken!
-      SmartDashboard.putBoolean("Broken", true);
-    }
-    lastState = sensorState;
-  }
+  public void testPeriodic() {}
 }
