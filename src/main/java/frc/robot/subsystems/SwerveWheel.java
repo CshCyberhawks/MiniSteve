@@ -145,7 +145,7 @@ public class SwerveWheel {
         SmartDashboard.putNumber(m_turnEncoderPort + " driveSet", (speed / 3.777) + drivePIDOutput);
         // SmartDashboard.putNumber(m_turnEncoderPort + " turnSet", turnPIDOutput);
         // 70% speed is about 5.6 feet/second
-        driveMotor.set(ControlMode.PercentOutput, MathUtil.clamp((speed / 3.777) + drivePIDOutput, -1, 1));
+        driveMotor.set(ControlMode.PercentOutput, MathUtil.clamp((speed / 3.777), -1, 1));
         if (!turnPidController.atSetpoint()) {
             turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -1, 1));
         }
