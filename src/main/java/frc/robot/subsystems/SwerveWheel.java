@@ -10,8 +10,10 @@ import edu.wpi.first.math.controller.PIDController;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import edu.wpi.first.wpilibj.RobotController;
 
 public class SwerveWheel {
     private TalonSRX turnMotor;
@@ -27,7 +29,7 @@ public class SwerveWheel {
     private double oldAngle;
     
     public SwerveWheel(int turnPort, int drivePort, int turnEncoderPort) {
-
+        
         turnMotor = new TalonSRX(turnPort);
         driveMotor = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless);
         
@@ -89,7 +91,7 @@ public class SwerveWheel {
         // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
         //70% speed is about 5.6 feet/second
-
+        
         driveMotor.set(MathUtil.clamp(drivePIDOutput, -.7, .7));
         if (!turnPidController.atSetpoint())
            turnMotor.set(ControlMode.PercentOutput, MathUtil.clamp(turnPIDOutput, -.7, .7));
