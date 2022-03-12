@@ -41,7 +41,6 @@ public class Robot extends TimedRobot {
   // private OldSwerveDriveTrain swerveSystem;
   // private SwerveDriveTrain swerveSystem;
   private IntakeSystem intakeSystem;
-  private boolean lastBreakBeamState;
   // private RobotContainer m_robotContainer;
 
   /**
@@ -111,11 +110,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    if (frontBreakBeam.get() && !lastBreakBeamState)
-      shootSystem.traverse(.5);
-    if (!frontBreakBeam.get() && lastBreakBeamState)
+    if (((frontBreakBeam.get() && !backBreakBeam.get()) || (frontBreakBeam.get() && backBreakBeam.get())) && !topBreakBeam.get())
       shootSystem.traverse(0);
-    lastBreakBeamState = frontBreakBeam.get();
+    if (((!frontBreakBeam.get() && backBreakBeam.get()) || !(frontBreakBeam.get() && backBreakBeam.get())) && topBreakBeam.get())
+      shootSystem.traverse(-.5);
   }
 
   @Override
