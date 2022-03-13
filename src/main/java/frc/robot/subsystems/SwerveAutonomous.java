@@ -10,6 +10,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.robot.Robot;
@@ -30,10 +31,15 @@ public class SwerveAutonomous {
     private TrapezoidProfile.State trapCurrentState = new TrapezoidProfile.State(0, .5);
     private TrapezoidProfile.State trapDesiredState;
 
+    private PIDController autoPID = new PIDController(0.01, 0, 0);
+
     private SwerveWheel backRight = Robot.swerveSystem.backRight;
     private SwerveWheel frontRight = Robot.swerveSystem.frontRight;
     private SwerveWheel backLeft = Robot.swerveSystem.backLeft;
     private SwerveWheel frontLeft = Robot.swerveSystem.frontLeft;
+
+    private double currentPosition = 0;
+    private double currentVelocity = 0;
 
     private double prevTime = 0;
 
@@ -67,8 +73,15 @@ public class SwerveAutonomous {
 
         TrapezoidProfile.State trapOutput = trapProfile.calculate(trapTime);
 
+        currentPosition = MathClass.cartesianToPolar(Robot.swo.getPosition().positionCoord.x,
+                Robot.swo.getPosition().positionCoord.y)[1];
+        currentVelocity = MathClass.cartesianToPolar(Robot.swo.getVelocities()[0],
+                Robot.swo.getVelocities()[1])[1];
+
         SmartDashboard.putNumber("trapVelocity", trapOutput.velocity);
         SmartDashboard.putNumber("trapPosition", trapOutput.position);
+
+        double pidOutput = autoPID.calculate(currentVelocity, trapOutput.velocity);
 
         backRight.autoDrive(desiredPositionPolar.theta, trapOutput.velocity);
         frontRight.autoDrive(desiredPositionPolar.theta, trapOutput.velocity);
@@ -78,17 +91,11 @@ public class SwerveAutonomous {
         // position = magnitude of odometry as polar (meters)
         // velocity = odometry velocity (m/s)
 
-        double currentPosition = MathClass.cartesianToPolar(Robot.swo.getPosition().positionCoord.x,
-                Robot.swo.getPosition().positionCoord.y)[1];
-        double currentVelocity = MathClass.cartesianToPolar(Robot.swo.getVelocities()[0],
-                Robot.swo.getVelocities()[1])[1];
-        trapCurrentState = new TrapezoidProfile.State(MathClass.swosToMeters(currentPosition),
-                MathClass.swosToMeters(currentVelocity));
+        // trapCurrentState = new
+        // TrapezoidProfile.State(MathClass.swoToMeters(currentPosition),
+        // MathClass.swoToMeters(currentVelocity));
 
-        SmartDashboard.putNumber("trapCurrentStateVel", trapCurrentState.velocity);
-        SmartDashboard.putNumber("trapCurrentStatePos", trapCurrentState.position);
-
-        // trapCurrentState = trapOutput;
+        trapCurrentState = trapOutput;
 
         prevTime = currentTime;
     }
