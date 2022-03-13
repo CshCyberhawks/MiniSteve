@@ -16,6 +16,8 @@ public class IntakeSystem extends SubsystemBase {
 
     private final double powerMult = 1;
 
+    private double currentBall = 1;
+
     public IntakeSystem() {
         intakeMotor = new TalonSRX(Constants.intakeMotor);
         intakeMotor.setInverted(true);
