@@ -122,7 +122,8 @@ public class SwerveWheel {
 
         double driveVelocity = driveEncoder.getVelocity();
         currentDriveSpeed = convertToMetersPerSecondFromSecond(driveVelocity);
-        SmartDashboard.putNumber(m_turnEncoderPort + " wheel rotations", driveVelocity);
+        // SmartDashboard.putNumber(m_turnEncoderPort + " wheel rotations",
+        // driveVelocity);
         turnValue = wrapAroundAngles(turnEncoder.get());
         rawTurnValue = turnEncoder.get();
         angle = wrapAroundAngles(angle);
@@ -163,10 +164,12 @@ public class SwerveWheel {
         // speed);
 
         // SmartDashboard.putNumber(m_turnEncoderPort + " turnEncoderValue", turnValue);
-        SmartDashboard.putNumber(m_turnEncoderPort + " currentDriveSpeed", currentDriveSpeed);
+        // SmartDashboard.putNumber(m_turnEncoderPort + " currentDriveSpeed",
+        // currentDriveSpeed);
         // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " driveSet", (speed / 3.777) + drivePIDOutput);
+        // SmartDashboard.putNumber(m_turnEncoderPort + " driveSet", (speed / 3.777) +
+        // drivePIDOutput);
         // SmartDashboard.putNumber(m_turnEncoderPort + " turnSet", turnPIDOutput);
         // 70% speed is about 5.6 feet/second
         driveMotor.set(ControlMode.PercentOutput, MathUtil.clamp((speed / 3.777)/* + drivePIDOutput */, -1, 1));
@@ -184,7 +187,7 @@ public class SwerveWheel {
         double driveVelocity = driveEncoder.getVelocity();
         currentDriveSpeed = convertToMetersPerSecondFromSecond(driveVelocity);
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " drive speed", currentDriveSpeed);
+        SmartDashboard.putNumber("drive speed", currentDriveSpeed);
 
         // if (Math.abs(desiredTurnPosition - currentTurnPosition) > 90
         // && Math.abs(desiredTurnPosition - currentTurnPosition) < 270) {
@@ -194,7 +197,7 @@ public class SwerveWheel {
 
         double wheelTurn = turnPidController.calculate(currentTurnPosition, desiredTurnPosition);
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " drive output", r / 3.777);
+        SmartDashboard.putNumber("drive output", r / 3.777);
 
         // talonFX controlmode.position for positional control mode
         driveMotor.set(ControlMode.PercentOutput, r / 3.777);

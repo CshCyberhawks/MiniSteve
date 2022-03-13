@@ -81,11 +81,11 @@ public class MathClass {
         return WPIUtilJNI.now() * 1.0e-6;
     }
 
-    public static double swoToMeters(double swo) {
-        return swo * 3.69230769231;
+    public static double metersToSwos(double meters) {
+        return meters * 3.69230769231;
     }
 
-    public static double metersToSwos(double meters) {
-        return meters * 0.27083333333;
+    public static double swosToMeters(double swos) {
+        return swos * 0.27083333333;
     }
 }
