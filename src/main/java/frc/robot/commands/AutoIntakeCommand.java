@@ -5,12 +5,12 @@ import frc.robot.Robot;
 import frc.robot.subsystems.IntakeSystem;
 import frc.robot.util.IO;
 
-public class IntakeCommand extends CommandBase {
+public class AutoIntakeCommand extends CommandBase {
     private final IntakeSystem intakeSystem;
 
     private final double speedMult = 1;
 
-    public IntakeCommand(IntakeSystem subsystem) {
+    public AutoIntakeCommand(IntakeSystem subsystem) {
         intakeSystem = subsystem;
         addRequirements(subsystem);
     }

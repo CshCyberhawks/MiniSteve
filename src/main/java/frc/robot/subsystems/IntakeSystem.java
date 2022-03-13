@@ -2,9 +2,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -28,14 +25,13 @@ public class IntakeSystem extends SubsystemBase {
 
     public void intake(double speed) {
         intakeMotor.set(ControlMode.PercentOutput, speed);
-        if (speed > 0) {
+        if (speed > 0)
             intakeSolenoid.set(true);
-        } else {
+        else
             intakeSolenoid.set(false);
-        }
         // bottomFeedMotor.set(speed);
         // topFeedMotor.set(speed);
-        SmartDashboard.putNumber("Intake Motor Speed", speed);
+        SmartDashboard.putNumber("Intake Motor Speed ", speed);
     }
 
     public void output() {
