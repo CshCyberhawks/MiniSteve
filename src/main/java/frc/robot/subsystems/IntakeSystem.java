@@ -16,13 +16,21 @@ public class IntakeSystem extends SubsystemBase {
 
     private final double powerMult = 1;
 
-    private double currentBall = 1;
+    private int currentBall = 1;
 
     public IntakeSystem() {
         intakeMotor = new TalonSRX(Constants.intakeMotor);
         intakeMotor.setInverted(true);
 
         intakeSolenoid = new Solenoid(Constants.intakeSolenoid, PneumaticsModuleType.CTREPCM, 0);
+    }
+
+    public int getBallNumber() {
+        return currentBall;
+    }
+
+    public void setBallNumber(int ballNumber) {
+        currentBall = ballNumber;
     }
 
     public void intake(double speed) {

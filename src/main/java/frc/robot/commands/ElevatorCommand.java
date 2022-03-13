@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.subsystems.IntakeSystem;
 
 public class ElevatorCommand extends CommandBase {
     private int ball;
@@ -20,10 +21,11 @@ public class ElevatorCommand extends CommandBase {
     public void end(boolean interrupted) {
         //sets autoClassWhatever ball number = opposite of one given
         //kills traverse
+        IntakeSystem intakeSystem = Robot.getIntakeSystem();
         if (ball == 1)
-            ball = 2;
+            intakeSystem.setBallNumber(2);
         else
-            ball = 1;
+            intakeSystem.setBallNumber(1);
         Robot.getShootSystem().traverse(0);
     }
 
