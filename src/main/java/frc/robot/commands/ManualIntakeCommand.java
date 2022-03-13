@@ -17,12 +17,10 @@ public class ManualIntakeCommand extends CommandBase {
     @Override
     public void execute() {
         double speed = IO.getXboxLeftTrigger();
-
-        if (IO.getXboxLeftBumper())
-            intakeSystem.output();
-        else
-            intakeSystem.intake(speed * speedMult);
-        if (IO.getXboxAButton())
+        if (IO.getXboxYButton())
             new IntakeSequence(Robot.getIntakeSystem().getBallNumber());
+        else 
+            intakeSystem.intake(speed);
+
     }
 }

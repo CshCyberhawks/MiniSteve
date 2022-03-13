@@ -18,18 +18,10 @@ public class ShootCommand extends CommandBase {
     public void execute() {
         double traversePower = IO.getXboxLeftY();
         double power = IO.getXboxRightTrigger();
-        double intakePower = IO.getXboxLeftTrigger();
-        double pneumaticsPower = IO.getXboxLeftX();
-
-        power = power > 0 ? power : 0;
-        intakePower = intakePower > 0 ? intakePower : 0;
-        pneumaticsPower = Math.abs(pneumaticsPower) > 0 ? pneumaticsPower : 0;
-        traversePower = Math.abs(traversePower) > 0 ? traversePower : 0;
 
         speedMult = SmartDashboard.getNumber("Speed Mult", speedMult);
         SmartDashboard.putNumber("Speed Mult", speedMult);
 
-        shootSystem.intake(intakePower);
         shootSystem.shoot(power);
 
         shootSystem.traverse(traversePower);

@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.AutoIntakeCommand;
+import frc.robot.commands.ManualIntakeCommand;
 import frc.robot.commands.ShootCommand;
 
 import frc.robot.subsystems.IntakeSystem;
@@ -54,6 +55,9 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     // teamColor = DriverStation.getAlliance();
     // m_robotContainer = new RobotContainer();
+    frontBreakBeam = new DigitalInput(Constants.frontBreakBeam);
+    backBreakBeam = new DigitalInput(Constants.backBreakBeam);
+    topBreakBeam = new DigitalInput(Constants.topBreakBeam);
     shootSystem = new ShootSystem();
     intakeSystem = new IntakeSystem();
     // driveSystem = new DriveSystem();
@@ -97,9 +101,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    frontBreakBeam = new DigitalInput(Constants.frontBreakBeam);
-    backBreakBeam = new DigitalInput(Constants.backBreakBeam);
-    topBreakBeam = new DigitalInput(Constants.topBreakBeam);
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null)
       m_autonomousCommand.schedule();
@@ -115,7 +116,7 @@ public class Robot extends TimedRobot {
     // swerveSystem = new SwerveDriveTrain();
 
     shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
-    intakeSystem.setDefaultCommand(new AutoIntakeCommand(intakeSystem));
+    intakeSystem.setDefaultCommand(new ManualIntakeCommand(intakeSystem));
     // swerveSystem.setDefaultCommand(new OldSwerveCommand(swerveSystem));
 
     // This makes sure that the autonomous stops running when

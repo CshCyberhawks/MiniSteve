@@ -34,8 +34,9 @@ public class IntakeSystem extends SubsystemBase {
     }
 
     public void intake(double speed) {
-        intakeMotor.set(ControlMode.PercentOutput, speed);
-        if (speed > 0)
+        //negative b/c neg motor speed picks up, positive spits out
+        intakeMotor.set(ControlMode.PercentOutput, -speed);
+        if (speed != 0)
             intakeSolenoid.set(true);
         else
             intakeSolenoid.set(false);
@@ -44,12 +45,6 @@ public class IntakeSystem extends SubsystemBase {
         SmartDashboard.putNumber("Intake Motor Speed ", speed);
     }
 
-    public void output() {
-        intakeSolenoid.set(true);
-        intakeMotor.set(ControlMode.PercentOutput, -powerMult);
-        // bottomFeedMotor.set(-powerMult);
-        // topFeedMotor.set(-powerMult);
-    }
 
     public void kill() {
         intakeMotor.set(ControlMode.PercentOutput, 0);

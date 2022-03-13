@@ -84,4 +84,8 @@ public class IO {
     public static boolean getXboxAButton() {
         return xbox.getAButton();
     }
+
+    public static boolean getXboxYButton() {
+        return xbox.getYButton();
+    }
 }
