@@ -16,8 +16,6 @@ public class IntakeSystem extends SubsystemBase {
 
     private final double powerMult = 1;
 
-    private int currentBall = 1;
-
     public IntakeSystem() {
         intakeMotor = new TalonSRX(Constants.intakeMotor);
         intakeMotor.setInverted(true);
@@ -25,16 +23,7 @@ public class IntakeSystem extends SubsystemBase {
         intakeSolenoid = new Solenoid(Constants.intakeSolenoid, PneumaticsModuleType.CTREPCM, 0);
     }
 
-    public int getBallNumber() {
-        return currentBall;
-    }
-
-    public void setBallNumber(int ballNumber) {
-        currentBall = ballNumber;
-    }
-
     public void intake(double speed) {
-        //negative b/c neg motor speed picks up, positive spits out
         intakeMotor.set(ControlMode.PercentOutput, -speed);
         if (speed != 0)
             intakeSolenoid.set(true);

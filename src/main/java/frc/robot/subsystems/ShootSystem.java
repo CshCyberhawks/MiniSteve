@@ -19,10 +19,7 @@ public class ShootSystem extends SubsystemBase {
     private CANSparkMax topMotor;
     private CANSparkMax bottomRightMotor;
     private CANSparkMax bottomLeftMotor;
-    private TalonSRX intakeMotor;
-    private VictorSPX traversalMotor;
     private double topMotorMult = 2;
-    private double traversalMult = 2;
     private RelativeEncoder topEncoder;
     private RelativeEncoder rightEncoder;
     private RelativeEncoder leftEncoder;
@@ -33,13 +30,11 @@ public class ShootSystem extends SubsystemBase {
         topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         bottomLeftMotor = new CANSparkMax(Constants.leftShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         bottomRightMotor = new CANSparkMax(Constants.rightShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
-        traversalMotor = new VictorSPX(Constants.traversalMotor);
-        intakeMotor = new TalonSRX(Constants.intakeMotor);
         // traversalEncoder = traversalMotor.getEncoder();
         topEncoder = topMotor.getEncoder();
         rightEncoder = bottomRightMotor.getEncoder();
         leftEncoder = bottomLeftMotor.getEncoder();
-        motorController = new PIDController(0.01, 0, 0);
+        motorController = new PIDController(1, 0, 0);
     }
 
     // Syncing of bottom 2 motors
@@ -68,13 +63,5 @@ public class ShootSystem extends SubsystemBase {
         topMotor.set(/*-power * topMotorMult*/topPIDOut / (maxRPM * topMotorMult));
         setBottom(power);
         SmartDashboard.putNumber("Top Motor Mult", topMotorMult);
-    }
-
-    public void intake(double power) {
-        intakeMotor.set(ControlMode.PercentOutput, power);
-    }
-
-    public void traverse(double power) {
-        traversalMotor.set(ControlMode.PercentOutput, power * traversalMult);
     }
 }

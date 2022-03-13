@@ -16,7 +16,6 @@ public class ShootCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double traversePower = IO.getXboxLeftY();
         double power = IO.getXboxRightTrigger();
 
         speedMult = SmartDashboard.getNumber("Speed Mult", speedMult);
@@ -24,6 +23,5 @@ public class ShootCommand extends CommandBase {
 
         shootSystem.shoot(power);
 
-        shootSystem.traverse(traversePower);
     }
 }

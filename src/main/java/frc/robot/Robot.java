@@ -6,11 +6,12 @@ package frc.robot;
 
 import frc.robot.commands.AutoIntakeCommand;
 import frc.robot.commands.ManualIntakeCommand;
+import frc.robot.commands.ManualTransportCommand;
 import frc.robot.commands.ShootCommand;
 
 import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.ShootSystem;
-
+import frc.robot.subsystems.TransportSystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -41,6 +42,7 @@ public class Robot extends TimedRobot {
   // private OldSwerveDriveTrain swerveSystem;
   // private SwerveDriveTrain swerveSystem;
   private static IntakeSystem intakeSystem;
+  private static TransportSystem transportSystem;
   // private RobotContainer m_robotContainer;
 
   /**
@@ -60,6 +62,7 @@ public class Robot extends TimedRobot {
     topBreakBeam = new DigitalInput(Constants.topBreakBeam);
     shootSystem = new ShootSystem();
     intakeSystem = new IntakeSystem();
+    transportSystem = new TransportSystem();
     // driveSystem = new DriveSystem();
     CameraServer.startAutomaticCapture();
   }
@@ -117,6 +120,7 @@ public class Robot extends TimedRobot {
 
     shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
     intakeSystem.setDefaultCommand(new ManualIntakeCommand(intakeSystem));
+    transportSystem.setDefaultCommand(new ManualTransportCommand(transportSystem));
     // swerveSystem.setDefaultCommand(new OldSwerveCommand(swerveSystem));
 
     // This makes sure that the autonomous stops running when
@@ -150,8 +154,12 @@ public class Robot extends TimedRobot {
   public static ShootSystem getShootSystem() {
     return shootSystem;
   }
+  
+  public static TransportSystem getTransportSystem() {
+    return transportSystem;
+  }
 
-  public static DigitalInput getfrontBreakBeam() {
+  public static DigitalInput getFrontBreakBeam() {
     return frontBreakBeam;
   }
 

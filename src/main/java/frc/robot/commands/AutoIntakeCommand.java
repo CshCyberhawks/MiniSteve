@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.IntakeSystem;
@@ -21,12 +22,12 @@ public class AutoIntakeCommand extends CommandBase {
     @Override 
     public void end(boolean interrupted) {
         //intakeSystem.kill (stop the motors)
-        Robot.getShootSystem().traverse(0);
+        Robot.getTransportSystem().move(0);
         Robot.getIntakeSystem().kill();
     }
 
     @Override
     public boolean isFinished() {
-        return !Robot.getfrontBreakBeam().get();
+        return !Robot.getFrontBreakBeam().get();
     }
 }
