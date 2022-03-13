@@ -26,4 +26,8 @@ public class IntakeSystem extends SubsystemBase {
         // bottomFeedMotor.set(-powerMult);
         // topFeedMotor.set(-powerMult);
     }
+
+    public void kill() {
+        intakeMotor.set(ControlMode.PercentOutput, 0);
+    }
 }

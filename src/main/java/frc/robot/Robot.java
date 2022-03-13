@@ -33,14 +33,14 @@ public class Robot extends TimedRobot {
   // private OldSwerveDriveTrain swerveSystem;
   // private OldSwerveDriveTrain swerveSystem;
   // private SwerveDriveTrain swerveSystem;
-  private ShootSystem shootSystem;
-  private DigitalInput frontBreakBeam;
-  private DigitalInput backBreakBeam;
-  private DigitalInput topBreakBeam;
+  private static ShootSystem shootSystem;
+  private static DigitalInput frontBreakBeam;
+  private static DigitalInput backBreakBeam;
+  private static DigitalInput topBreakBeam;
 
   // private OldSwerveDriveTrain swerveSystem;
   // private SwerveDriveTrain swerveSystem;
-  private IntakeSystem intakeSystem;
+  private static IntakeSystem intakeSystem;
   // private RobotContainer m_robotContainer;
 
   /**
@@ -109,12 +109,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {
-    if (((frontBreakBeam.get() && !backBreakBeam.get()) || (frontBreakBeam.get() && backBreakBeam.get())) && !topBreakBeam.get())
-      shootSystem.traverse(0);
-    if (((!frontBreakBeam.get() && backBreakBeam.get()) || !(frontBreakBeam.get() && backBreakBeam.get())) && topBreakBeam.get())
-      shootSystem.traverse(-.5);
-  }
+  public void autonomousPeriodic() {}
 
   @Override
   public void teleopInit() {
@@ -147,4 +142,24 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
+
+  public static IntakeSystem getIntakeSystem() {
+    return intakeSystem;
+  }
+
+  public static ShootSystem getShootSystem() {
+    return shootSystem;
+  }
+
+  public static DigitalInput getfrontBreakBeam() {
+    return frontBreakBeam;
+  }
+
+  public static DigitalInput getBackBreakBeam() {
+    return backBreakBeam;
+  }
+
+  public static DigitalInput getTopBreakBeam() {
+    return topBreakBeam;
+  }
 }
