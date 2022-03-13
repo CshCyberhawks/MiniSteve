@@ -178,34 +178,6 @@ public class SwerveWheel {
         }
     }
 
-    public void autoDrive(double theta, double r) {
-        double inputRotations = r;
-
-        double currentTurnPosition = wrapAroundAngles(turnEncoder.get());
-        double desiredTurnPosition = wrapAroundAngles(theta);
-
-        double driveVelocity = driveEncoder.getVelocity();
-        currentDriveSpeed = convertToMetersPerSecondFromSecond(driveVelocity);
-
-        SmartDashboard.putNumber("drive speed", currentDriveSpeed);
-
-        // if (Math.abs(desiredTurnPosition - currentTurnPosition) > 90
-        // && Math.abs(desiredTurnPosition - currentTurnPosition) < 270) {
-        // desiredTurnPosition = (desiredTurnPosition + 180) % 360;
-        // wheelSpeed *= -1;
-        // }
-
-        double wheelTurn = turnPidController.calculate(currentTurnPosition, desiredTurnPosition);
-
-        SmartDashboard.putNumber("drive output", r / 3.777);
-
-        // talonFX controlmode.position for positional control mode
-        driveMotor.set(ControlMode.PercentOutput, r / 3.777);
-        if (!turnPidController.atSetpoint()) {
-            turnMotor.set(ControlMode.PercentOutput, wheelTurn);
-        }
-    }
-
     public void preserveAngle() {
         drive(0, oldAngle, "no");
     }
