@@ -58,17 +58,20 @@ public class MathClass {
 
         double max = getMax(speeds);
         double min = getMin(speeds);
+        double divSpeed = Math.abs(min) > max ? Math.abs(min) : max;
+        double highestSpeed = max > maxSpeed ? maxSpeed : max;
+        double lowestSpeed = min < minSpeed ? minSpeed : min;
 
         for (int i = 0; i < speeds.length; i++) {
             if (max > maxSpeed && speeds[i] > 0) {
-                retSpeeds[i] = speeds[i] / max * maxSpeed;
+                retSpeeds[i] = speeds[i] / divSpeed * highestSpeed;
             } else if (min < minSpeed && speeds[i] < 0) {
-                retSpeeds[i] = speeds[i] / min * minSpeed;
+                retSpeeds[i] = speeds[i] / -divSpeed * lowestSpeed;
             }
         }
 
         return retSpeeds;
-    }
+    }   
 
     public static double optimize(double desiredAngle, double currentAngle) {
         if (Math.abs(desiredAngle - currentAngle) > 90 && Math.abs(desiredAngle - currentAngle) < 270) {

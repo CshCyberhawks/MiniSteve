@@ -4,6 +4,7 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.util.FieldPosition;
 import frc.robot.util.Gyro;
+import frc.robot.util.MathClass;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -182,16 +183,20 @@ public class SwerveDriveTrain extends SubsystemBase {
                 double backRightAngle = backRightVector[0];
                 double backLeftAngle = backLeftVector[0];
 
+                double[] wheelSpeeds = { frontRightSpeed, frontLeftSpeed, backRightSpeed, backLeftSpeed };
+
+                wheelSpeeds = MathClass.normalizeSpeeds(wheelSpeeds, 1, -1);
+
                 // SmartDashboard.putNumber("frontRightAngle", frontRightAngle);
                 // SmartDashboard.putNumber("frontLeftAngle", frontLeftAngle);
                 // SmartDashboard.putNumber("backRightAngle", backRightAngle);
                 // SmartDashboard.putNumber("backLeftAngle", backLeftAngle);
 
                 // sets the speed and angle of each motor
-                backRight.drive(backRightSpeed, backRightAngle, mode);
-                backLeft.drive(backLeftSpeed, backLeftAngle, mode);
-                frontRight.drive(frontRightSpeed, frontRightAngle, mode);
-                frontLeft.drive(frontLeftSpeed, frontLeftAngle, mode);
+                backRight.drive(wheelSpeeds[2], backRightAngle, mode);
+                backLeft.drive(wheelSpeeds[3], backLeftAngle, mode);
+                frontRight.drive(wheelSpeeds[0], frontRightAngle, mode);
+                frontLeft.drive(wheelSpeeds[1], frontLeftAngle, mode);
 
                 // predictedVelocity.x = inputX * maxSwos * period;
                 // predictedVelocity.y = inputY * maxSwos * period;
