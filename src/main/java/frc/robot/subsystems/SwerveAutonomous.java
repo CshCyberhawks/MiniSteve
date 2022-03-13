@@ -48,18 +48,18 @@ public class SwerveAutonomous {
     public void setDesiredPosition(Vector2 desiredPosition) {
         this.desiredPositionCart = desiredPosition;
         this.desiredPositionPolar = new PolarCoordinate(desiredPosition);
-        SmartDashboard.putNumber("desiredPositionPolarR", desiredPositionPolar.r);
+        // SmartDashboard.putNumber("desiredPositionPolarR", desiredPositionPolar.r);
 
         trapDesiredState = new TrapezoidProfile.State(desiredPositionPolar.r, 0);
 
-        SmartDashboard.putNumber("polarAngle", desiredPositionPolar.theta);
+        // SmartDashboard.putNumber("polarAngle", desiredPositionPolar.theta);
 
         startTime = WPIUtilJNI.now() * 1.0e-6;
     }
 
     public void setDesiredAngle(double desiredAngle) {
         this.desiredAngle = desiredAngle;
-        SmartDashboard.putNumber("Desired Angle", desiredAngle);
+        // SmartDashboard.putNumber("Desired Angle", desiredAngle);
     }
 
     public void translate() {
@@ -69,7 +69,7 @@ public class SwerveAutonomous {
 
         double trapTime = currentTime - prevTime;
 
-        SmartDashboard.putNumber("trapTime", trapTime);
+        // SmartDashboard.putNumber("trapTime", trapTime);
 
         TrapezoidProfile.State trapOutput = trapProfile.calculate(trapTime);
 
@@ -78,8 +78,8 @@ public class SwerveAutonomous {
         currentVelocity = MathClass.cartesianToPolar(Robot.swo.getVelocities()[0],
                 Robot.swo.getVelocities()[1])[1];
 
-        SmartDashboard.putNumber("trapVelocity", trapOutput.velocity);
-        SmartDashboard.putNumber("trapPosition", trapOutput.position);
+        // SmartDashboard.putNumber("trapVelocity", trapOutput.velocity);
+        // SmartDashboard.putNumber("trapPosition", trapOutput.position);
 
         double pidOutput = autoPID.calculate(currentVelocity, trapOutput.velocity);
 

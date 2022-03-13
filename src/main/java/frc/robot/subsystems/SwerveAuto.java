@@ -24,23 +24,21 @@ public class SwerveAuto {
 
     // both below args are in m/s - first is velocity (35% of max robot velocity of
     // 3.77), and a max accel of .05 m/s
-    private TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(0.5, 0.01);
+    private TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(3.777, 1);
     private TrapezoidProfile.State trapXCurrentState = new TrapezoidProfile.State(0, 0);
     private TrapezoidProfile.State trapXDesiredState;
     private TrapezoidProfile.State trapYCurrentState = new TrapezoidProfile.State(0, 0);
     private TrapezoidProfile.State trapYDesiredState;
 
-    private PIDController xPID = new PIDController(0.01, 0, 0);
-    private PIDController yPID = new PIDController(0.01, 0, 0);
+    private PIDController xPID = new PIDController(0.1, 0, 0);
+    private PIDController yPID = new PIDController(0.1, 0, 0);
 
-    private double prevTime;
+    private double prevTime = 0;
 
     public void setDesiredPosition(Vector2 desiredPosition) {
         this.desiredPosition = desiredPosition;
         trapXDesiredState = new TrapezoidProfile.State(this.desiredPosition.x, 0);
         trapYDesiredState = new TrapezoidProfile.State(this.desiredPosition.y, 0);
-
-        prevTime = WPIUtilJNI.now() * 1.0e-6;
     }
 
     public void setDesiredAngle(double angle) {
@@ -73,7 +71,7 @@ public class SwerveAuto {
 
     public void translate() {
         double timeNow = WPIUtilJNI.now() * 1.0e-6;
-        double trapTime = timeNow - prevTime;
+        double trapTime = prevTime == 0 ? 0 : timeNow - prevTime;
 
         System.out.println("isTranslating");
 
@@ -87,12 +85,15 @@ public class SwerveAuto {
         TrapezoidProfile.State trapYOutput = trapYProfile.calculate(trapTime);
 
         double xVel = trapXOutput.velocity
-                + xPID.calculate(Robot.swo.getVelocities()[0], trapXDesiredState.velocity);
+                + xPID.calculate(Robot.swo.getVelocities()[0], trapXOutput.velocity);
 
         double yVel = trapYOutput.velocity
-                + yPID.calculate(Robot.swo.getVelocities()[1], trapYDesiredState.velocity);
+                + yPID.calculate(Robot.swo.getVelocities()[1], trapYOutput.velocity);
 
-        Robot.swerveSystem.drive(xVel, yVel, 0, 0, "auto");
+        SmartDashboard.putNumber("xVel", xVel / 3.777);
+        SmartDashboard.putNumber("yVel", yVel / 3.777);
+
+        Robot.swerveSystem.drive(xVel / 3.777, yVel / 3.777, 0, 0, "auto");
 
         trapXCurrentState = trapXOutput;
         trapYCurrentState = trapYOutput;
