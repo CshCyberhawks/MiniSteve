@@ -27,23 +27,23 @@ public class AutoGoToAngle extends CommandBase {
         // meters), y in swos, and twist in degrees
         // (based on
         // robot staring position)
-        Robot.swerveAutonomous.setDesiredAngle(desiredAngle);
+        Robot.swerveAuto.setDesiredAngle(desiredAngle);
     }
 
     @Override
     public void execute() {
-        Robot.swerveAutonomous.twist();
+        Robot.swerveAuto.twist();
     }
 
     @Override
     public void end(boolean interrupted) {
-        SmartDashboard.putBoolean("auto angle command finsihed", Robot.swerveAutonomous.isAtDesiredAngle());
-        Robot.swerveAutonomous.kill();
+        SmartDashboard.putBoolean("auto angle command finsihed", Robot.swerveAuto.isAtDesiredAngle());
+        Robot.swerveAuto.kill();
     }
 
     @Override
     public boolean isFinished() {
-        return Robot.swerveAutonomous.isAtDesiredAngle();
+        return Robot.swerveAuto.isAtDesiredAngle();
     }
 
 }

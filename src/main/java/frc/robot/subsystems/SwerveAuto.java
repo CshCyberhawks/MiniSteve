@@ -9,12 +9,15 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.robot.Robot;
 
 public class SwerveAuto {
-    private FieldPosition desiredPosition;
+    private Vector2 desiredPosition;
+    private double desiredAngle;
+
     private double positionStopRange = .1;
     private boolean isAtPosition = false;
     private boolean isAtAngle = false;
@@ -27,28 +30,31 @@ public class SwerveAuto {
     private TrapezoidProfile.State trapYCurrentState = new TrapezoidProfile.State(0, 0);
     private TrapezoidProfile.State trapYDesiredState;
 
-    private double startTime;
+    private PIDController xPID = new PIDController(0.01, 0, 0);
+    private PIDController yPID = new PIDController(0.01, 0, 0);
 
-    public void setDesiredPosition(FieldPosition _desiredPosition) {
-        desiredPosition = _desiredPosition;
-        trapXDesiredState = new TrapezoidProfile.State(desiredPosition.positionCoord.x, 0);
-        trapYDesiredState = new TrapezoidProfile.State(desiredPosition.positionCoord.y, 0);
+    private double prevTime;
 
-        SmartDashboard.putNumber("Desired Angle", desiredPosition.angle);
-        SmartDashboard.putNumber("Desired X", desiredPosition.positionCoord.x);
-        SmartDashboard.putNumber("Desired Y", desiredPosition.positionCoord.y);
+    public void setDesiredPosition(Vector2 desiredPosition) {
+        this.desiredPosition = desiredPosition;
+        trapXDesiredState = new TrapezoidProfile.State(this.desiredPosition.x, 0);
+        trapYDesiredState = new TrapezoidProfile.State(this.desiredPosition.y, 0);
 
-        startTime = WPIUtilJNI.now() * 1.0e-6;
+        prevTime = WPIUtilJNI.now() * 1.0e-6;
+    }
+
+    public void setDesiredAngle(double angle) {
+        this.desiredAngle = angle;
     }
 
     public boolean isAtDesiredPosition() {
         if (MathClass.calculateDeadzone(
-                Math.abs(Robot.swo.getPosition().positionCoord.x) - Math.abs(desiredPosition.positionCoord.x),
+                Math.abs(Robot.swo.getPosition().positionCoord.x) - Math.abs(desiredPosition.x),
                 positionStopRange) == 0) {
 
             if (MathClass.calculateDeadzone(
                     Math.abs(Robot.swo.getPosition().positionCoord.y) -
-                            Math.abs(desiredPosition.positionCoord.y),
+                            Math.abs(desiredPosition.y),
                     positionStopRange) == 0) {
                 return true;
             }
@@ -58,81 +64,51 @@ public class SwerveAuto {
     }
 
     public boolean isAtDesiredAngle() {
-        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().angle) - Math.abs(desiredPosition.angle),
+        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().angle) - Math.abs(desiredAngle),
                 4) == 0) {
             return true;
         }
         return false;
     }
 
-    public boolean isAtDesiredPosAng() {
-        return isAtPosition && isAtAngle;
-    }
-
-    public void drive() {
+    public void translate() {
         double timeNow = WPIUtilJNI.now() * 1.0e-6;
-        double trapTime = timeNow - startTime;
+        double trapTime = timeNow - prevTime;
 
-        isAtPosition = isAtDesiredPosition();
-        isAtAngle = isAtDesiredAngle();
+        System.out.println("isTranslating");
 
-        // translateInputs[0] = MathUtil.clamp(translateInputs[0], -.2, .2);
-        // translateInputs[1] = MathUtil.clamp(translateInputs[1], -.2, .2);
+        SmartDashboard.putNumber("Trap X Desired State", trapXDesiredState.velocity);
+        SmartDashboard.putNumber("Trap Y Desired State", trapYDesiredState.velocity);
 
-        SmartDashboard.putBoolean("isAtAngle", isAtAngle);
-        SmartDashboard.putBoolean("isAtDesiredPos", isAtPosition);
+        TrapezoidProfile trapXProfile = new TrapezoidProfile(trapConstraints, trapXDesiredState, trapXCurrentState);
+        TrapezoidProfile trapYProfile = new TrapezoidProfile(trapConstraints, trapYDesiredState, trapYCurrentState);
 
-        if (!isAtPosition) {
-            System.out.println("isTranslating");
+        TrapezoidProfile.State trapXOutput = trapXProfile.calculate(trapTime);
+        TrapezoidProfile.State trapYOutput = trapYProfile.calculate(trapTime);
 
-            SmartDashboard.putNumber("Trap X Desired State", trapXDesiredState.velocity);
-            SmartDashboard.putNumber("Trap Y Desired State", trapYDesiredState.velocity);
+        double xVel = trapXOutput.velocity
+                + xPID.calculate(Robot.swo.getVelocities()[0], trapXDesiredState.velocity);
 
-            TrapezoidProfile trapXProfile = new TrapezoidProfile(trapConstraints, trapXDesiredState, trapXCurrentState);
-            TrapezoidProfile trapYProfile = new TrapezoidProfile(trapConstraints, trapYDesiredState, trapYCurrentState);
+        double yVel = trapYOutput.velocity
+                + yPID.calculate(Robot.swo.getVelocities()[1], trapYDesiredState.velocity);
 
-            double[] translateInputs = translate();
+        Robot.swerveSystem.drive(xVel, yVel, 0, 0, "auto");
 
-            SmartDashboard.putNumber("autoX", translateInputs[0]);
-            SmartDashboard.putNumber("autoY", translateInputs[1]);
+        trapXCurrentState = trapXOutput;
+        trapYCurrentState = trapYOutput;
 
-            translateInputs[0] *= Math.abs(trapXProfile.calculate(trapTime).velocity);
-            translateInputs[1] *= Math.abs(trapYProfile.calculate(trapTime).velocity);
+        prevTime = timeNow;
 
-            // translateInputs[0] = trapXProfile.calculate(trapTime).velocity;
-            // translateInputs[1] = trapYProfile.calculate(trapTime).velocity;
-
-            SmartDashboard.putNumber("trapXOutput", translateInputs[0]);
-            SmartDashboard.putNumber("trapYOutput", translateInputs[1]);
-
-            Robot.swerveSystem.drive(translateInputs[0], translateInputs[1], 0, 0, "auto");
-        }
-        if (isAtPosition && !isAtAngle) {
-            System.out.println("isTwisting");
-            double twistInput = twist();
-            SmartDashboard.putNumber(" auto twistVal ", twistInput);
-            Robot.swerveSystem.drive(0, 0, twistInput, 0, "auto");
-        }
-
-        trapXCurrentState = new TrapezoidProfile.State(Robot.swo.getPosition().positionCoord.x,
-                Robot.swo.getVelocities()[0]);
-        trapYCurrentState = new TrapezoidProfile.State(Robot.swo.getPosition().positionCoord.y,
-                Robot.swo.getVelocities()[1]);
     }
 
-    public double[] translate() {
-        double inputX = MathUtil.clamp(desiredPosition.positionCoord.x - Robot.swo.getPosition().positionCoord.x, -1,
-                1);
-        double inputY = MathUtil.clamp(desiredPosition.positionCoord.y - Robot.swo.getPosition().positionCoord.y, -1,
-                1);
+    public void twist() {
+        double twistValue = MathUtil.clamp(Robot.swo.getPosition().angle - desiredAngle, -1, 1);
 
-        double[] ret = { inputX, inputY };
-        return isAtPosition ? new double[] { 0, 0 } : ret;
-    }
+        System.out.println("isTwisting");
+        double twistInput = twistValue * .5;
+        SmartDashboard.putNumber(" auto twistVal ", twistInput);
+        Robot.swerveSystem.drive(0, 0, twistInput, 0, "auto");
 
-    public double twist() {
-        double twistValue = MathUtil.clamp(Robot.swo.getPosition().angle - desiredPosition.angle, -1, 1);
-        return isAtAngle ? 0 : twistValue;
     }
 
     public void kill() {

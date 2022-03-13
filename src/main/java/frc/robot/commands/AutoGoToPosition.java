@@ -27,23 +27,23 @@ public class AutoGoToPosition extends CommandBase {
         // meters), y in swos, and twist in degrees
         // (based on
         // robot staring position)
-        Robot.swerveAutonomous.setDesiredPosition(desiredPosition);
+        Robot.swerveAuto.setDesiredPosition(desiredPosition);
     }
 
     @Override
     public void execute() {
-        Robot.swerveAutonomous.translate();
+        Robot.swerveAuto.translate();
     }
 
     @Override
     public void end(boolean interrupted) {
-        SmartDashboard.putBoolean("auto translate command finsihed", Robot.swerveAutonomous.isAtDesiredPosition());
-        Robot.swerveAutonomous.kill();
+        SmartDashboard.putBoolean("auto translate command finsihed", Robot.swerveAuto.isAtDesiredPosition());
+        Robot.swerveAuto.kill();
     }
 
     @Override
     public boolean isFinished() {
-        return Robot.swerveAutonomous.isAtDesiredPosition();
+        return Robot.swerveAuto.isAtDesiredPosition();
     }
 
 }
