@@ -8,8 +8,7 @@ import frc.robot.util.IO;
 
 public class ShootCommand extends CommandBase {
     private final ShootSystem shootSystem;
-    private final double traversePowerMult = .33;
-    private final double traversalPower = .95;
+    private double speedMult = .55;
 
     public ShootCommand(ShootSystem subsystem) {
         shootSystem = subsystem;
@@ -28,7 +27,9 @@ public class ShootCommand extends CommandBase {
         pneumaticsPower = Math.abs(pneumaticsPower) > 0 ? pneumaticsPower : 0;
         traversePower = Math.abs(traversePower) > 0 ? traversePower : 0;
 
-        
+        speedMult = SmartDashboard.getNumber("Speed Mult", speedMult);
+        SmartDashboard.putNumber("Speed Mult", speedMult);
+
         shootSystem.intake(intakePower);
         shootSystem.shoot(power);
         shootSystem.shiftGears(pneumaticsPower);
