@@ -22,16 +22,21 @@ public class SwerveAuto {
     private boolean isAtPosition = false;
     private boolean isAtAngle = false;
 
+    private boolean trapXFinished = false;
+    private boolean trapYFinsihed = false;
+
     // both below args are in m/s - first is velocity (35% of max robot velocity of
     // 3.77), and a max accel of .05 m/s
     private TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(3.777, 1);
-    private TrapezoidProfile.State trapXCurrentState = new TrapezoidProfile.State(0, 0);
+    private TrapezoidProfile.State trapXCurrentState = new TrapezoidProfile.State(
+            Robot.swo.getPosition().positionCoord.x, 0);
     private TrapezoidProfile.State trapXDesiredState;
-    private TrapezoidProfile.State trapYCurrentState = new TrapezoidProfile.State(0, 0);
+    private TrapezoidProfile.State trapYCurrentState = new TrapezoidProfile.State(
+            Robot.swo.getPosition().positionCoord.y, 0);
     private TrapezoidProfile.State trapYDesiredState;
 
-    private PIDController xPID = new PIDController(0.1, 0, 0);
-    private PIDController yPID = new PIDController(0.1, 0, 0);
+    private PIDController xPID = new PIDController(1, 0, 0);
+    private PIDController yPID = new PIDController(1, 0, 0);
 
     private double prevTime = 0;
 
@@ -46,19 +51,7 @@ public class SwerveAuto {
     }
 
     public boolean isAtDesiredPosition() {
-        if (MathClass.calculateDeadzone(
-                Math.abs(Robot.swo.getPosition().positionCoord.x) - Math.abs(desiredPosition.x),
-                positionStopRange) == 0) {
-
-            if (MathClass.calculateDeadzone(
-                    Math.abs(Robot.swo.getPosition().positionCoord.y) -
-                            Math.abs(desiredPosition.y),
-                    positionStopRange) == 0) {
-                return true;
-            }
-
-        }
-        return false;
+        return false;// trapXFinished && trapYFinsihed;
     }
 
     public boolean isAtDesiredAngle() {
@@ -73,25 +66,29 @@ public class SwerveAuto {
         double timeNow = WPIUtilJNI.now() * 1.0e-6;
         double trapTime = prevTime == 0 ? 0 : timeNow - prevTime;
 
-        System.out.println("isTranslating");
-
-        SmartDashboard.putNumber("Trap X Desired State", trapXDesiredState.velocity);
-        SmartDashboard.putNumber("Trap Y Desired State", trapYDesiredState.velocity);
-
         TrapezoidProfile trapXProfile = new TrapezoidProfile(trapConstraints, trapXDesiredState, trapXCurrentState);
         TrapezoidProfile trapYProfile = new TrapezoidProfile(trapConstraints, trapYDesiredState, trapYCurrentState);
+
+        trapXFinished = trapXProfile.isFinished(trapTime);
+        trapYFinsihed = trapYProfile.isFinished(trapTime);
 
         TrapezoidProfile.State trapXOutput = trapXProfile.calculate(trapTime);
         TrapezoidProfile.State trapYOutput = trapYProfile.calculate(trapTime);
 
+        double xPIDOutput = xPID.calculate(MathClass.swosToMeters(Robot.swo.getPosition().positionCoord.x),
+                trapXOutput.position);
+
+        double yPIDOutput = yPID.calculate(MathClass.swosToMeters(Robot.swo.getPosition().positionCoord.y),
+                trapYOutput.position);
+
         double xVel = trapXOutput.velocity
-                + xPID.calculate(Robot.swo.getVelocities()[0], trapXOutput.velocity);
+                + xPIDOutput;
 
         double yVel = trapYOutput.velocity
-                + yPID.calculate(Robot.swo.getVelocities()[1], trapYOutput.velocity);
+                + yPIDOutput;
 
-        SmartDashboard.putNumber("xVel", xVel / 3.777);
-        SmartDashboard.putNumber("yVel", yVel / 3.777);
+        SmartDashboard.putNumber("xPID", xVel / 3.777);
+        SmartDashboard.putNumber("yPID", yVel / 3.777);
 
         Robot.swerveSystem.drive(xVel / 3.777, yVel / 3.777, 0, 0, "auto");
 
