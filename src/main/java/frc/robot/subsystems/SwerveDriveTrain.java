@@ -11,19 +11,35 @@ public class SwerveDriveTrain extends SubsystemBase {
      private SwerveWheel backRight;
      private SwerveWheel frontLeft;
      private SwerveWheel frontRight;
-     public Gyro gyro;
+     private Gyro gyro;
 
      public SwerveDriveTrain() {
           gyro = new Gyro();
-          backLeft = new SwerveWheel(Constants.backLeftTurnMotor, Constants.backLeftDriveMotor,
-                    Constants.backLeftEncoder);
-          backRight = new SwerveWheel(Constants.backRightTurnMotor, Constants.backRightDriveMotor,
-                    Constants.backRightEncoder);
-          frontLeft = new SwerveWheel(Constants.frontLeftTurnMotor, Constants.frontLeftDriveMotor,
-                    Constants.frontLeftEncoder);
-          frontRight = new SwerveWheel(Constants.frontRightTurnMotor, Constants.frontRightDriveMotor,
-                    Constants.frontRightEncoder);
+          backLeft = new SwerveWheel(
+               Constants.backLeftTurnMotor, 
+               Constants.backLeftDriveMotor,
+               Constants.backLeftEncoder
+               );
+          backRight = new SwerveWheel(
+               Constants.backRightTurnMotor,
+               Constants.backRightDriveMotor,
+               Constants.backRightEncoder
+               );
+          frontLeft = new SwerveWheel(
+               Constants.frontLeftTurnMotor, 
+               Constants.frontLeftDriveMotor,
+               Constants.frontLeftEncoder
+               );
+          frontRight = new SwerveWheel(
+               Constants.frontRightTurnMotor, 
+               Constants.frontRightDriveMotor, 
+               Constants.frontRightEncoder
+               );
           gyro.setOffset();
+     }
+
+     public Gyro getGyro() {
+          return gyro;
      }
 
      public double[] polarToCartesian(double theta, double r) {

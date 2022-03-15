@@ -10,11 +10,27 @@ public class TransportSystem extends SubsystemBase {
     
     private VictorSPX transportMotor;
     private double traversalMult = 2;
-    public boolean isRunningSequence = false;
-    public int cargoStored = 0;
+    private boolean isRunningSequence = false;
+    private int cargoStored = 0;
 
     public TransportSystem() {
         transportMotor = new VictorSPX(Constants.traversalMotor);
+    }
+
+    public boolean getSequenceState() {
+        return isRunningSequence;
+    }
+
+    public int getCargoAmount() {
+        return cargoStored;
+    }
+
+    public void setSequenceState(boolean state) {
+        isRunningSequence = state;
+    }
+
+    public void setCargoAmount(int amount) {
+        cargoStored = amount;
     }
 
     public void move(double speed) {

@@ -21,15 +21,13 @@ public class Limelight extends SubsystemBase {
     private static NetworkTableEntry pipeline = table.getEntry("pipeline");
     private static Alliance team = DriverStation.getAlliance();
 
-    public Limelight() {
-    }
+    public Limelight() {}
 
     public static void setTeam() {
         if (team == Alliance.Red)
             pipeline.setString("FRCPipe");
-        else if (team == Alliance.Blue) {
+        else if (team == Alliance.Blue)
             pipeline.setString("FRCBPipe");
-        }
     }
 
     public static double getHorizontalOffset() {

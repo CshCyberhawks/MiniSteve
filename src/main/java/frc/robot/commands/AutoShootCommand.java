@@ -1,11 +1,9 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.ShootSystem;
 import frc.robot.subsystems.TransportSystem;
-import frc.robot.util.IO;
 
 public class AutoShootCommand extends CommandBase {
     private final ShootSystem shootSystem;
@@ -15,7 +13,7 @@ public class AutoShootCommand extends CommandBase {
 
     public AutoShootCommand(ShootSystem subsystem) {
         shootSystem = subsystem;
-        shootSystem.autoShootRunning = true;
+        shootSystem.setAutoShootState(true);
         transportSystem = Robot.getTransportSystem();
         addRequirements(subsystem);
 
@@ -23,12 +21,12 @@ public class AutoShootCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double currentTopEncoderSpeed = shootSystem.topEncoder.getRate() / 8192;
+        double currentTopEncoderSpeed = shootSystem.getTopEncoder().getRate() / 8192;
 
         double encoderDifference = currentTopEncoderSpeed - lastTopEncoderSpeed;
 
-        if (encoderDifference < 0 && transportSystem.cargoStored > 0) {
-            transportSystem.cargoStored--;
+        if (encoderDifference < 0 && transportSystem.getCargoAmount() > 0) {
+            transportSystem.setCargoAmount(transportSystem.getCargoAmount() - 1);
         }
 
         if (currentTopEncoderSpeed > desiredShootSpeed) {
@@ -44,12 +42,12 @@ public class AutoShootCommand extends CommandBase {
     public void end(boolean interrupted) {
         shootSystem.shoot(0);
         transportSystem.move(0);
-        shootSystem.autoShootRunning = true;
+        shootSystem.setAutoShootState(true);
 
     }
 
     @Override
     public boolean isFinished() {
-        return transportSystem.cargoStored == 0;
+        return transportSystem.getCargoAmount() == 0;
     }
 }

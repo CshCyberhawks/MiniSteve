@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.commands.AutoIntakeCommand;
 import frc.robot.commands.ManualIntakeCommand;
 import frc.robot.commands.ManualTransportCommand;
 import frc.robot.commands.ShootCommand;
@@ -16,7 +15,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
@@ -135,7 +133,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putNumber("cargoStored", transportSystem.cargoStored);
+    SmartDashboard.putNumber("cargoStored", transportSystem.getCargoAmount());
   }
 
   @Override
