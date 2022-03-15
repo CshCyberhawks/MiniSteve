@@ -122,6 +122,7 @@ public class SwerveWheel {
 
         double driveVelocity = driveEncoder.getVelocity();
         currentDriveSpeed = convertToMetersPerSecondFromSecond(driveVelocity);
+        SmartDashboard.putNumber(m_turnEncoderPort + " encoder speed", currentDriveSpeed);
         // SmartDashboard.putNumber(m_turnEncoderPort + " wheel rotations",
         // driveVelocity);
         turnValue = wrapAroundAngles(turnEncoder.get());
