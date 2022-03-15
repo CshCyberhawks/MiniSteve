@@ -33,15 +33,14 @@ public class ShootSystem extends SubsystemBase {
         topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         bottomLeftMotor = new CANSparkMax(Constants.leftShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         bottomRightMotor = new CANSparkMax(Constants.rightShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
-        
 
         // traversalEncoder = traversalMotor.getEncoder();
         topEncoder = topMotor.getEncoder();
         rightEncoder = bottomRightMotor.getEncoder();
         leftEncoder = bottomLeftMotor.getEncoder();
         topPIDController = new PIDController(1, 0, 0);
-        bottomRightPIDController = new PIDController(0.1, 0, 0);
-        bottomLeftPIDController = new PIDController(0.1, 0, 0);
+        bottomRightPIDController = new PIDController(1, 0, 0);
+        bottomLeftPIDController = new PIDController(1, 0, 0);
 
     }
 
@@ -50,8 +49,16 @@ public class ShootSystem extends SubsystemBase {
         double bottomRightPIDOutput = bottomRightPIDController.calculate(rightEncoder.getVelocity(), power);
         double bottomLeftPIDOutput = bottomLeftPIDController.calculate(leftEncoder.getVelocity(), power);
 
-        bottomRightMotor.set(-(bottomRightPIDOutput / maxRPM) + -(power / maxRPM));
-        bottomLeftMotor.set(-(bottomLeftPIDOutput / maxRPM) + -(power / maxRPM));
+        double rightSet = -((bottomRightPIDOutput / maxRPM) + (power / maxRPM));
+        double leftSet = -((bottomLeftPIDOutput / maxRPM) + (power / maxRPM));
+
+        SmartDashboard.putNumber("bottomPower", power);
+
+        SmartDashboard.putNumber("rightSet", rightSet);
+        SmartDashboard.putNumber("leftSet", leftSet);
+
+        bottomRightMotor.set(rightSet);
+        bottomLeftMotor.set(leftSet);
     }
 
     public void shoot(double power) {
