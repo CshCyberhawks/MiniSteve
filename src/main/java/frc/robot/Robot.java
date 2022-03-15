@@ -13,6 +13,7 @@ import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.ShootSystem;
 import frc.robot.subsystems.TransportSystem;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -64,7 +65,7 @@ public class Robot extends TimedRobot {
     intakeSystem = new IntakeSystem();
     transportSystem = new TransportSystem();
     // driveSystem = new DriveSystem();
-    CameraServer.startAutomaticCapture();
+    // CameraServer.startAutomaticCapture();
   }
 
   /**
@@ -134,7 +135,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    // swerveSystem.drive(IO.getPolarCoords());
+    SmartDashboard.putNumber("cargoStored", transportSystem.cargoStored);
   }
 
   @Override
@@ -160,6 +161,7 @@ public class Robot extends TimedRobot {
   }
 
   public static DigitalInput getFrontBreakBeam() {
+    SmartDashboard.putBoolean("frontBreakBeam", frontBreakBeam.get());
     return frontBreakBeam;
   }
 

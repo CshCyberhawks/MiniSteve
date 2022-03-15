@@ -53,6 +53,14 @@ public class IO {
         return Math.abs(xbox.getRightX()) > deadzone ? xbox.getRightX() : 0;
     }
 
+    public static boolean getXboxStartButton() {
+        return xbox.getStartButtonPressed();
+    }
+
+    public static boolean getXboxBackButton() {
+        return xbox.getBackButton();
+    }
+
     public static double getJoy2X() {
         return deadZone(joystick2.getX());
     }
