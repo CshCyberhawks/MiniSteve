@@ -7,6 +7,7 @@ import frc.robot.util.IO;
 
 public class ShootCommand extends CommandBase {
     private final ShootSystem shootSystem;
+    private AutoShootCommand shootCommand;
     private double speedMult = .55;
 
     public ShootCommand(ShootSystem subsystem) {
@@ -18,10 +19,16 @@ public class ShootCommand extends CommandBase {
     public void execute() {
         double power = IO.getXboxRightTrigger();
 
-        speedMult = SmartDashboard.getNumber("Speed Mult", speedMult);
-        SmartDashboard.putNumber("Speed Mult", speedMult);
+        if (IO.getXboxXButton()) {
+            shootCommand = new AutoShootCommand(shootSystem);
+            shootCommand.schedule();
+        }
 
-        shootSystem.shoot(power);
+        else if (!shootSystem.autoShootRunning) {
+            speedMult = SmartDashboard.getNumber("Speed Mult", speedMult);
+            SmartDashboard.putNumber("Speed Mult", speedMult);
+            shootSystem.shoot(power);
+        }
 
     }
 }

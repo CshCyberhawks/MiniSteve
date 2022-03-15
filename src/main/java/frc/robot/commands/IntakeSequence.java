@@ -1,20 +1,36 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
+import frc.robot.subsystems.TransportSystem;
+import frc.robot.util.IO;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class IntakeSequence extends SequentialCommandGroup {
     //this gets called upon running intake on xbox controller
-    public IntakeSequence(int ballNum) {
+    private AutoIntakeCommand intakeCommand;
+    private AutoTransportCommand transportCommand;
+
+    public IntakeSequence() {
+        intakeCommand = new AutoIntakeCommand(Robot.getIntakeSystem());
+        transportCommand = new AutoTransportCommand(Robot.getTransportSystem());
         Robot.getTransportSystem().isRunningSequence = true;
         addCommands(
-            new AutoIntakeCommand(Robot.getIntakeSystem()),
-            new AutoTransportCommand(ballNum)//1st or 2nd ball)
+            intakeCommand,
+            transportCommand
         );
+    }
+
+    @Override
+    public boolean isFinished() {
+        if (!transportCommand.isFinished()) {
+            return IO.getXboxStartButton();
+        }
+        return transportCommand.isFinished();
     }
 
     @Override
     public void end(boolean interrupted) {
         Robot.getTransportSystem().isRunningSequence = false;
     }
+
 }

@@ -20,29 +20,38 @@ public class ShootSystem extends SubsystemBase {
     private CANSparkMax bottomRightMotor;
     private CANSparkMax bottomLeftMotor;
     private double topMotorMult = 2;
-    private RelativeEncoder topEncoder;
+    public RelativeEncoder topEncoder;
     private RelativeEncoder rightEncoder;
     private RelativeEncoder leftEncoder;
-    private PIDController motorController;
+    private PIDController topPIDController;
+    private PIDController bottomRightPIDController;
+    private PIDController bottomLeftPIDController;
     private double maxRPM = 5000;
+    public boolean autoShootRunning = false;
 
     public ShootSystem() {
         topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         bottomLeftMotor = new CANSparkMax(Constants.leftShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         bottomRightMotor = new CANSparkMax(Constants.rightShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        
+
         // traversalEncoder = traversalMotor.getEncoder();
         topEncoder = topMotor.getEncoder();
         rightEncoder = bottomRightMotor.getEncoder();
         leftEncoder = bottomLeftMotor.getEncoder();
-        motorController = new PIDController(1, 0, 0);
+        topPIDController = new PIDController(1, 0, 0);
+        bottomRightPIDController = new PIDController(0.1, 0, 0);
+        bottomLeftPIDController = new PIDController(0.1, 0, 0);
+
     }
 
     // Syncing of bottom 2 motors
     private void setBottom(double power) {
-        double leftPIDOut = motorController.calculate(leftEncoder.getVelocity(), power);
-        double rightPIDOut = motorController.calculate(rightEncoder.getVelocity(), power);
-        bottomLeftMotor.set(-leftPIDOut / maxRPM);// power
-        bottomRightMotor.set(rightPIDOut / maxRPM);
+        double bottomRightPIDOutput = bottomRightPIDController.calculate(rightEncoder.getVelocity(), power);
+        double bottomLeftPIDOutput = bottomLeftPIDController.calculate(leftEncoder.getVelocity(), power);
+
+        bottomRightMotor.set(-(bottomRightPIDOutput / maxRPM) + -(power / maxRPM));
+        bottomLeftMotor.set(-(bottomLeftPIDOutput / maxRPM) + -(power / maxRPM));
     }
 
     public void shoot(double power) {
@@ -55,12 +64,11 @@ public class ShootSystem extends SubsystemBase {
 
         power *= maxRPM; // Convert to RPM
 
-        SmartDashboard.putNumber("key", power);
+        SmartDashboard.putNumber("shootPower", power);
 
-        double topPIDOut = motorController.calculate(topEncoder.getVelocity(), -power * topMotorMult);
+        double topPIDOut = topPIDController.calculate(topEncoder.getVelocity(), power);
 
-        topMotorMult = SmartDashboard.getNumber("Top Motor Mult", topMotorMult);
-        topMotor.set(/*-power * topMotorMult*/topPIDOut / (maxRPM * topMotorMult));
+        topMotor.set(-(topPIDOut / maxRPM) + -(power / maxRPM));
         setBottom(power);
         SmartDashboard.putNumber("Top Motor Mult", topMotorMult);
     }
