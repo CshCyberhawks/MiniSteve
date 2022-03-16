@@ -23,8 +23,8 @@ public class ShootSystem extends SubsystemBase {
     private PIDController topPIDController;
     private PIDController bottomRightPIDController;
     private PIDController bottomLeftPIDController;
-    private double maxRPM = 5000;
-    private boolean autoShootRunning = false;
+    private final double maxRPM = 5000;
+    private boolean autoShootRunning;
 
     public ShootSystem() {
         topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -42,7 +42,7 @@ public class ShootSystem extends SubsystemBase {
         topPIDController = new PIDController(1, 0, 0);
         bottomRightPIDController = new PIDController(1, 0, 0);
         bottomLeftPIDController = new PIDController(1, 0, 0);
-
+        autoShootRunning = false;
     }
 
     public Encoder getTopEncoder() {
@@ -70,7 +70,6 @@ public class ShootSystem extends SubsystemBase {
         double leftSet = ((bottomLeftPIDOutput / maxRPM) + (power / maxRPM));
 
         SmartDashboard.putNumber("bottomPower", power);
-
         SmartDashboard.putNumber("rightSet", rightSet);
         SmartDashboard.putNumber("leftSet", leftSet);
 
@@ -86,7 +85,6 @@ public class ShootSystem extends SubsystemBase {
         SmartDashboard.putNumber("Bottom Encoder", bottomEncoder.getRate() / 8192);
 
         power *= maxRPM; // Convert to RPM
-
         SmartDashboard.putNumber("shootPower", power);
 
         double topPIDOut = topPIDController.calculate(bottomEncoder.getRate() / 8192, power);
