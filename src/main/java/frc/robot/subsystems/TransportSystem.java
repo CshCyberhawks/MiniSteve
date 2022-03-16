@@ -9,12 +9,31 @@ import frc.robot.Constants;
 public class TransportSystem extends SubsystemBase {
     
     private VictorSPX transportMotor;
-    private double traversalMult = 2;
-    public boolean isRunningSequence = false;
-    public int cargoStored = 0;
+    private double traversalMult;
+    private boolean isRunningSequence;
+    private int cargoAmount;
 
     public TransportSystem() {
         transportMotor = new VictorSPX(Constants.traversalMotor);
+        traversalMult = 2;
+        isRunningSequence = false;
+        cargoAmount = 0;
+    }
+
+    public boolean getSequenceState() {
+        return isRunningSequence;
+    }
+
+    public int getCargoAmount() {
+        return cargoAmount;
+    }
+
+    public void setSequenceState(boolean state) {
+        isRunningSequence = state;
+    }
+
+    public void setCargoAmount(int amount) {
+        cargoAmount = amount;
     }
 
     public void move(double speed) {

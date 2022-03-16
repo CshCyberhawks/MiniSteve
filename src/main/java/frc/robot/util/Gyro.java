@@ -17,32 +17,6 @@ public class Gyro {
         offset = 0;
     }
 
-    private double wrapAroundAngles(double input) {
-        while (input < 0) {
-            input += 360;
-        }
-        return input;
-    }
-
-    public double getAngle() {
-        SmartDashboard.putNumber("Gyro Offset", offset);
-        return wrapAroundAngles(gyro.getYaw() - offset);
-        // return gyro.getYaw();
-    }
-
-    public boolean isConnected() {
-        return gyro.isConnected();
-    }
-
-    public void reset() {
-        gyro.reset();
-    }
-
-    public void setOffset() {
-        // The gyro wasn't being nice
-        offset = wrapAroundAngles(gyro.getYaw());
-    }
-
     public double getVelX() {
         return gyro.getVelocityX();
     }
@@ -55,4 +29,28 @@ public class Gyro {
         return gyro.getVelocityZ();
     }
 
+    public double getAngle() {
+        SmartDashboard.putNumber("Gyro Offset", offset);
+        return wrapAroundAngles(gyro.getYaw() - offset);
+        // return gyro.getYaw();
+    }
+
+    public void setOffset() {
+        // The gyro wasn't being nice
+        offset = wrapAroundAngles(gyro.getYaw());
+    }
+
+    public boolean isConnected() {
+        return gyro.isConnected();
+    }
+
+    private double wrapAroundAngles(double input) {
+        while (input < 0)
+            input += 360;
+        return input;
+    }
+
+    public void reset() {
+        gyro.reset();
+    }
 }

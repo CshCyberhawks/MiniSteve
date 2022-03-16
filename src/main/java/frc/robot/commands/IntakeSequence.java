@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.TransportSystem;
 import frc.robot.util.IO;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -13,7 +12,7 @@ public class IntakeSequence extends SequentialCommandGroup {
     public IntakeSequence() {
         intakeCommand = new AutoIntakeCommand(Robot.getIntakeSystem());
         transportCommand = new AutoTransportCommand(Robot.getTransportSystem());
-        Robot.getTransportSystem().isRunningSequence = true;
+        Robot.getTransportSystem().setSequenceState(true);
         addCommands(
             intakeCommand,
             transportCommand
@@ -22,15 +21,13 @@ public class IntakeSequence extends SequentialCommandGroup {
 
     @Override
     public boolean isFinished() {
-        if (!transportCommand.isFinished()) {
+        if (!transportCommand.isFinished())
             return IO.getXboxStartButton();
-        }
         return transportCommand.isFinished();
     }
 
     @Override
     public void end(boolean interrupted) {
-        Robot.getTransportSystem().isRunningSequence = false;
+        Robot.getTransportSystem().setSequenceState(false);
     }
-
 }

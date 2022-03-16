@@ -4,10 +4,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 // import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
@@ -30,7 +27,7 @@ public class ShootSystem extends SubsystemBase {
     private RelativeEncoder oldEncoder;
     private double maxRPM = 25;
     private double maxSetRPM = 10;
-    public boolean autoShootRunning = false;
+    public boolean autoShootRunning;
 
     public ShootSystem() {
         topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -51,6 +48,23 @@ public class ShootSystem extends SubsystemBase {
         topPIDController = new PIDController(.01, 0, 0);
         bottomRightPIDController = new PIDController(.01, 0, 0);
         bottomLeftPIDController = new PIDController(.01, 0, 0);
+        autoShootRunning = false;
+    }
+
+    public Encoder getTopEncoder() {
+        return topEncoder;
+    }
+
+    public Encoder getBottomEncoder() {
+        return bottomEncoder;
+    }
+
+    public boolean getAutoShootState() {
+        return autoShootRunning;
+    }
+
+    public void setAutoShootState(boolean state) {
+        autoShootRunning = state;
     }
 
     // Syncing of bottom 2 motors
@@ -62,7 +76,6 @@ public class ShootSystem extends SubsystemBase {
         double leftSet = ((bottomLeftPIDOutput / maxRPM) + (power / maxRPM));
 
         SmartDashboard.putNumber("bottomPower", power);
-
         SmartDashboard.putNumber("rightSet", rightSet);
         SmartDashboard.putNumber("leftSet", leftSet);
 

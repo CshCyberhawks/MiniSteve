@@ -1,19 +1,18 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.TransportSystem;
 
 public class AutoTransportCommand extends CommandBase {
     private int cargoStored;
-    private boolean hitBackBreak = false;
-    TransportSystem transportSystem;
+    private boolean hitBackBreak;
+    private TransportSystem transportSystem;
 
     public AutoTransportCommand(TransportSystem transportSystem) {
         this.transportSystem = transportSystem;
-        this.cargoStored = transportSystem.cargoStored;
+        this.cargoStored = transportSystem.getCargoAmount();
+        hitBackBreak = false;
 
         addRequirements(transportSystem);
     }
@@ -28,8 +27,8 @@ public class AutoTransportCommand extends CommandBase {
     public void end(boolean interrupted) {
         //sets autoClassWhatever ball number = opposite of one given
         //kills traverse
-        if (transportSystem.cargoStored < 2 && interrupted == false) {
-            transportSystem.cargoStored += 1;
+        if (transportSystem.getCargoAmount() < 2 && interrupted == false) {
+            transportSystem.setCargoAmount(transportSystem.getCargoAmount() + 1);
         }
         transportSystem.move(0);
     }

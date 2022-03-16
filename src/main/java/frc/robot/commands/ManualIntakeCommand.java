@@ -17,16 +17,16 @@ public class ManualIntakeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        boolean reverse = IO.getXboxBackButton();
+        boolean reverse = IO.removeBall();
         double speed = IO.getXboxLeftTrigger();
 
-        SmartDashboard.putBoolean("intakeSequenceBool", Robot.getTransportSystem().isRunningSequence);
-        if (IO.getXboxYButton()) {
+        SmartDashboard.putBoolean("intakeSequenceBool", Robot.getTransportSystem().getSequenceState());
+        if (IO.autoIntake()) {
             IntakeSequence intakeCommandSequence = new IntakeSequence();
             intakeCommandSequence.schedule();
             SmartDashboard.putBoolean("intakeSequenceBegan", true);
         }
-        else if (!Robot.getTransportSystem().isRunningSequence)
+        else if (!Robot.getTransportSystem().getSequenceState())
             if (reverse)
                 intakeSystem.intake(-1);
             else

@@ -85,5 +85,5 @@ public final class Constants {
     public static final int backBreakBeam = 0;
     public static final int topBreakBeam = 2;
 
-    public static final double[] turnEncoderOffsets = { 256, 346, 171, 95 };
+    public static final double[] turnEncoderOffsets = {256, 346, 171, 95};
 }
