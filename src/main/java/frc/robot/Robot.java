@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.util.net.PortForwarder;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
@@ -56,6 +57,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     // teamColor = DriverStation.getAlliance();
     // m_robotContainer = new RobotContainer();
+    // PortForwarder.add(5800, "limelight.local", 5800);
     frontBreakBeam = new DigitalInput(Constants.frontBreakBeam);
     backBreakBeam = new DigitalInput(Constants.backBreakBeam);
     topBreakBeam = new DigitalInput(Constants.topBreakBeam);
