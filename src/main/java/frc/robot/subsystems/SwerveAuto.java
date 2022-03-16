@@ -29,10 +29,10 @@ public class SwerveAuto {
     // 3.77), and a max accel of .05 m/s
     private TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(3.777, 1);
     private TrapezoidProfile.State trapXCurrentState = new TrapezoidProfile.State(
-            Robot.swo.getPosition().positionCoord.x, 0);
+            Robot.swo.getPosition().positionCoord.x, Robot.swo.getVelocities()[0]);
     private TrapezoidProfile.State trapXDesiredState;
     private TrapezoidProfile.State trapYCurrentState = new TrapezoidProfile.State(
-            Robot.swo.getPosition().positionCoord.y, 0);
+            Robot.swo.getPosition().positionCoord.y, Robot.swo.getVelocities()[1]);
     private TrapezoidProfile.State trapYDesiredState;
 
     private PIDController xPID = new PIDController(1, 0, 0);
@@ -40,10 +40,14 @@ public class SwerveAuto {
 
     private double prevTime = 0;
 
-    public void setDesiredPosition(Vector2 desiredPosition) {
+    public void setDesiredPosition(Vector2 desiredPosition, double desiredVelocity) {
         this.desiredPosition = desiredPosition;
-        trapXDesiredState = new TrapezoidProfile.State(this.desiredPosition.x, 0);
-        trapYDesiredState = new TrapezoidProfile.State(this.desiredPosition.y, 0);
+
+        double[] polarPosition = MathClass.cartesianToPolar(desiredPosition.x, desiredPosition.y);
+        double[] desiredVelocities = MathClass.polarToCartesian(polarPosition[0], desiredVelocity);
+
+        trapXDesiredState = new TrapezoidProfile.State(this.desiredPosition.x, desiredVelocities[0]);
+        trapYDesiredState = new TrapezoidProfile.State(this.desiredPosition.y, desiredVelocities[0]);
     }
 
     public void setDesiredAngle(double angle) {
