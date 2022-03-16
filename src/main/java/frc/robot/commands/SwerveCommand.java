@@ -22,9 +22,9 @@ public class SwerveCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (IO.getJoystickButton8())
+        if (IO.resetGyro())
             swerveDriveTrain.getGyro().setOffset();
-        if (IO.getJoyButton3())
+        if (IO.limelightLockOn())
             swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -deadzone(Limelight.getHorizontalOffset(), .5) / 27);
         else
             swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoy2X());

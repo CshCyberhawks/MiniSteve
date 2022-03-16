@@ -17,7 +17,7 @@ public class ShootCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double power = IO.getXboxRightTrigger();
+        double power = IO.shootBall();
 
         if (IO.getXboxXButton()) {
             shootCommand = new AutoShootCommand(shootSystem);

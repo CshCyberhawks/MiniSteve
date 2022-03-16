@@ -35,7 +35,7 @@ public class IO {
         return deadZone(joystick.getTwist());
     }
 
-    public static boolean getJoystickButton8() {
+    public static boolean resetGyro() {
         return joystick.getRawButtonPressed(8);
     }
 
@@ -55,7 +55,7 @@ public class IO {
         return xbox.getStartButtonPressed();
     }
 
-    public static boolean getXboxBackButton() {
+    public static boolean removeBall() {
         return xbox.getBackButton();
     }
 
@@ -63,11 +63,11 @@ public class IO {
         return deadZone(joystick2.getX());
     }
 
-    public static boolean getJoyButton3() {
+    public static boolean limelightLockOn() {
         return joystick.getRawButton(3);
     }
 
-    public static double getXboxRightTrigger() {
+    public static double shootBall() {
         return xbox.getRightTriggerAxis();
     }
 
@@ -91,7 +91,7 @@ public class IO {
         return xbox.getAButton();
     }
 
-    public static boolean getXboxYButton() {
+    public static boolean autoIntake() {
         return xbox.getYButton();
     }
 }
