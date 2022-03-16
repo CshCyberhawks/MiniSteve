@@ -20,14 +20,14 @@ public class IntakeSequence extends SequentialCommandGroup {
     }
 
     @Override
+    public void end(boolean interrupted) {
+        Robot.getTransportSystem().setSequenceState(false);
+    }
+
+    @Override
     public boolean isFinished() {
         if (!transportCommand.isFinished())
             return IO.getXboxStartButton();
         return transportCommand.isFinished();
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        Robot.getTransportSystem().setSequenceState(false);
     }
 }

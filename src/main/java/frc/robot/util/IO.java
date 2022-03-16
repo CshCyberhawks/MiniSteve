@@ -8,29 +8,33 @@ public class IO {
     private static final Joystick joystick = new Joystick(0);
     private static final Joystick joystick2 = new Joystick(1);
     private static final XboxController xbox = new XboxController(2);
-    private static final double deadzone = 0.3;
+    private static final double controllerDeadzone = 0.3;
 
-    public static double deadZone(double input) {
-        return Math.abs(input) > deadzone ? input : 0;
+    public static double deadzone(double input, double zone) {
+        return Math.abs(input) > zone ? input : 0;
     }
 
     public static double[] getPolarCoords() {
-        return new double[] {-deadZone(joystick.getDirectionDegrees()), deadZone(joystick.getMagnitude()), deadZone(joystick.getTwist())};
+        return new double[] {
+            -deadzone(joystick.getDirectionDegrees(), controllerDeadzone), 
+            deadzone(joystick.getMagnitude(), controllerDeadzone), 
+            deadzone(joystick.getTwist(), controllerDeadzone)
+        };
     }
 
     public static double getJoyY() {
         SmartDashboard.putNumber("Joystick Y", joystick.getY());
-        return deadZone(joystick.getY());
+        return deadzone(joystick.getY(), controllerDeadzone);
     }
 
     public static double getJoyX() {
         SmartDashboard.putNumber("Jotstick X", joystick.getX());
-        return deadZone(joystick.getX());
+        return deadzone(joystick.getX(), controllerDeadzone);
     }
 
     public static double getJoyTwist() {
         SmartDashboard.putNumber("Joystick Twist", joystick.getTwist());
-        return deadZone(joystick.getTwist());
+        return deadzone(joystick.getTwist(), controllerDeadzone);
     }
 
     public static boolean resetGyro() {
@@ -38,15 +42,15 @@ public class IO {
     }
 
     public static double getXboxLeftY() {
-        return Math.abs(xbox.getLeftY()) > deadzone ? xbox.getLeftY() : 0;
+        return Math.abs(xbox.getLeftY()) > controllerDeadzone ? xbox.getLeftY() : 0;
     }
 
     public static double getXboxLeftX() {
-        return Math.abs(xbox.getLeftX()) > deadzone ? xbox.getLeftX() : 0;
+        return Math.abs(xbox.getLeftX()) > controllerDeadzone ? xbox.getLeftX() : 0;
     }
 
     public static double getXboxRightX() {
-        return Math.abs(xbox.getRightX()) > deadzone ? xbox.getRightX() : 0;
+        return Math.abs(xbox.getRightX()) > controllerDeadzone ? xbox.getRightX() : 0;
     }
 
     public static boolean getXboxStartButton() {
@@ -58,7 +62,7 @@ public class IO {
     }
 
     public static double getJoy2X() {
-        return deadZone(joystick2.getX());
+        return deadzone(joystick2.getX(), controllerDeadzone);
     }
 
     public static boolean limelightLockOn() {

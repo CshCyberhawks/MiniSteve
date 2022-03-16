@@ -25,7 +25,7 @@ public class SwerveCommand extends CommandBase {
         if (IO.resetGyro())
             swerveDriveTrain.getGyro().setOffset();
         if (IO.limelightLockOn())
-            swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -deadzone(Limelight.getHorizontalOffset(), .5) / 27);
+            swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.deadzone(Limelight.getHorizontalOffset(), .5) / 27);
         else
             swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoy2X());
     }
@@ -38,9 +38,5 @@ public class SwerveCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return false;
-    }
-
-    private static double deadzone(double input, double zone) {
-        return Math.abs(input) > zone ? input : 0;
     }
 }

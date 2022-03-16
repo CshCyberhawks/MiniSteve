@@ -18,6 +18,5 @@ public class ManualTransportCommand extends CommandBase {
 
         if (!transportSystem.getSequenceState())
             transportSystem.move(transportPower);
-
     }
 }

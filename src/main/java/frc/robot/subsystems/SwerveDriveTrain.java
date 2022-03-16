@@ -19,22 +19,22 @@ public class SwerveDriveTrain extends SubsystemBase {
                Constants.backLeftTurnMotor, 
                Constants.backLeftDriveMotor,
                Constants.backLeftEncoder
-               );
+          );
           backRight = new SwerveWheel(
                Constants.backRightTurnMotor,
                Constants.backRightDriveMotor,
                Constants.backRightEncoder
-               );
+          );
           frontLeft = new SwerveWheel(
                Constants.frontLeftTurnMotor, 
                Constants.frontLeftDriveMotor,
                Constants.frontLeftEncoder
-               );
+          );
           frontRight = new SwerveWheel(
                Constants.frontRightTurnMotor, 
                Constants.frontRightDriveMotor, 
                Constants.frontRightEncoder
-               );
+          );
           gyro.setOffset();
      }
 
@@ -42,21 +42,21 @@ public class SwerveDriveTrain extends SubsystemBase {
           return gyro;
      }
 
-     public double[] polarToCartesian(double theta, double r) {
+     public static double[] polarToCartesian(double theta, double r) {
           double x = r * Math.cos(Math.toRadians(theta));
           double y = r * Math.sin(Math.toRadians(theta));
 
           return new double[] {x, y};
      }
 
-     public double[] cartesianToPolar(double x, double y) {
+     public static double[] cartesianToPolar(double x, double y) {
           double r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
           double theta = Math.toDegrees(Math.atan2(y, x));
 
           return new double[] {theta, r};
      }
 
-     public double[] fieldOriented(double x, double y, double gyroAngle) {
+     public static double[] fieldOriented(double x, double y, double gyroAngle) {
           double[] polar = cartesianToPolar(x, y);
           double theta = polar[0] + gyroAngle;
           double r = polar[1];
@@ -85,6 +85,7 @@ public class SwerveDriveTrain extends SubsystemBase {
                     inputTwist);
           double[] backLeftVector = calculateDrive(inputX, inputY, Constants.twistAngleMap.get("backLeft"), inputTwist);
 
+          /*
           double frontRightSpeed = frontRightVector[1];
           double frontLeftSpeed = frontLeftVector[1];
           double backRightSpeed = backRightVector[1];
@@ -94,10 +95,11 @@ public class SwerveDriveTrain extends SubsystemBase {
           double frontLeftAngle = frontLeftVector[0];
           double backRightAngle = backRightVector[0];
           double backLeftAngle = backLeftVector[0];
+          */
 
-          backRight.drive(backRightSpeed, backRightAngle);
-          backLeft.drive(-backLeftSpeed, backLeftAngle);
-          frontRight.drive(frontRightSpeed, frontRightAngle);
-          frontLeft.drive(-frontLeftSpeed, frontLeftAngle);
+          backRight.drive(backRightVector[1], backRightVector[0]);
+          backLeft.drive(-backLeftVector[1], backLeftVector[0]);
+          frontRight.drive(frontRightVector[1], frontRightVector[0]);
+          frontLeft.drive(-frontLeftVector[1], frontLeftVector[0]);
      }
 }

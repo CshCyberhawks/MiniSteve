@@ -27,6 +27,5 @@ public class ShootCommand extends CommandBase {
             SmartDashboard.putNumber("Speed Mult", speedMult);
             shootSystem.shoot(power);
         }
-
     }
 }
