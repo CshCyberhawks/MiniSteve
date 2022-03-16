@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.cameraserver.CameraServer;
 // import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -53,15 +53,16 @@ public class Limelight extends SubsystemBase {
         double cameraHeight = 0.305; //Height of camera (meters)
         double targetHeight = 0.1455313; //Height of target (meters) measured perfectly
         double mountAngle = 0; //Angle that the limelight is mounted
-        return (targetHeight - cameraHeight) / Math.tan(mountAngle + getVerticalOffset()); // 
+        return (targetHeight - cameraHeight) / Math.tan(mountAngle + getVerticalOffset()); 
     } 
 
     @Override
     public void periodic() {
         // Values needed from final robot before implemented
-        
         SmartDashboard.putBoolean("Limelight hasValidTarget", hasTarget());
         SmartDashboard.putNumber("Limelight horrizontalOffset", getHorizontalOffset());
+        SmartDashboard.putNumber("Limelight verticalOffset", getVerticalOffset());
+        SmartDashboard.putNumber("Limelight distance", getDistance());
         SmartDashboard.putNumber("Limelight verticalOffset", getVerticalOffset());
         SmartDashboard.putNumber("Limelight distance", getDistance());
     }
