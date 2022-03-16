@@ -5,16 +5,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LimeLight;
 
 public class LimeLightAuto extends CommandBase {
-    private LimeLight limeLight;
 
-    public LimeLightAuto(LimeLight limeLight) {
+    public LimeLightAuto() {
         // Use addRequirements() here to declare subsystem dependencies.
-        this.limeLight = limeLight;
     }
 
     @Override
     public void execute() {
-        SmartDashboard.putNumber("limeLightDistance", limeLight.getDistance());
+        SmartDashboard.putNumber("limeLightDistance", LimeLight.getDistance());
     }
 
     @Override
