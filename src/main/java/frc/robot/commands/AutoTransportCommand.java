@@ -5,9 +5,9 @@ import frc.robot.Robot;
 import frc.robot.subsystems.TransportSystem;
 
 public class AutoTransportCommand extends CommandBase {
+    private TransportSystem transportSystem;
     private int cargoStored;
     private boolean hitBackBreak;
-    private TransportSystem transportSystem;
 
     public AutoTransportCommand(TransportSystem transportSystem) {
         this.transportSystem = transportSystem;
@@ -19,17 +19,13 @@ public class AutoTransportCommand extends CommandBase {
 
     @Override
     public void execute() {
-        //run elevator
         transportSystem.move(-.25);
     }
 
     @Override 
     public void end(boolean interrupted) {
-        //sets autoClassWhatever ball number = opposite of one given
-        //kills traverse
-        if (transportSystem.getCargoAmount() < 2 && interrupted == false) {
+        if (transportSystem.getCargoAmount() < 2 && interrupted == false)
             transportSystem.setCargoAmount(transportSystem.getCargoAmount() + 1);
-        }
         transportSystem.move(0);
     }
 
@@ -41,6 +37,5 @@ public class AutoTransportCommand extends CommandBase {
             return !Robot.getBackBreakBeam().get();
         return Robot.getBackBreakBeam().get() && hitBackBreak;
     }
-
 }
 

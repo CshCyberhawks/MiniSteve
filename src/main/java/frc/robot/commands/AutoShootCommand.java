@@ -7,16 +7,15 @@ import frc.robot.subsystems.TransportSystem;
 
 public class AutoShootCommand extends CommandBase {
     private final ShootSystem shootSystem;
-    private double lastTopEncoderSpeed;
-    private double desiredShootSpeed;
     private TransportSystem transportSystem;
+    private final double desiredShootSpeed = 1500;;
+    private double lastTopEncoderSpeed;    
 
     public AutoShootCommand(ShootSystem subsystem) {
         shootSystem = subsystem;
         shootSystem.setAutoShootState(true);
         transportSystem = Robot.getTransportSystem();
-        lastTopEncoderSpeed = 0;
-        desiredShootSpeed = 1500;
+        lastTopEncoderSpeed = 0; 
         addRequirements(subsystem);
     }
 
@@ -28,7 +27,7 @@ public class AutoShootCommand extends CommandBase {
         if (encoderDifference < 0 && transportSystem.getCargoAmount() > 0)
             transportSystem.setCargoAmount(transportSystem.getCargoAmount() - 1);
         if (currentTopEncoderSpeed > desiredShootSpeed)
-            transportSystem.move(1);
+            transportSystem.move(.25);
 
         shootSystem.shoot(1);
         lastTopEncoderSpeed = currentTopEncoderSpeed;
@@ -39,7 +38,6 @@ public class AutoShootCommand extends CommandBase {
         shootSystem.shoot(0);
         transportSystem.move(0);
         shootSystem.setAutoShootState(true);
-
     }
 
     @Override

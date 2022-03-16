@@ -18,13 +18,13 @@ public class ShootSystem extends SubsystemBase {
     private CANSparkMax topMotor;
     private CANSparkMax bottomRightMotor;
     private CANSparkMax bottomLeftMotor;
-    private double topMotorMult;
     private Encoder topEncoder;
     private Encoder bottomEncoder;
+    private RelativeEncoder oldEncoder;
     private PIDController topPIDController;
     private PIDController bottomRightPIDController;
     private PIDController bottomLeftPIDController;
-    private RelativeEncoder oldEncoder;
+    private final double topMotorMult = 1.5;
     private final double maxRPM = 25;
     private final double maxSetRPM = 10;
     private boolean autoShootRunning;
@@ -33,7 +33,6 @@ public class ShootSystem extends SubsystemBase {
         topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         bottomLeftMotor = new CANSparkMax(Constants.leftShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         bottomRightMotor = new CANSparkMax(Constants.rightShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
-        topMotorMult = 1.5;
         oldEncoder = topMotor.getEncoder();
 
         // traversalEncoder = traversalMotor.getEncoder();

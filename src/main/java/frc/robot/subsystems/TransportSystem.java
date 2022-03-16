@@ -7,15 +7,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class TransportSystem extends SubsystemBase {
-    
     private VictorSPX transportMotor;
-    private double traversalMult;
-    private boolean isRunningSequence;
+    private final double traversalMult = 2;
     private int cargoAmount;
+    private boolean isRunningSequence;
 
     public TransportSystem() {
         transportMotor = new VictorSPX(Constants.traversalMotor);
-        traversalMult = 2;
         isRunningSequence = false;
         cargoAmount = 0;
     }

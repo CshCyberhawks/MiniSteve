@@ -23,16 +23,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SwerveWheel {
     private TalonSRX turnMotor;
     private CANSparkMax driveMotor;
-
     private TurnEncoder turnEncoder;
     private RelativeEncoder driveEncoder;
-
-    private int m_turnEncoderPort;
-
     private PIDController turnPidController;
     private PIDController drivePidController;
-
     private SimpleMotorFeedforward driveFeedforward;
+    private int m_turnEncoderPort;
 
     public SwerveWheel(int turnPort, int drivePort, int turnEncoderPort) {
 

@@ -5,12 +5,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IO {
-    private static Joystick joystick = new Joystick(0);
-    private static Joystick joystick2 = new Joystick(1);
-
-    private static XboxController xbox = new XboxController(2);
-
-    private static double deadzone = 0.3;
+    private static final Joystick joystick = new Joystick(0);
+    private static final Joystick joystick2 = new Joystick(1);
+    private static final XboxController xbox = new XboxController(2);
+    private static final double deadzone = 0.3;
 
     public static double deadZone(double input) {
         return Math.abs(input) > deadzone ? input : 0;

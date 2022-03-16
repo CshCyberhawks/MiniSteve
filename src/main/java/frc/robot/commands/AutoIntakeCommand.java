@@ -14,13 +14,11 @@ public class AutoIntakeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        //run intake
         intakeSystem.intake(1);
     }
 
     @Override 
     public void end(boolean interrupted) {
-        //intakeSystem.kill (stop the motors)
         Robot.getTransportSystem().move(0);
         Robot.getIntakeSystem().kill();
     }
