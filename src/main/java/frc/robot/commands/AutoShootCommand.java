@@ -16,7 +16,6 @@ public class AutoShootCommand extends CommandBase {
         shootSystem.setAutoShootState(true);
         transportSystem = Robot.getTransportSystem();
         addRequirements(subsystem);
-
     }
 
     @Override

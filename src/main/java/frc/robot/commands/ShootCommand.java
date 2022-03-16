@@ -23,7 +23,6 @@ public class ShootCommand extends CommandBase {
             shootCommand = new AutoShootCommand(shootSystem);
             shootCommand.schedule();
         }
-
         else if (!shootSystem.getAutoShootState()) {
             speedMult = SmartDashboard.getNumber("Speed Mult", speedMult);
             SmartDashboard.putNumber("Speed Mult", speedMult);

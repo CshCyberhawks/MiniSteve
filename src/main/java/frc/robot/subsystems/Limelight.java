@@ -23,13 +23,6 @@ public class Limelight extends SubsystemBase {
 
     public Limelight() {}
 
-    public static void setTeam() {
-        if (team == Alliance.Red)
-            pipeline.setString("FRCPipe");
-        else if (team == Alliance.Blue)
-            pipeline.setString("FRCBPipe");
-    }
-
     public static double getHorizontalOffset() {
         return tx.getDouble(0.0);
     }
@@ -52,6 +45,13 @@ public class Limelight extends SubsystemBase {
 
     public static double getDistance() {
         return getArea();
+    }
+    
+    public static void setTeam() {
+        if (team == Alliance.Red)
+            pipeline.setString("FRCPipe");
+        else if (team == Alliance.Blue)
+            pipeline.setString("FRCBPipe");
     }
 
     @Override

@@ -6,12 +6,13 @@ import frc.robot.subsystems.TransportSystem;
 
 public class AutoTransportCommand extends CommandBase {
     private int cargoStored;
-    private boolean hitBackBreak = false;
+    private boolean hitBackBreak;
     private TransportSystem transportSystem;
 
     public AutoTransportCommand(TransportSystem transportSystem) {
         this.transportSystem = transportSystem;
         this.cargoStored = transportSystem.getCargoAmount();
+        hitBackBreak = false;
 
         addRequirements(transportSystem);
     }

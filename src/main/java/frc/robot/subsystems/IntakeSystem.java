@@ -33,7 +33,6 @@ public class IntakeSystem extends SubsystemBase {
         SmartDashboard.putNumber("Intake Motor Speed ", speed);
     }
 
-
     public void kill() {
         intakeMotor.set(ControlMode.PercentOutput, 0);
     }

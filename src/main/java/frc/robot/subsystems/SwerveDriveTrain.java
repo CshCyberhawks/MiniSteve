@@ -46,26 +46,22 @@ public class SwerveDriveTrain extends SubsystemBase {
           double x = r * Math.cos(Math.toRadians(theta));
           double y = r * Math.sin(Math.toRadians(theta));
 
-          double[] ret = { x, y };
-          return ret;
+          return new double[] {x, y};
      }
 
      public double[] cartesianToPolar(double x, double y) {
           double r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
           double theta = Math.toDegrees(Math.atan2(y, x));
 
-          double[] ret = { theta, r };
-          return ret;
+          return new double[] {theta, r};
      }
 
      public double[] fieldOriented(double x, double y, double gyroAngle) {
           double[] polar = cartesianToPolar(x, y);
           double theta = polar[0] + gyroAngle;
-
           double r = polar[1];
 
-          double[] ret = polarToCartesian(theta, r);
-          return ret;
+          return polarToCartesian(theta, r);
      }
 
      public double[] calculateDrive(double x1, double y1, double theta2, double r2) {
@@ -74,9 +70,7 @@ public class SwerveDriveTrain extends SubsystemBase {
           double[] twistCoordinate = polarToCartesian(theta2, r2);
 
           // Args are theta, r
-          double[] ret = cartesianToPolar(driveCoordinate[0] + twistCoordinate[0],
-                    driveCoordinate[1] + twistCoordinate[1]);
-          return ret;
+          return cartesianToPolar(driveCoordinate[0] + twistCoordinate[0], driveCoordinate[1] + twistCoordinate[1]);
      }
 
      public void drive(double inputX, double inputY, double inputTwist) {
