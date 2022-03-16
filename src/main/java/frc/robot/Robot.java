@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommandGroup;
 import frc.robot.commands.SwerveCommand;
+import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.SwerveAuto;
 import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
@@ -40,6 +41,7 @@ public class Robot extends TimedRobot {
     public static SwerveDriveTrain swerveSystem;
     public static SwerveOdometry swo;
     private static SwerveCommand swerveCommand;
+    public static LimeLight limeLight;
 
     private Command autoCommands;
 
@@ -61,6 +63,7 @@ public class Robot extends TimedRobot {
         // CameraServer.startAutomaticCapture();
         swerveSystem = new SwerveDriveTrain();
         swo = new SwerveOdometry(new FieldPosition(0, 0, 0));
+        limeLight = new LimeLight();
         CameraServer.startAutomaticCapture();
 
     }

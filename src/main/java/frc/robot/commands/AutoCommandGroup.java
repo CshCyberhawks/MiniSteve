@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.util.FieldPosition;
 import frc.robot.util.Vector2;
 import frc.robot.Robot;
+import frc.robot.subsystems.LimeLight;
 
 public class AutoCommandGroup extends SequentialCommandGroup {
     public AutoCommandGroup() {
@@ -14,6 +15,7 @@ public class AutoCommandGroup extends SequentialCommandGroup {
         // position
         addCommands(
                 new AutoGoToPosition(new Vector2(10, 4))
+        // new LimeLightAuto(Robot.limeLight)
         // new Wait(1000),
         // new AutoGoTo(new FieldPosition(0, 0, 0))
         );

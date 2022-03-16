@@ -6,6 +6,8 @@ package frc.robot;
 
 import java.util.HashMap;
 
+import frc.robot.util.Vector2;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -73,4 +75,10 @@ public final class Constants {
 
     public static final double wheelRadius = 0.0505; // In meters
     public static final double wheelGearRatio = 7 / 1; // 7:1 gear ratio
+
+    public static final Vector2[] redBallPositions = { new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 0),
+            new Vector2(0, 0), new Vector2(0, 0) };
+    public static final Vector2[] blueBallPositions = { new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 0),
+            new Vector2(0, 0), new Vector2(0, 0) };
+
 }
