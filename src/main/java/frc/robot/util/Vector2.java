@@ -9,6 +9,11 @@ public class Vector2 {
         y = 0;
     }
 
+    public Vector2(double inputX, double inputY) {
+        x = inputX;
+        y = inputY;
+    }
+
     public double getX() {
         return x;
     }
@@ -23,11 +28,6 @@ public class Vector2 {
 
     public void setY(double y) {
         this.y = y;
-    }
-
-    public Vector2(double inputX, double inputY) {
-        x = inputX;
-        y = inputY;
     }
 
     public boolean equals(Vector2 other) {

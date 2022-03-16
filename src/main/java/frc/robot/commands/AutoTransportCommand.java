@@ -38,4 +38,3 @@ public class AutoTransportCommand extends CommandBase {
         return Robot.getBackBreakBeam().get() && hitBackBreak;
     }
 }
-

@@ -18,7 +18,6 @@ public class IntakeSystem extends SubsystemBase {
     public IntakeSystem() {
         intakeMotor = new TalonSRX(Constants.intakeMotor);
         intakeMotor.setInverted(true);
-
         intakeSolenoid = new Solenoid(Constants.intakeSolenoid, PneumaticsModuleType.CTREPCM, 0);
     }
 

@@ -10,7 +10,7 @@ public class SwerveCommand extends CommandBase {
     
     public SwerveCommand(SwerveDriveTrain subsystem) {
         swerveDriveTrain = subsystem;
-        addRequirements(subsystem, new Limelight());
+        addRequirements(subsystem);
     }
 
     // Called when the command is initially scheduled.

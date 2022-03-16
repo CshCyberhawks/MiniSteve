@@ -21,6 +21,7 @@ public class ManualIntakeCommand extends CommandBase {
         double speed = IO.getXboxLeftTrigger();
 
         SmartDashboard.putBoolean("intakeSequenceBool", Robot.getTransportSystem().getSequenceState());
+        
         if (IO.autoIntake()) {
             IntakeSequence intakeCommandSequence = new IntakeSequence();
             intakeCommandSequence.schedule();

@@ -6,16 +6,16 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class IntakeSequence extends SequentialCommandGroup {
     //this gets called upon running intake on xbox controller
-    private AutoIntakeCommand intakeCommand;
-    private AutoTransportCommand transportCommand;
+    private AutoIntakeCommand autoIntakeCommand;
+    private AutoTransportCommand autoTransportCommand;
 
     public IntakeSequence() {
-        intakeCommand = new AutoIntakeCommand(Robot.getIntakeSystem());
-        transportCommand = new AutoTransportCommand(Robot.getTransportSystem());
+        autoIntakeCommand = new AutoIntakeCommand(Robot.getIntakeSystem());
+        autoTransportCommand = new AutoTransportCommand(Robot.getTransportSystem());
         Robot.getTransportSystem().setSequenceState(true);
         addCommands(
-            intakeCommand,
-            transportCommand
+            autoIntakeCommand,
+            autoTransportCommand
         );
     }
 
@@ -26,8 +26,8 @@ public class IntakeSequence extends SequentialCommandGroup {
 
     @Override
     public boolean isFinished() {
-        if (!transportCommand.isFinished())
+        if (!autoTransportCommand.isFinished())
             return IO.getXboxStartButton();
-        return transportCommand.isFinished();
+        return autoTransportCommand.isFinished();
     }
 }
