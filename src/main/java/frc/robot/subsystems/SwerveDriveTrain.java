@@ -114,7 +114,7 @@ public class SwerveDriveTrain extends SubsystemBase {
                 double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
                 double gyroAngle = Gyro.getAngle();
 
-                throttle = MathUtil.clamp(throttle += MathUtil.clamp(throttleChange / 125, -.1, .1), .05, 1);
+                throttle = throttleChange;
 
                 SmartDashboard.putNumber("throttle ", throttle);
                 SmartDashboard.putNumber("gyro val", gyroAngle);

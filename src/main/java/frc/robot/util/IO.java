@@ -34,6 +34,11 @@ public class IO {
         return MathClass.calculateDeadzone(joystick.getTwist(), deadzoneVal);
     }
 
+    public static double getJoyThrottle() {
+        SmartDashboard.putNumber("Joystick Throttle", (-joystick.getThrottle() + 1) / 2);
+        return MathClass.calculateDeadzone((-joystick.getThrottle() + 1) / 2, deadzoneVal);
+    }
+
     public static boolean getJoystickButton5() {
         return joystick.getRawButtonPressed(5);
     }

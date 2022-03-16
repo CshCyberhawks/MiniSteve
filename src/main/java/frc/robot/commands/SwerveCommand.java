@@ -28,7 +28,7 @@ public class SwerveCommand extends CommandBase {
             Robot.swo.resetPos();
         if (IO.getJoystickButton8())
             Gyro.setOffset();
-        swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoy2X(), -IO.getJoy2Y(), "tele");
+        swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoyTwist(), IO.getJoyThrottle(), "tele");
         Robot.swo.getPosition();
     }
 
