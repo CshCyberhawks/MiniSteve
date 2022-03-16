@@ -13,7 +13,7 @@ public class IntakeSystem extends SubsystemBase {
     private TalonSRX intakeMotor;
     private Solenoid intakeSolenoid;
 
-    private final double powerMult = 1;
+    // private final double powerMult = 1;
 
     public IntakeSystem() {
         intakeMotor = new TalonSRX(Constants.intakeMotor);

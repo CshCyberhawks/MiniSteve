@@ -8,7 +8,7 @@ import frc.robot.util.IO;
 
 public class ManualIntakeCommand extends CommandBase {
     private IntakeSystem intakeSystem;
-    private double speedMult;
+    // private double speedMult;
 
     public ManualIntakeCommand(IntakeSystem subsystem) {
         intakeSystem = subsystem;
