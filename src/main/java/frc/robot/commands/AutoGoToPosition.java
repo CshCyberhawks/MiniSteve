@@ -10,10 +10,18 @@ import frc.robot.util.Vector2;
 public class AutoGoToPosition extends CommandBase {
     private Vector2 desiredPosition;
     private double desiredVelocity;
+    private int ballNumber;
+    private boolean byBallNumber = false;
 
     public AutoGoToPosition(Vector2 desiredPosition, double desiredVelocity) {
         this.desiredPosition = desiredPosition;
         this.desiredVelocity = desiredVelocity;
+    }
+
+    public AutoGoToPosition(int ballNumber, double desiredVelocity) {
+        this.ballNumber = ballNumber;
+        this.desiredVelocity = desiredVelocity;
+        byBallNumber = true;
     }
 
     // this command will move the robot to the desired position x, y and twist
@@ -29,7 +37,11 @@ public class AutoGoToPosition extends CommandBase {
         // meters), y in swos, and twist in degrees
         // (based on
         // robot staring position)
-        Robot.swerveAuto.setDesiredPosition(desiredPosition, desiredVelocity);
+        if (!byBallNumber) {
+            Robot.swerveAuto.setDesiredPosition(desiredPosition, desiredVelocity);
+        } else {
+            Robot.swerveAuto.setDesiredPositionBall(ballNumber, desiredVelocity);
+        }
     }
 
     @Override

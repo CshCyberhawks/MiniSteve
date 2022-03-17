@@ -76,9 +76,9 @@ public final class Constants {
     public static final double wheelRadius = 0.0505; // In meters
     public static final double wheelGearRatio = 7 / 1; // 7:1 gear ratio
 
-    public static final Vector2[] redBallPositions = { new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 0),
+    public static final Vector2[] redBallPositions = { new Vector2(5, 0), new Vector2(0, 0), new Vector2(0, 0),
             new Vector2(0, 0), new Vector2(0, 0) };
-    public static final Vector2[] blueBallPositions = { new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 0),
+    public static final Vector2[] blueBallPositions = { new Vector2(0, 5), new Vector2(0, 0), new Vector2(0, 0),
             new Vector2(0, 0), new Vector2(0, 0) };
 
 }

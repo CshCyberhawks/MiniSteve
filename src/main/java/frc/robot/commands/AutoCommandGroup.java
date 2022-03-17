@@ -15,9 +15,9 @@ public class AutoCommandGroup extends SequentialCommandGroup {
         // position
         addCommands(
                 new AutoGoToPosition(new Vector2(10, 4), 1)
-        // new LimeLightAuto(Robot.limeLight)
+        // new LimeLightAuto()
         // new Wait(1000),
-        // new AutoGoTo(new FieldPosition(0, 0, 0))
+        // new AutoGoTo(0, 0)
         );
     }
 }

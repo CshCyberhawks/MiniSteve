@@ -10,13 +10,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.util.WPIUtilJNI;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class SwerveAuto {
     private Vector2 desiredPosition;
     private double desiredAngle;
+
+    private Alliance team;
+    private Vector2[] ballPositions;
 
     private double positionStopRange = .1;
     private boolean isAtPosition = false;
@@ -40,6 +46,11 @@ public class SwerveAuto {
 
     private double prevTime = 0;
 
+    public SwerveAuto() {
+        team = DriverStation.getAlliance();
+        ballPositions = team == Alliance.Blue ? Constants.blueBallPositions : Constants.redBallPositions;
+    }
+
     public void setDesiredPosition(Vector2 desiredPosition, double desiredVelocity) {
         this.desiredPosition = desiredPosition;
 
@@ -50,8 +61,35 @@ public class SwerveAuto {
         trapYDesiredState = new TrapezoidProfile.State(this.desiredPosition.y, desiredVelocities[0]);
     }
 
-    public void setDesiredAngle(double angle) {
-        this.desiredAngle = angle;
+    public void setDesiredPositionBall(int ballNumber, double desiredVelocity) {
+
+        this.desiredPosition = ballPositions[ballNumber];
+
+        double[] polarPosition = MathClass.cartesianToPolar(desiredPosition.x, desiredPosition.y);
+        double[] desiredVelocities = MathClass.polarToCartesian(polarPosition[0], desiredVelocity);
+
+        trapXDesiredState = new TrapezoidProfile.State(this.desiredPosition.x, desiredVelocities[0]);
+        trapYDesiredState = new TrapezoidProfile.State(this.desiredPosition.y, desiredVelocities[0]);
+    }
+
+    public void setDesiredPositionDistance(double distance) {
+
+        double[] desiredPositionCart = MathClass.polarToCartesian(Gyro.getAngle(), distance);
+
+        this.desiredPosition = new Vector2(desiredPositionCart[0], desiredPositionCart[1]);
+
+        trapXDesiredState = new TrapezoidProfile.State(this.desiredPosition.x, 0);
+        trapYDesiredState = new TrapezoidProfile.State(this.desiredPosition.y, 0);
+
+    }
+
+    public void setDesiredAngle(double angle, boolean robotRelative) {
+
+        if (robotRelative) {
+            this.desiredAngle = MathClass.wrapAroundAngles(angle - Gyro.getAngle());
+        } else {
+            this.desiredAngle = angle;
+        }
     }
 
     public boolean isAtDesiredPosition() {
