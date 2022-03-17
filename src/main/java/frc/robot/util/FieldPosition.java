@@ -5,7 +5,7 @@ public class FieldPosition {
     private static Gyro gyro = new Gyro();
 
     public static void update() {
-        positionCoord.setX(positionCoord.getX() + gyro.getVelX());
-        positionCoord.setY(positionCoord.getY() + gyro.getVelY());
+        positionCoord.x = (positionCoord.x + gyro.getVelX());
+        positionCoord.y = (positionCoord.x + gyro.getVelY());
     }
 }
