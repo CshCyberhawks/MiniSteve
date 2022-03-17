@@ -17,7 +17,6 @@ public class ManualIntakeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        boolean reverse = IO.removeBall();
         double speed = IO.getXboxLeftTrigger();
 
         SmartDashboard.putBoolean("intakeSequenceBool", Robot.getTransportSystem().getSequenceState());
@@ -28,7 +27,7 @@ public class ManualIntakeCommand extends CommandBase {
             SmartDashboard.putBoolean("intakeSequenceBegan", true);
         }
         else if (!Robot.getTransportSystem().getSequenceState())
-            if (reverse)
+            if (IO.removeBall())
                 intakeSystem.intake(-.5);
             else
                 intakeSystem.intake(speed);
