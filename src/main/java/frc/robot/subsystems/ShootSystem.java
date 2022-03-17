@@ -25,8 +25,8 @@ public class ShootSystem extends SubsystemBase {
     private PIDController bottomRightPIDController;
     private PIDController bottomLeftPIDController;
     private final double topMotorMult = 1.5;
-    private final double maxRPM = 25;
-    private final double maxSetRPM = 10;
+    private final int maxRPM = 25;
+    private final int maxSetRPM = 10;
     private boolean autoShootRunning;
 
     public ShootSystem() {
@@ -41,8 +41,9 @@ public class ShootSystem extends SubsystemBase {
 
         // Set distance to pulse to distance in rotation (makes get rate return
         // rotations)
-        topEncoder.setDistancePerPulse(1. / 8192.);
-        bottomEncoder.setDistancePerPulse(1. / 8192.);
+        // Why write readable code when I can write this
+        topEncoder.setDistancePerPulse(0.00012207031);
+        bottomEncoder.setDistancePerPulse(0.00012207031);
 
         topPIDController = new PIDController(.01, 0, 0);
         bottomRightPIDController = new PIDController(.01, 0, 0);

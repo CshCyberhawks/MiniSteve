@@ -13,7 +13,7 @@ public class TurnEncoder {
     }
 
     private double voltageToDegrees(double input) {
-        return input / (2.5/180);
+        return input * 72;
     }
 
     public double get() {

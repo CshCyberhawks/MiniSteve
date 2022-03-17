@@ -29,7 +29,7 @@ public class ManualIntakeCommand extends CommandBase {
         }
         else if (!Robot.getTransportSystem().getSequenceState())
             if (reverse)
-                intakeSystem.intake(-1);
+                intakeSystem.intake(-.5);
             else
                 intakeSystem.intake(speed);
     }

@@ -53,15 +53,16 @@ public class SwerveWheel {
     }
 
     public double convertToMetersPerSecond(double rpm) {
-        double radius = 0.0505;
+        //double radius = 0.0505;
         // Gear ratio is 7:1
-        return ((2 * Math.PI * radius) / 60) * (rpm / 7);
+        // weird number = 2 * radius * pi / 60 (this is precaulculated)
+        return 0.000755478233363*rpm;
     }
 
     public double convertCentiMeterSecond(double rpm) {
-        double diameter = 0.00101;// 101 millimeters
-        return ((rpm / 7) * ((Math.PI * diameter) / 60)) / 100;
-
+        //double diameter = 0.00101;// 101 millimeters
+        // weird number = (pi * diameter) / 60 (precalculated for speed)
+        return convertToMetersPerSecond(rpm) / 100.0;
         // 7:1 (Motor to wheel)
 
     }
