@@ -27,7 +27,7 @@ public class AutoGoToAngle extends CommandBase {
         // meters), y in swos, and twist in degrees
         // (based on
         // robot staring position)
-        Robot.swerveAuto.setDesiredAngle(desiredAngle);
+        Robot.swerveAuto.setDesiredAngle(desiredAngle, true);
     }
 
     @Override

@@ -91,4 +91,8 @@ public class MathClass {
     public static double swosToMeters(double swos) {
         return swos * 0.27083333333;
     }
+
+    public static double wrapAroundAngles(double angle) {
+        return angle < 0 ? 360 + angle : angle;
+    }
 }

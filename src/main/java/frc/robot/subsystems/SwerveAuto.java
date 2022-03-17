@@ -62,7 +62,7 @@ public class SwerveAuto {
     }
 
     public void setDesiredPositionBall(int ballNumber, double desiredVelocity) {
-        setDesiredPosition(ballPositions[ballNumber]);
+        setDesiredPosition(ballPositions[ballNumber], desiredVelocity);
     }
 
     public void setDesiredPositionDistance(double distance) {

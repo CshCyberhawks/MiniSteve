@@ -33,7 +33,7 @@ public class LimeLightAuto extends CommandBase {
 
         else if (isAtAngle && !isAtPosition && firstTimeAtAngle) {
             // intakeSequence = new IntakeSequence();
-            swerveAuto.setDesiredPosition(LimeLight.getDistance());
+            swerveAuto.setDesiredPositionDistance(LimeLight.getDistance());
         }
 
         else if (!isAtPosition && isAtAngle) {
