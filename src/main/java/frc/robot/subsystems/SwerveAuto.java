@@ -62,24 +62,14 @@ public class SwerveAuto {
     }
 
     public void setDesiredPositionBall(int ballNumber, double desiredVelocity) {
-
-        this.desiredPosition = ballPositions[ballNumber];
-
-        double[] polarPosition = MathClass.cartesianToPolar(desiredPosition.x, desiredPosition.y);
-        double[] desiredVelocities = MathClass.polarToCartesian(polarPosition[0], desiredVelocity);
-
-        trapXDesiredState = new TrapezoidProfile.State(this.desiredPosition.x, desiredVelocities[0]);
-        trapYDesiredState = new TrapezoidProfile.State(this.desiredPosition.y, desiredVelocities[0]);
+        setDesiredPosition(ballPositions[ballNumber]);
     }
 
     public void setDesiredPositionDistance(double distance) {
 
         double[] desiredPositionCart = MathClass.polarToCartesian(Gyro.getAngle(), distance);
 
-        this.desiredPosition = new Vector2(desiredPositionCart[0], desiredPositionCart[1]);
-
-        trapXDesiredState = new TrapezoidProfile.State(this.desiredPosition.x, 0);
-        trapYDesiredState = new TrapezoidProfile.State(this.desiredPosition.y, 0);
+        setDesiredPosition(new Vector2(desiredPositionCart[0], desiredPositionCart[1]), 0);
 
     }
 
