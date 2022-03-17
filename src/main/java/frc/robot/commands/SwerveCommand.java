@@ -7,7 +7,7 @@ import frc.robot.util.IO;
 
 public class SwerveCommand extends CommandBase {
     private final SwerveDriveTrain swerveDriveTrain;
-    
+
     public SwerveCommand(SwerveDriveTrain subsystem) {
         swerveDriveTrain = subsystem;
         addRequirements(subsystem);
@@ -16,23 +16,25 @@ public class SwerveCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        swerveDriveTrain.getGyro().setOffset();
+        swerveDriveTrain.gyro.setOffset();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         if (IO.resetGyro())
-            swerveDriveTrain.getGyro().setOffset();
+            swerveDriveTrain.gyro.setOffset();
         if (IO.limelightLockOn())
-            swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.deadzone(Limelight.getHorizontalOffset(), .5) / 27);
+            swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(),
+                    -IO.deadzone(Limelight.getHorizontalOffset(), .5) / 27);
         else
             swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoy2X());
     }
 
     // Called once the command ends or is interrupted.
     @Override
-    public void end(boolean interrupted) {}
+    public void end(boolean interrupted) {
+    }
 
     // Returns true when the command should end.
     @Override
