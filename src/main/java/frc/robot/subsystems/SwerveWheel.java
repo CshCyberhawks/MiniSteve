@@ -31,7 +31,6 @@ public class SwerveWheel {
     private int m_turnEncoderPort;
 
     public SwerveWheel(int turnPort, int drivePort, int turnEncoderPort) {
-
         turnMotor = new TalonSRX(turnPort);
         driveMotor = new CANSparkMax(drivePort, CANSparkMaxLowLevel.MotorType.kBrushless);
 
@@ -62,7 +61,7 @@ public class SwerveWheel {
     public double convertCentiMeterSecond(double rpm) {
         //double diameter = 0.00101;// 101 millimeters
         // weird number = (pi * diameter) / 60 (precalculated for speed)
-        return convertToMetersPerSecond(rpm) / 100.0;
+        return convertToMetersPerSecond(rpm) / 100;
         // 7:1 (Motor to wheel)
 
     }
@@ -104,7 +103,6 @@ public class SwerveWheel {
         SmartDashboard.putNumber(m_turnEncoderPort + " drive encoder ", currentDriveSpeed);
 
         double turnPIDOutput = turnPidController.calculate(turnValue, angle);
-
         double drivePIDOutput = drivePidController.calculate(currentDriveSpeed, speed);
 
         // SmartDashboard.putNumber(m_turnEncoderPort + " pid value", drivePIDOutput);
@@ -114,10 +112,9 @@ public class SwerveWheel {
         // SmartDashboard.putNumber(m_turnEncoderPort + " feedforward value",
         // driveFeedForwardOutput);
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " drive set", MathUtil.clamp(drivePIDOutput /*
-                                                                                                  * +
-                                                                                                  * driveFeedForwardOutput
-                                                                                                  */, -.7, .7));
+        SmartDashboard.putNumber(
+            m_turnEncoderPort + " drive set", 
+            MathUtil.clamp(drivePIDOutput /*+ driveFeedForwardOutput*/, -.7, .7));
         // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
 
         // 70% speed is about 5.6 feet/second

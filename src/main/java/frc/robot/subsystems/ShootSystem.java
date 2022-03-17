@@ -41,7 +41,7 @@ public class ShootSystem extends SubsystemBase {
 
         // Set distance to pulse to distance in rotation (makes get rate return
         // rotations)
-        // Why write readable code when I can write this
+        // Why write readable code when I can write this 1/8192
         topEncoder.setDistancePerPulse(0.00012207031);
         bottomEncoder.setDistancePerPulse(0.00012207031);
 

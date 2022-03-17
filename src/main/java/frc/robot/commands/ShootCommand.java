@@ -17,15 +17,13 @@ public class ShootCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double power = IO.shootBall();
-
         if (IO.getXboxXButton()) {
             shootCommand = new AutoShootCommand(shootSystem);
             shootCommand.schedule();
         }
         else if (!shootSystem.getAutoShootState()) {
             SmartDashboard.putNumber("Speed Mult", speedMult);
-            shootSystem.shoot(power);
+            shootSystem.shoot(IO.shootBall());
         }
     }
 }
