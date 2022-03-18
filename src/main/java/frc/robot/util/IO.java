@@ -73,6 +73,10 @@ public class IO {
         return xbox.getRightTriggerAxis();
     }
 
+    public static double climbControl() {
+        return xbox.getRightY();
+    }
+
     public static boolean getXboxRightBumper() {
         return xbox.getRightBumper();
     }
@@ -89,7 +93,7 @@ public class IO {
         return xbox.getXButtonPressed();
     }
 
-    public static boolean getXboxAButton() {
+    public static boolean deployPneumatics() {
         return xbox.getAButton();
     }
 
