@@ -33,7 +33,7 @@ public class ClimbSystem extends SubsystemBase {
         lastUpdateTime = timeNow;
     }
 
-    public void setPneumatics(boolean control) {
+    public void controlPneumatics(boolean control) {
         leftSolenoid.set(control);
         rightSolenoid.set(control);
     }

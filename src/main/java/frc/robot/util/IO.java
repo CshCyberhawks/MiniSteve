@@ -22,9 +22,36 @@ public class IO {
         };
     }
 
-    public static double moveRobotY() {
-        SmartDashboard.putNumber("Joystick Y", joystick.getY());
-        return deadzone(joystick.getY(), controllerDeadzone);
+    public static boolean autoIntake() {
+        return xbox.getYButton();
+    }
+
+    public static boolean autoShoot() {
+        return xbox.getXButtonPressed();
+    }
+
+    public static double climbControl() {
+        return xbox.getRightY();
+    }
+
+    public static boolean deployPneumatics() {
+        return xbox.getAButton();
+    }
+
+    public static boolean getXboxStartButton() {
+        return xbox.getStartButtonPressed();
+    }
+
+    public static double intakeBall() {
+        return xbox.getLeftTriggerAxis();
+    }
+
+    public static boolean limelightLockOn() {
+        return joystick.getRawButton(3);
+    }
+
+    public static double moveTransport() {
+        return Math.abs(xbox.getLeftY()) > controllerDeadzone ? xbox.getLeftY() : 0;
     }
 
     public static double moveRobotX() {
@@ -32,72 +59,45 @@ public class IO {
         return deadzone(joystick.getX(), controllerDeadzone);
     }
 
-    public static double getJoyTwist() {
-        SmartDashboard.putNumber("Joystick Twist", joystick.getTwist());
-        return deadzone(joystick.getTwist(), controllerDeadzone);
-    }
-
-    public static boolean resetGyro() {
-        return joystick.getRawButtonPressed(8);
-    }
-
-    public static double moveTransport() {
-        return Math.abs(xbox.getLeftY()) > controllerDeadzone ? xbox.getLeftY() : 0;
-    }
-
-    public static double getXboxLeftX() {
-        return Math.abs(xbox.getLeftX()) > controllerDeadzone ? xbox.getLeftX() : 0;
-    }
-
-    public static double getXboxRightX() {
-        return Math.abs(xbox.getRightX()) > controllerDeadzone ? xbox.getRightX() : 0;
-    }
-
-    public static boolean getXboxStartButton() {
-        return xbox.getStartButtonPressed();
+    public static double moveRobotY() {
+        SmartDashboard.putNumber("Joystick Y", joystick.getY());
+        return deadzone(joystick.getY(), controllerDeadzone);
     }
 
     public static boolean removeBall() {
         return xbox.getBackButton();
     }
 
-    public static double rotate() {
-        return deadzone(joystick2.getX(), controllerDeadzone);
-    }
-
-    public static boolean limelightLockOn() {
-        return joystick.getRawButton(3);
+    public static boolean resetGyro() {
+        return joystick.getRawButtonPressed(8);
     }
 
     public static double shootBall() {
         return xbox.getRightTriggerAxis();
     }
 
-    public static double climbControl() {
-        return xbox.getRightY();
+    public static double turnControl() {
+        return deadzone(joystick2.getX(), controllerDeadzone);
     }
 
-    public static boolean getXboxRightBumper() {
-        return xbox.getRightBumper();
-    }
+    // public static boolean getXboxRightBumper() {
+    //     return xbox.getRightBumper();
+    // }
 
-    public static double intakeBall() {
-        return xbox.getLeftTriggerAxis();
-    }
+    // public static boolean getXboxLeftBumper() {
+    //     return xbox.getLeftBumper();
+    // }
 
-    public static boolean getXboxLeftBumper() {
-        return xbox.getLeftBumper();
-    }
+        // public static double getXboxLeftX() {
+    //     return Math.abs(xbox.getLeftX()) > controllerDeadzone ? xbox.getLeftX() : 0;
+    // }
 
-    public static boolean autoShoot() {
-        return xbox.getXButtonPressed();
-    }
+    // public static double getXboxRightX() {
+    //     return Math.abs(xbox.getRightX()) > controllerDeadzone ? xbox.getRightX() : 0;
+    // }
 
-    public static boolean deployPneumatics() {
-        return xbox.getAButton();
-    }
-
-    public static boolean autoIntake() {
-        return xbox.getYButton();
-    }
+    // public static double getJoyTwist() {
+    //     SmartDashboard.putNumber("Joystick Twist", joystick.getTwist());
+    //     return deadzone(joystick.getTwist(), controllerDeadzone);
+    // }
 }

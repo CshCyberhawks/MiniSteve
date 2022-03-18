@@ -28,13 +28,12 @@ public class SwerveCommand extends CommandBase {
             swerveDriveTrain.drive(-IO.moveRobotY(), -IO.moveRobotX(),
                     -IO.deadzone(Limelight.getHorizontalOffset(), .5) / 27);
         else
-            swerveDriveTrain.drive(-IO.moveRobotY(), -IO.moveRobotX(), -IO.rotate());
+            swerveDriveTrain.drive(-IO.moveRobotY(), -IO.moveRobotX(), -IO.turnControl());
     }
 
     // Called once the command ends or is interrupted.
     @Override
-    public void end(boolean interrupted) {
-    }
+    public void end(boolean interrupted) {}
 
     // Returns true when the command should end.
     @Override

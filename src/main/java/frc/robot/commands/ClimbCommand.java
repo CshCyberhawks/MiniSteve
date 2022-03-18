@@ -16,6 +16,6 @@ public class ClimbCommand extends CommandBase {
     @Override
     public void execute() {
         climbSystem.climb(IO.climbControl() * speedMult);
-        climbSystem.setPneumatics(IO.deployPneumatics());
+        climbSystem.controlPneumatics(IO.deployPneumatics());
     }
 }
