@@ -17,7 +17,7 @@ public class ManualIntakeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double speed = IO.getXboxLeftTrigger();
+        double speed = IO.intakeBall();
 
         SmartDashboard.putBoolean("intakeSequenceBool", Robot.getTransportSystem().getSequenceState());
         

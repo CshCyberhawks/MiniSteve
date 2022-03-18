@@ -22,12 +22,12 @@ public class IO {
         };
     }
 
-    public static double getJoyY() {
+    public static double moveRobotY() {
         SmartDashboard.putNumber("Joystick Y", joystick.getY());
         return deadzone(joystick.getY(), controllerDeadzone);
     }
 
-    public static double getJoyX() {
+    public static double moveRobotX() {
         SmartDashboard.putNumber("Jotstick X", joystick.getX());
         return deadzone(joystick.getX(), controllerDeadzone);
     }
@@ -41,7 +41,7 @@ public class IO {
         return joystick.getRawButtonPressed(8);
     }
 
-    public static double getXboxLeftY() {
+    public static double moveTransport() {
         return Math.abs(xbox.getLeftY()) > controllerDeadzone ? xbox.getLeftY() : 0;
     }
 
@@ -61,7 +61,7 @@ public class IO {
         return xbox.getBackButton();
     }
 
-    public static double getJoy2X() {
+    public static double rotate() {
         return deadzone(joystick2.getX(), controllerDeadzone);
     }
 
@@ -77,7 +77,7 @@ public class IO {
         return xbox.getRightBumper();
     }
 
-    public static double getXboxLeftTrigger() {
+    public static double intakeBall() {
         return xbox.getLeftTriggerAxis();
     }
 
@@ -85,7 +85,7 @@ public class IO {
         return xbox.getLeftBumper();
     }
 
-    public static boolean getXboxXButton() {
+    public static boolean autoShoot() {
         return xbox.getXButtonPressed();
     }
 

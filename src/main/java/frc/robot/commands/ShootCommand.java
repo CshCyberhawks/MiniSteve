@@ -17,7 +17,7 @@ public class ShootCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (IO.getXboxXButton()) {
+        if (IO.autoShoot()) {
             shootCommand = new AutoShootCommand(shootSystem);
             shootCommand.schedule();
         }

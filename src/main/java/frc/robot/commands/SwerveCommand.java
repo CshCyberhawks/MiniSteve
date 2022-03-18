@@ -25,10 +25,10 @@ public class SwerveCommand extends CommandBase {
         if (IO.resetGyro())
             swerveDriveTrain.gyro.setOffset();
         if (IO.limelightLockOn())
-            swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(),
+            swerveDriveTrain.drive(-IO.moveRobotY(), -IO.moveRobotX(),
                     -IO.deadzone(Limelight.getHorizontalOffset(), .5) / 27);
         else
-            swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoy2X());
+            swerveDriveTrain.drive(-IO.moveRobotY(), -IO.moveRobotX(), -IO.rotate());
     }
 
     // Called once the command ends or is interrupted.
