@@ -98,7 +98,7 @@ public class ShootSystem extends SubsystemBase {
 
         double topPIDOut = topPIDController.calculate(bottomEncoder.getRate(), power);
 
-        topMotor.set(-(topPIDOut / maxRPM) + -((power * topMotorMult) / (maxRPM * Math.abs(topMotorMult))));
+        topMotor.set(-(topPIDOut / maxRPM) + -((power * topMotorMult) / (maxRPM * topMotorMult)));
         setBottom(power);
     }
 }
