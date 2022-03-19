@@ -13,7 +13,7 @@ public class LimeLightAuto extends CommandBase {
     boolean isAtPosition = false;
     boolean pickedUpBall = false;
     boolean firstTimeAtAngle = false;
-    // IntakeSequence intakeSequence;
+    IntakeSequence intakeSequence;
 
     public LimeLightAuto() {
         // Use addRequirements() here to declare subsystem dependencies.
@@ -32,7 +32,7 @@ public class LimeLightAuto extends CommandBase {
         }
 
         else if (isAtAngle && !isAtPosition && firstTimeAtAngle) {
-            // intakeSequence = new IntakeSequence();
+            intakeSequence = new IntakeSequence();
             swerveAuto.setDesiredPositionDistance(Limelight.getBallDistance());
         }
 
@@ -55,7 +55,7 @@ public class LimeLightAuto extends CommandBase {
             isAtPosition = swerveAuto.isAtDesiredPosition();
         }
 
-        // pickedUpBall = IntakeSequence.isFinished();
+        pickedUpBall = intakeSequence.isFinished();
 
         return pickedUpBall;
     }

@@ -20,6 +20,10 @@ public class SwerveAuto {
     private Alliance team;
     private Vector2[] ballPositions;
 
+    private boolean byBall = false;
+    private double ballDistanceDeadzone = 1;
+    private double normalDistanceDeadzone = .1;
+
     private double positionStopRange = .1;
     private boolean isAtPosition = false;
     private boolean isAtAngle = false;
@@ -48,6 +52,7 @@ public class SwerveAuto {
     }
 
     public void setDesiredPosition(Vector2 desiredPosition, double desiredVelocity) {
+        byBall = false;
         this.desiredPosition = desiredPosition;
 
         double[] polarPosition = MathClass.cartesianToPolar(desiredPosition.x, desiredPosition.y);
@@ -59,6 +64,7 @@ public class SwerveAuto {
 
     public void setDesiredPositionBall(int ballNumber, double desiredVelocity) {
         setDesiredPosition(ballPositions[ballNumber], desiredVelocity);
+        byBall = true;
     }
 
     public void setDesiredPositionDistance(double distance) {
@@ -79,7 +85,23 @@ public class SwerveAuto {
     }
 
     public boolean isAtDesiredPosition() {
-        return false;// trapXFinished && trapYFinsihed;
+
+        if (byBall) {
+            return MathClass.calculateDeadzone(
+                    desiredPosition.x - MathClass.swosToMeters(Robot.swo.getPosition().positionCoord.x),
+                    ballDistanceDeadzone) == 0
+                    && MathClass.calculateDeadzone(
+                            desiredPosition.y - MathClass.swosToMeters(Robot.swo.getPosition().positionCoord.y),
+                            ballDistanceDeadzone) == 0;
+        } else {
+            return MathClass.calculateDeadzone(
+                    desiredPosition.x - MathClass.swosToMeters(Robot.swo.getPosition().positionCoord.x),
+                    normalDistanceDeadzone) == 0
+                    && MathClass.calculateDeadzone(
+                            desiredPosition.y - MathClass.swosToMeters(Robot.swo.getPosition().positionCoord.y),
+                            normalDistanceDeadzone) == 0;
+
+        }
     }
 
     public boolean isAtDesiredAngle() {
