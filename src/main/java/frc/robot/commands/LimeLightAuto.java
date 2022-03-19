@@ -24,7 +24,7 @@ public class LimeLightAuto extends CommandBase {
 
     @Override
     public void execute() {
-        SmartDashboard.putNumber("limeLightDistance", LimeLight.getDistance());
+        SmartDashboard.putNumber("limeLightDistance", LimeLight.getBallDistance());
 
         if (!isAtAngle) {
             swerveAuto.twist();
@@ -33,7 +33,7 @@ public class LimeLightAuto extends CommandBase {
 
         else if (isAtAngle && !isAtPosition && firstTimeAtAngle) {
             // intakeSequence = new IntakeSequence();
-            swerveAuto.setDesiredPositionDistance(LimeLight.getDistance());
+            swerveAuto.setDesiredPositionDistance(LimeLight.getBallDistance());
         }
 
         else if (!isAtPosition && isAtAngle) {
