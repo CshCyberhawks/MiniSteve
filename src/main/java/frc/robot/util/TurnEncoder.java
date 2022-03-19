@@ -13,10 +13,10 @@ public class TurnEncoder {
     }
 
     private double voltageToDegrees(double input) {
-        return input * 72;
+        return input / (2.5 / 180);
     }
 
-    public double getRotations() {
+    public double get() {
         // return
         // (double)Math.floor(filter.calculate(voltageToDegrees(encoder.getVoltage()) -
         // Constants.turnEncoderOffsets[encoderPort]) * 10d) / 10d;

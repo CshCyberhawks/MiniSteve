@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import org.ejml.dense.fixed.CommonOps_DDF2;
+
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import frc.robot.commands.ManualIntakeCommand;
 import frc.robot.commands.ManualTransportCommand;
 import frc.robot.commands.ShootCommand;
@@ -15,6 +19,15 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.AutoCommandGroup;
+import frc.robot.commands.SwerveCommand;
+import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.SwerveAuto;
+import frc.robot.subsystems.SwerveDriveTrain;
+//import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.SwerveOdometry;
+import frc.robot.util.FieldPosition;
+import frc.robot.util.Gyro;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
@@ -27,22 +40,27 @@ import edu.wpi.first.wpilibj.DigitalInput;
  * project.
  */
 public class Robot extends TimedRobot {
-  // private DriveSystem driveSystem;
-  private Command m_autonomousCommand;
-  // private Alliance teamColor;
-  // private OldSwerveDriveTrain swerveSystem;
-  // private OldSwerveDriveTrain swerveSystem;
-  // private SwerveDriveTrain swerveSystem;
-  private static ShootSystem shootSystem;
-  private static DigitalInput frontBreakBeam;
-  private static DigitalInput backBreakBeam;
-  private static DigitalInput topBreakBeam;
+  public static SwerveAuto swerveAuto;
 
-  // private OldSwerveDriveTrain swerveSystem;
-  // private SwerveDriveTrain swerveSystem;
-  private static IntakeSystem intakeSystem;
-  private static TransportSystem transportSystem;
-  // private RobotContainer m_robotContainer;
+  public static SwerveDriveTrain swerveSystem;
+  public static SwerveOdometry swo;
+  public static SwerveCommand swerveCommand;
+  // public Alliance teamColor;
+  // public OldSwerveDriveTrain swerveSystem;
+  // public OldSwerveDriveTrain swerveSystem;
+  // public SwerveDriveTrain swerveSystem;
+  public static ShootSystem shootSystem;
+  public static DigitalInput frontBreakBeam;
+  public static DigitalInput backBreakBeam;
+  public static DigitalInput topBreakBeam;
+
+  // public OldSwerveDriveTrain swerveSystem;
+  // public SwerveDriveTrain swerveSystem;
+  public static IntakeSystem intakeSystem;
+  public static TransportSystem transportSystem;
+
+  public static AutoCommandGroup autoCommands;
+  // public RobotContainer m_robotContainer;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -63,6 +81,11 @@ public class Robot extends TimedRobot {
     shootSystem = new ShootSystem();
     intakeSystem = new IntakeSystem();
     transportSystem = new TransportSystem();
+
+    swerveSystem = new SwerveDriveTrain();
+    swo = new SwerveOdometry(new FieldPosition(0, 0, 0));
+    CameraServer.startAutomaticCapture();
+
     // driveSystem = new DriveSystem();
     // CameraServer.startAutomaticCapture();
   }
@@ -92,10 +115,14 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    swo.resetPos();
+    // swerveSystem.resetPredictedOdometry();
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   /**
    * This autonomous runs the autonomous command selected by your
@@ -103,49 +130,68 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    if (swerveCommand != null) {
+      swerveCommand.cancel();
+    }
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null)
-      m_autonomousCommand.schedule();
-  }
+    swerveAuto = new SwerveAuto();
+    autoCommands = new AutoCommandGroup();
 
+    // schedule the autonomous command (example)
+    autoCommands.schedule();
+
+  }
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    swo.updatePosition();
+
+  }
 
   @Override
   public void teleopInit() {
-    // swerveSystem = new SwerveDriveTrain();
 
     shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
     intakeSystem.setDefaultCommand(new ManualIntakeCommand(intakeSystem));
     transportSystem.setDefaultCommand(new ManualTransportCommand(transportSystem));
-    // swerveSystem.setDefaultCommand(new OldSwerveCommand(swerveSystem));
+
+    swerveCommand = new SwerveCommand(swerveSystem);
+    swerveCommand.schedule();
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null)
-      m_autonomousCommand.cancel();
+    // if (autoCommands != null) {
+    // autoCommands.cancel();
+    // }
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    swo.updatePosition();
+
     SmartDashboard.putNumber("cargoStored", transportSystem.getCargoAmount());
+
+    SmartDashboard.putNumber("Gyro Vel X", Gyro.getVelocityX());
+    SmartDashboard.putNumber("Gyro Vel Y", Gyro.getVelocityY());
+    SmartDashboard.putNumber("Gyro Accel X", Gyro.getAccelX());
+    SmartDashboard.putNumber("Gyro Accel Y", Gyro.getAccelY());
   }
 
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+
   }
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+  }
 
   public static IntakeSystem getIntakeSystem() {
     return intakeSystem;
@@ -154,7 +200,7 @@ public class Robot extends TimedRobot {
   public static ShootSystem getShootSystem() {
     return shootSystem;
   }
-  
+
   public static TransportSystem getTransportSystem() {
     return transportSystem;
   }

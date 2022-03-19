@@ -1,11 +1,17 @@
 package frc.robot.util;
 
 public class FieldPosition {
-    private static Vector2 positionCoord = new Vector2();
-    private static Gyro gyro = new Gyro();
+    public double angle = 0;
+    public Vector2 positionCoord;
 
-    public static void update() {
-        positionCoord.x = (positionCoord.x + gyro.getVelX());
-        positionCoord.y = (positionCoord.x + gyro.getVelY());
+    public FieldPosition(double startX, double startY, double startAngle) {
+        positionCoord = new Vector2(startX, startY);
+        angle = startAngle;
     }
+
+    public void reset() {
+        positionCoord = new Vector2(0, 0);
+        angle = 0;
+    }
+
 }

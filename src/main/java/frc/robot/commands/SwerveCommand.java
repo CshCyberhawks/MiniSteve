@@ -1,8 +1,11 @@
 package frc.robot.commands;
 
+import edu.wpi.first.hal.simulation.RoboRioDataJNI;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Limelight;
+import frc.robot.Robot;
+import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.SwerveDriveTrain;
+import frc.robot.util.Gyro;
 import frc.robot.util.IO;
 
 public class SwerveCommand extends CommandBase {
@@ -16,24 +19,28 @@ public class SwerveCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        swerveDriveTrain.gyro.setOffset();
+        Gyro.setOffset();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        if (IO.getJoystickButton5())
+            Robot.swo.resetPos();
+        Robot.swo.getPosition();
         if (IO.resetGyro())
-            swerveDriveTrain.gyro.setOffset();
+            Gyro.setOffset();
         if (IO.limelightLockOn())
             swerveDriveTrain.drive(-IO.moveRobotY(), -IO.moveRobotX(),
-                    -IO.deadzone(Limelight.getHorizontalOffset(), .5) / 27);
+                    -IO.deadzone(LimeLight.getHorizontalOffset(), .5) / 27, IO.getJoyThrottle(), "tele");
         else
-            swerveDriveTrain.drive(-IO.moveRobotY(), -IO.moveRobotX(), -IO.turnControl());
+            swerveDriveTrain.drive(-IO.moveRobotY(), -IO.moveRobotX(), -IO.turnControl(), IO.getJoyThrottle(), "tele");
     }
 
     // Called once the command ends or is interrupted.
     @Override
-    public void end(boolean interrupted) {}
+    public void end(boolean interrupted) {
+    }
 
     // Returns true when the command should end.
     @Override

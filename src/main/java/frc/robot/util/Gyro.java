@@ -4,53 +4,62 @@ package frc.robot.util;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.math.filter.LinearFilter;
 import com.kauailabs.navx.frc.AHRS;
 
 public class Gyro {
-    private AHRS gyro;
-    private double offset;
+    private static AHRS gyro = new AHRS(SPI.Port.kMXP);
+    private static double offset = 0;
+    private static LinearFilter filter = LinearFilter.highPass(0.1, 0.02);
 
-    public Gyro() {
-        gyro = new AHRS(SPI.Port.kMXP);
-        Shuffleboard.getTab("SmartDashboard").add(gyro);
-        offset = 0;
+    private static double wrapAroundAngles(double input) {
+        return input < 0 ? 360 + input : input;
     }
 
-    public double getVelX() {
-        return gyro.getVelocityX();
-    }
-
-    public double getVelY() {
-        return gyro.getVelocityY();
-    }
-
-    public double getAngVel() {
-        return gyro.getVelocityZ();
-    }
-
-    public double getAngle() {
-        SmartDashboard.putNumber("Gyro Offset", offset);
-        return wrapAroundAngles(gyro.getYaw() - offset);
+    public static double getAngle() {
+        SmartDashboard.putNumber("Gyro raw", gyro.getYaw() - offset);
+        return wrapAroundAngles(wrapAroundAngles(gyro.getYaw()) - offset);
         // return gyro.getYaw();
     }
 
-    public void setOffset() {
+    public static boolean isConnected() {
+        return gyro.isConnected();
+    }
+
+    public static void reset() {
+        gyro.reset();
+    }
+
+    public static void setOffset() {
         // The gyro wasn't being nice
         offset = wrapAroundAngles(gyro.getYaw());
     }
 
-    public boolean isConnected() {
-        return gyro.isConnected();
+    public static double getVelZ() {
+        return filter.calculate(gyro.getVelocityZ());
     }
 
-    private double wrapAroundAngles(double input) {
-        while (input < 0)
-            input += 360;
-        return input;
+    public static double getVelocityX() {
+        return filter.calculate(gyro.getVelocityX());
+        // return gyro.getVelocityX();
     }
 
-    public void reset() {
-        gyro.reset();
+    public static double getVelocityY() {
+        return filter.calculate(gyro.getVelocityY());
+        // return gyro.getVelocityY();
+    }
+
+    public static double getAccelX() {
+        return filter.calculate(gyro.getWorldLinearAccelX());
+        // return gyro.getWorldLinearAccelX();
+    }
+
+    public static double getAccelY() {
+        return filter.calculate(gyro.getWorldLinearAccelX());
+        // return gyro.getWorldLinearAccelX();
+    }
+
+    public static void calibrate() {
+        gyro.calibrate();
     }
 }

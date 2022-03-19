@@ -7,6 +7,8 @@ package frc.robot;
 import java.util.HashMap;
 // import java.util.Map;
 
+import frc.robot.util.Vector2;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -26,12 +28,12 @@ public final class Constants {
     public static final int backLeftTwistMult = 1;
 
     // twist speed mults for each motor
-    public static final HashMap<String, Integer> twistSpeedMap = new HashMap<>() {
+    public static final HashMap<String, Double> twistSpeedMap = new HashMap<>() {
         {
-            put("frontRight", -1);
-            put("frontLeft", 1);
-            put("backRight", -1);
-            put("backLeft", 1);
+            put("frontRight", .5);
+            put("frontLeft", .5);
+            put("backRight", .5);
+            put("backLeft", .5);
         }
     };
 
@@ -45,13 +47,13 @@ public final class Constants {
         }
     };
 
-    // Turn Motors
+    // TalonSRX Motors
     public static final int frontRightTurnMotor = 5;
     public static final int frontLeftTurnMotor = 2;
     public static final int backRightTurnMotor = 1;
     public static final int backLeftTurnMotor = 3;
 
-    // Drive Motors
+    // CANSparkMax Motors
     public static final int frontRightDriveMotor = 6;
     public static final int frontLeftDriveMotor = 8;
     public static final int backRightDriveMotor = 9;
@@ -80,10 +82,18 @@ public final class Constants {
     public static final int backRightEncoder = 1;
     public static final int backLeftEncoder = 2;
 
+    public static final double wheelRadius = 0.0505; // In meters
+    public static final double wheelGearRatio = 7 / 1; // 7:1 gear ratio
+
+    public static final Vector2[] redBallPositions = { new Vector2(5, 0), new Vector2(0, 0), new Vector2(0, 0),
+            new Vector2(0, 0), new Vector2(0, 0) };
+    public static final Vector2[] blueBallPositions = { new Vector2(0, 5), new Vector2(0, 0), new Vector2(0, 0),
+            new Vector2(0, 0), new Vector2(0, 0) };
+
     // Break Beams
     public static final int frontBreakBeam = 1;
     public static final int backBreakBeam = 0;
     public static final int topBreakBeam = 2;
 
-    public static final double[] turnEncoderOffsets = {256, 346, 171, 95};
+    public static final double[] turnEncoderOffsets = { 256, 346, 171, 95 };
 }
