@@ -21,4 +21,14 @@ public class Vector2 {
     public Vector2 add(Vector2 other) {
         return new Vector2(this.x + other.x, this.y + other.y);
     }
+
+    public void set(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void set(Vector2 vec) {
+        this.x = vec.x;
+        this.y = vec.y;
+    }
 }
