@@ -3,7 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveAuto;
 
 public class LimeLightAuto extends CommandBase {
@@ -18,13 +18,13 @@ public class LimeLightAuto extends CommandBase {
     public LimeLightAuto() {
         // Use addRequirements() here to declare subsystem dependencies.
         swerveAuto = Robot.swerveAuto;
-        swerveAuto.setDesiredAngle(LimeLight.getHorizontalOffset(), true);
+        swerveAuto.setDesiredAngle(Limelight.getHorizontalOffset(), true);
 
     }
 
     @Override
     public void execute() {
-        SmartDashboard.putNumber("limeLightDistance", LimeLight.getBallDistance());
+        SmartDashboard.putNumber("limeLightDistance", Limelight.getBallDistance());
 
         if (!isAtAngle) {
             swerveAuto.twist();
@@ -33,7 +33,7 @@ public class LimeLightAuto extends CommandBase {
 
         else if (isAtAngle && !isAtPosition && firstTimeAtAngle) {
             // intakeSequence = new IntakeSequence();
-            swerveAuto.setDesiredPositionDistance(LimeLight.getBallDistance());
+            swerveAuto.setDesiredPositionDistance(Limelight.getBallDistance());
         }
 
         else if (!isAtPosition && isAtAngle) {

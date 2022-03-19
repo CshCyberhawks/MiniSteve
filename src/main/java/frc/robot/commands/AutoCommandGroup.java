@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.util.FieldPosition;
 import frc.robot.util.Vector2;
 import frc.robot.Robot;
-import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.Limelight;
 
 public class AutoCommandGroup extends SequentialCommandGroup {
     public AutoCommandGroup() {
