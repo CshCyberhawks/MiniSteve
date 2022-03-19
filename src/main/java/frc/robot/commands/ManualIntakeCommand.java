@@ -20,13 +20,12 @@ public class ManualIntakeCommand extends CommandBase {
         double speed = IO.intakeBall();
 
         SmartDashboard.putBoolean("intakeSequenceBool", Robot.getTransportSystem().getSequenceState());
-        
+
         if (IO.autoIntake()) {
             IntakeSequence intakeCommandSequence = new IntakeSequence();
             intakeCommandSequence.schedule();
             SmartDashboard.putBoolean("intakeSequenceBegan", true);
-        }
-        else if (!Robot.getTransportSystem().getSequenceState())
+        } else if (!Robot.getTransportSystem().getSequenceState())
             if (IO.removeBall())
                 intakeSystem.intake(-.5);
             else

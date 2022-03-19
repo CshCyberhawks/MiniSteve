@@ -14,7 +14,7 @@ public class ClimbSystem extends SubsystemBase {
     private Solenoid leftSolenoid;
     private Solenoid rightSolenoid;
     private PIDController climbPidController;
-    
+
     public ClimbSystem() {
         climbMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
         encoder = climbMotor.getEncoder();

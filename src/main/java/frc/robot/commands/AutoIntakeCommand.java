@@ -17,7 +17,7 @@ public class AutoIntakeCommand extends CommandBase {
         intakeSystem.intake(1);
     }
 
-    @Override 
+    @Override
     public void end(boolean interrupted) {
         Robot.getTransportSystem().move(0);
         Robot.getIntakeSystem().kill();

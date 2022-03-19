@@ -7,7 +7,7 @@ import frc.robot.util.IO;
 public class ClimbCommand extends CommandBase {
     private final ClimbSystem climbSystem;
     private final double speedMult = 1;
-    
+
     public ClimbCommand(ClimbSystem subsystem) {
         climbSystem = subsystem;
         addRequirements(subsystem);

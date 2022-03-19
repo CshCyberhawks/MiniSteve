@@ -3,13 +3,10 @@ package frc.robot.subsystems;
 import frc.robot.util.TurnEncoder;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -20,8 +17,6 @@ import edu.wpi.first.math.controller.PIDController;
 // import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 // import edu.wpi.first.math.geometry.Rotation2d;
 // import edu.wpi.first.math.kinematics.SwerveModuleState;
-import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.RelativeEncoder;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import frc.robot.Constants;

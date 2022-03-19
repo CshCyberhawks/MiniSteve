@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.util.MathClass;
 import edu.wpi.first.util.WPIUtilJNI;
 
-
 public class Wait extends CommandBase {
     double startTime;
     private double length;
-    //length is in MS
+
+    // length is in MS
     public Wait(double _length) {
         length = _length;
     }
@@ -28,10 +28,10 @@ public class Wait extends CommandBase {
 
     }
 
-    @Override public boolean isFinished() {
+    @Override
+    public boolean isFinished() {
         double timeNow = WPIUtilJNI.now() * 1.0e-6;
         return MathClass.calculateDeadzone((timeNow - startTime) - length, .05) == 0;
     }
 
 }
-

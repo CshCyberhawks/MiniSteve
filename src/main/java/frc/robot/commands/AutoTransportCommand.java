@@ -22,7 +22,7 @@ public class AutoTransportCommand extends CommandBase {
         transportSystem.move(-.25);
     }
 
-    @Override 
+    @Override
     public void end(boolean interrupted) {
         if (transportSystem.getCargoAmount() < 2 && interrupted == false)
             transportSystem.setCargoAmount(transportSystem.getCargoAmount() + 1);
@@ -31,10 +31,11 @@ public class AutoTransportCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        //return true on 2nd breakbeam if ball == 1, return true on 3rd breakbeam if ball == 2
+        // return true on 2nd breakbeam if ball == 1, return true on 3rd breakbeam if
+        // ball == 2
         boolean backBeam = Robot.getBackBreakBeam().get();
         hitBackBreak = !hitBackBreak ? !backBeam : hitBackBreak;
-        if (cargoStored == 0) 
+        if (cargoStored == 0)
             return !backBeam;
         return backBeam && hitBackBreak;
     }

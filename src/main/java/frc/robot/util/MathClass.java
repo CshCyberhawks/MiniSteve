@@ -32,11 +32,9 @@ public class MathClass {
     public static double getMin(double[] values) {
         double min = values[0];
 
-        for (int i = 1; i < values.length; i++) {
-            if (values[i] < min) {
+        for (int i = 1; i < values.length; i++)
+            if (values[i] < min)
                 min = values[i];
-            }
-        }
 
         return min;
     }
@@ -44,11 +42,9 @@ public class MathClass {
     public static double getMax(double[] values) {
         double max = values[0];
 
-        for (int i = 1; i < values.length; i++) {
-            if (values[i] > max) {
+        for (int i = 1; i < values.length; i++)
+            if (values[i] > max)
                 max = values[i];
-            }
-        }
 
         return max;
     }
@@ -63,20 +59,18 @@ public class MathClass {
         double lowestSpeed = min < minSpeed ? minSpeed : min;
 
         for (int i = 0; i < speeds.length; i++) {
-            if (max > maxSpeed && speeds[i] > 0) {
+            if (max > maxSpeed && speeds[i] > 0)
                 retSpeeds[i] = speeds[i] / divSpeed * highestSpeed;
-            } else if (min < minSpeed && speeds[i] < 0) {
+            else if (min < minSpeed && speeds[i] < 0)
                 retSpeeds[i] = speeds[i] / -divSpeed * lowestSpeed;
-            }
         }
 
         return retSpeeds;
-    }   
+    }
 
     public static double optimize(double desiredAngle, double currentAngle) {
-        if (Math.abs(desiredAngle - currentAngle) > 90 && Math.abs(desiredAngle - currentAngle) < 270) {
+        if (Math.abs(desiredAngle - currentAngle) > 90 && Math.abs(desiredAngle - currentAngle) < 270)
             return -1;
-        }
         return 1;
     }
 

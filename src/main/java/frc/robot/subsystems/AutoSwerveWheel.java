@@ -6,12 +6,7 @@ import frc.robot.util.TurnEncoder;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.revrobotics.CANSparkMax;
-
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 //leaving the below imports to remember that profiledPIDControllers exist, and that feedforwards exist in case we need to use them
 // import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -19,11 +14,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 // import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 // import edu.wpi.first.math.geometry.Rotation2d;
 // import edu.wpi.first.math.kinematics.SwerveModuleState;
-import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.RelativeEncoder;
 import frc.robot.Constants;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoSwerveWheel {
     private TalonSRX turnMotor;

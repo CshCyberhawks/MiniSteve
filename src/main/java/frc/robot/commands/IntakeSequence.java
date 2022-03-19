@@ -5,7 +5,7 @@ import frc.robot.util.IO;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class IntakeSequence extends SequentialCommandGroup {
-    //this gets called upon running intake on xbox controller
+    // this gets called upon running intake on xbox controller
     private AutoIntakeCommand autoIntakeCommand;
     private AutoTransportCommand autoTransportCommand;
 

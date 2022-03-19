@@ -1,11 +1,11 @@
 package frc.robot.commands;
 
-import edu.wpi.first.hal.simulation.RoboRioDataJNI;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveDriveTrain;
 import frc.robot.util.Gyro;
+import frc.robot.util.MathClass;
 import frc.robot.util.IO;
 
 public class SwerveCommand extends CommandBase {
@@ -31,10 +31,21 @@ public class SwerveCommand extends CommandBase {
         if (IO.resetGyro())
             Gyro.setOffset();
         if (IO.limelightLockOn())
-            swerveDriveTrain.drive(-IO.moveRobotY(), -IO.moveRobotX(),
-                    -IO.deadzone(Limelight.getHorizontalOffset(), .5) / 27, IO.getJoyThrottle(), "tele");
+            swerveDriveTrain.drive(
+                -IO.moveRobotY(), 
+                -IO.moveRobotX(),
+                -MathClass.calculateDeadzone(Limelight.getHorizontalOffset(), .5) / 27, 
+                IO.getJoyThrottle(),
+                "tele"
+            );
         else
-            swerveDriveTrain.drive(-IO.moveRobotY(), -IO.moveRobotX(), -IO.turnControl(), IO.getJoyThrottle(), "tele");
+            swerveDriveTrain.drive(
+                -IO.moveRobotY(), 
+                -IO.moveRobotX(), 
+                -IO.turnControl(), 
+                IO.getJoyThrottle(), 
+                "tele"
+            );
     }
 
     // Called once the command ends or is interrupted.

@@ -4,7 +4,6 @@ import frc.robot.Robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.util.FieldPosition;
 import frc.robot.util.Vector2;
 
 public class AutoGoToPosition extends CommandBase {
@@ -52,8 +51,9 @@ public class AutoGoToPosition extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         SmartDashboard.putBoolean("auto translate command finsihed", Robot.swerveAuto.isAtDesiredPosition());
-        //commented below code out so that robot will maintain desired autonomous velocities
-       // Robot.swerveAuto.kill();
+        // commented below code out so that robot will maintain desired autonomous
+        // velocities
+        // Robot.swerveAuto.kill();
     }
 
     @Override

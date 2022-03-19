@@ -1,14 +1,10 @@
 package frc.robot.subsystems;
 
 import frc.robot.util.MathClass;
-import frc.robot.util.FieldPosition;
 import frc.robot.util.Gyro;
-import frc.robot.util.IO;
 import frc.robot.util.Vector2;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;

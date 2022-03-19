@@ -12,22 +12,27 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class Limelight extends SubsystemBase {
     private static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     private static NetworkTableEntry tv = table.getEntry("tv"); // 0 or 1 whether it has a valid target
-    private static NetworkTableEntry tx = table.getEntry("tx"); // The horizontal offset between the crosshair and target in degrees
-    private static NetworkTableEntry ty = table.getEntry("ty"); // The vertical offset between the crosshair and target in degrees
+    private static NetworkTableEntry tx = table.getEntry("tx"); // The horizontal offset between the crosshair and
+                                                                // target in degrees
+    private static NetworkTableEntry ty = table.getEntry("ty"); // The vertical offset between the crosshair and target
+                                                                // in degrees
     private static NetworkTableEntry ta = table.getEntry("ta"); // Percentage of image
-    private static NetworkTableEntry tc = table.getEntry("tc"); // HSV color underneath the crosshair region as a NumberArray
-    private static NetworkTableEntry pipeline = table.getEntry("pipeline"); //Pipeline 
+    private static NetworkTableEntry tc = table.getEntry("tc"); // HSV color underneath the crosshair region as a
+                                                                // NumberArray
+    private static NetworkTableEntry pipeline = table.getEntry("pipeline"); // Pipeline
 
     private static Alliance team = DriverStation.getAlliance();
 
-    public Limelight() {}
-    
+    public Limelight() {
+    }
+
     public static void pipelineInit() {
         if (team == Alliance.Red)
             pipeline.setDouble(0);
         else if (team == Alliance.Blue)
             pipeline.setDouble(1);
     }
+
     public static double getHorizontalOffset() {
         return tx.getDouble(0.0);
     }
@@ -49,10 +54,10 @@ public class Limelight extends SubsystemBase {
     }
 
     public static double getBallDistance() {
-        double cameraHeight = 0.305; //Height of camera (meters)
-        double ballHeight = 0.24; //Height of target (meters) measured perfectly
-        int mountAngle = 0; //Angle that the limelight is mounted
-        return (ballHeight - cameraHeight) / Math.tan(mountAngle + getVerticalOffset()); 
+        double cameraHeight = 0.305; // Height of camera (meters)
+        double ballHeight = 0.24; // Height of target (meters) measured perfectly
+        int mountAngle = 0; // Angle that the limelight is mounted
+        return (ballHeight - cameraHeight) / Math.tan(mountAngle + getVerticalOffset());
     }
 
     @Override

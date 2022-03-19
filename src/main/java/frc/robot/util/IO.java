@@ -10,15 +10,11 @@ public class IO {
     private static final XboxController xbox = new XboxController(2);
     private static final double controllerDeadzone = 0.3;
 
-    public static double deadzone(double input, double zone) {
-        return Math.abs(input) > zone ? input : 0;
-    }
-
     public static double[] getPolarCoords() {
         return new double[] {
-                -deadzone(joystick.getDirectionDegrees(), controllerDeadzone),
-                deadzone(joystick.getMagnitude(), controllerDeadzone),
-                deadzone(joystick.getTwist(), controllerDeadzone)
+                -MathClass.calculateDeadzone(joystick.getDirectionDegrees(), controllerDeadzone),
+                MathClass.calculateDeadzone(joystick.getMagnitude(), controllerDeadzone),
+                MathClass.calculateDeadzone(joystick.getTwist(), controllerDeadzone)
         };
     }
 
@@ -56,12 +52,12 @@ public class IO {
 
     public static double moveRobotX() {
         SmartDashboard.putNumber("Jotstick X", joystick.getX());
-        return deadzone(joystick.getX(), controllerDeadzone);
+        return MathClass.calculateDeadzone(joystick.getX(), controllerDeadzone);
     }
 
     public static double moveRobotY() {
         SmartDashboard.putNumber("Joystick Y", joystick.getY());
-        return deadzone(joystick.getY(), controllerDeadzone);
+        return MathClass.calculateDeadzone(joystick.getY(), controllerDeadzone);
     }
 
     public static boolean removeBall() {
@@ -77,7 +73,7 @@ public class IO {
     }
 
     public static double turnControl() {
-        return deadzone(joystick2.getX(), controllerDeadzone);
+        return MathClass.calculateDeadzone(joystick2.getX(), controllerDeadzone);
     }
 
     public static boolean getJoystickButton5() {
@@ -85,7 +81,7 @@ public class IO {
     }
 
     public static double getJoyThrottle() {
-        return deadzone(joystick2.getY(), .5);
+        return MathClass.calculateDeadzone(joystick2.getY(), .5);
     }
 
     // public static boolean getXboxRightBumper() {
@@ -97,16 +93,19 @@ public class IO {
     // }
 
     // public static double getXboxLeftX() {
-    // return Math.abs(xbox.getLeftX()) > controllerDeadzone ? xbox.getLeftX() : 0;
+    // return Math.abs(xbox.getLeftX()) > controllerMathClass.calculateDeadzone ?
+    // xbox.getLeftX() : 0;
     // }
 
     // public static double getXboxRightX() {
-    // return Math.abs(xbox.getRightX()) > controllerDeadzone ? xbox.getRightX() :
+    // return Math.abs(xbox.getRightX()) > controllerMathClass.calculateDeadzone ?
+    // xbox.getRightX() :
     // 0;
     // }
 
     // public static double getJoyTwist() {
     // SmartDashboard.putNumber("Joystick Twist", joystick.getTwist());
-    // return deadzone(joystick.getTwist(), controllerDeadzone);
+    // return MathClass.calculateDeadzone(joystick.getTwist(),
+    // controllerMathClass.calculateDeadzone);
     // }
 }

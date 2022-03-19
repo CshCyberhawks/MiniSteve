@@ -1,22 +1,12 @@
 package frc.robot.subsystems;
 
-import frc.robot.util.MathClass;
 import frc.robot.Robot;
 import frc.robot.util.FieldPosition;
 import frc.robot.util.Gyro;
-import frc.robot.util.IO;
 import frc.robot.util.Vector2;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.Vector;
-import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.util.WPIUtilJNI;
-import java.lang.Math;
-
-import org.ejml.dense.row.decomposition.eig.watched.WatchedDoubleStepQREigen_FDRM;
-import org.ejml.simple.SimpleMatrix;
 
 public class SwerveOdometry extends SubsystemBase {
     private FieldPosition fieldPosition;
