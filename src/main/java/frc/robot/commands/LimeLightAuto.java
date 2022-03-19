@@ -15,28 +15,22 @@ public class LimeLightAuto extends CommandBase {
     boolean firstTimeAtAngle = false;
     IntakeSequence intakeSequence;
 
-    public LimeLightAuto() {
+    public LimelightAuto() {
         // Use addRequirements() here to declare subsystem dependencies.
         swerveAuto = Robot.swerveAuto;
         swerveAuto.setDesiredAngle(Limelight.getHorizontalOffset(), true);
-
     }
 
     @Override
     public void execute() {
         SmartDashboard.putNumber("limeLightDistance", Limelight.getBallDistance());
 
-        if (!isAtAngle) {
+        if (!isAtAngle)
             swerveAuto.twist();
-            return;
-        }
-
         else if (isAtAngle && !isAtPosition && firstTimeAtAngle) {
             intakeSequence = new IntakeSequence();
             swerveAuto.setDesiredPositionDistance(Limelight.getBallDistance());
-        }
-
-        else if (!isAtPosition && isAtAngle) {
+        } else if (!isAtPosition && isAtAngle) {
             swerveAuto.translate();
         }
     }
@@ -51,9 +45,8 @@ public class LimeLightAuto extends CommandBase {
         if (!isAtAngle) {
             isAtAngle = swerveAuto.isAtDesiredAngle();
             firstTimeAtAngle = isAtAngle ? true : false;
-        } else if (isAtAngle && !isAtPosition) {
+        } else if (isAtAngle && !isAtPosition)
             isAtPosition = swerveAuto.isAtDesiredPosition();
-        }
 
         pickedUpBall = intakeSequence.isFinished();
 

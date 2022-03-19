@@ -22,6 +22,10 @@ public class SwerveOdometry extends SubsystemBase {
         return fieldPosition;
     }
 
+    public double[] getVelocities() {
+        return robotVelocities;
+    }
+
     public void resetPos() {
         fieldPosition.reset();
     }
@@ -82,9 +86,4 @@ public class SwerveOdometry extends SubsystemBase {
 
         lastUpdateTime = timeNow;
     }
-
-    public double[] getVelocities() {
-        return robotVelocities;
-    }
-
 }
