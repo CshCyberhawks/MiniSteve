@@ -15,7 +15,7 @@ public class LimeLightAuto extends CommandBase {
     boolean firstTimeAtAngle = false;
     IntakeSequence intakeSequence;
 
-    public LimelightAuto() {
+    public void LimelightAuto() {
         // Use addRequirements() here to declare subsystem dependencies.
         swerveAuto = Robot.swerveAuto;
         swerveAuto.setDesiredAngle(Limelight.getHorizontalOffset(), true);

@@ -12,10 +12,7 @@ public class AutoBall extends SequentialCommandGroup {
         // then it will wait 1 second before moving the robot back to its starting
         // position
         addCommands(
-                new AutoGoToPosition(new Vector2(10, 4), 1)
-        // new LimeLightAuto()
-        // new Wait(1000),
-        // new AutoGoToPosition(0, 0)
-        );
+                new AutoGoToPosition(ballNumber, 0),
+                new LimeLightAuto());
     }
 }

@@ -92,6 +92,14 @@ public final class Constants {
             new Vector2(3.8, 0.9),
             new Vector2(2.3, -3.2), new Vector2(-0.6, -3.8), new Vector2(-3.2, -2.2) };
 
+    public static final Vector2[] blueShootingPositions = {
+            new Vector2(0, 0), new Vector2(0, 0)
+    };
+
+    public static final Vector2[] redShootingPositions = {
+            new Vector2(0, 0), new Vector2(0, 0)
+    };
+
     // Break Beams
     public static final int frontBreakBeam = 1;
     public static final int backBreakBeam = 0;
