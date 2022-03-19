@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.HashMap;
+// import java.util.Map;
 
 import frc.robot.util.Vector2;
 
@@ -58,6 +59,16 @@ public final class Constants {
     public static final int backRightDriveMotor = 9;
     public static final int backLeftDriveMotor = 7;
 
+    // Shoot System Motors
+    public static final int rightShootMotor = 11;
+    public static final int leftShootMotor = 13;
+    public static final int topShootMotor = 12;
+    public static final int traversalMotor = 16;
+
+    // Intake System
+    public static final int intakeMotor = 15;
+    public static final int intakeSolenoid = 4;
+
     // Dimensions
     public static final double length = .53;
     public static final double width = .53;
@@ -71,8 +82,6 @@ public final class Constants {
     public static final int backRightEncoder = 1;
     public static final int backLeftEncoder = 2;
 
-    public static final double[] turnEncoderOffsets = { 15.3, 269.7, 346.8, 159.3 };
-
     public static final double wheelRadius = 0.0505; // In meters
     public static final double wheelGearRatio = 7 / 1; // 7:1 gear ratio
 
@@ -81,4 +90,10 @@ public final class Constants {
     public static final Vector2[] blueBallPositions = { new Vector2(0, 5), new Vector2(0, 0), new Vector2(0, 0),
             new Vector2(0, 0), new Vector2(0, 0) };
 
+    // Break Beams
+    public static final int frontBreakBeam = 1;
+    public static final int backBreakBeam = 0;
+    public static final int topBreakBeam = 2;
+
+    public static final double[] turnEncoderOffsets = { 256, 346, 171, 95 };
 }

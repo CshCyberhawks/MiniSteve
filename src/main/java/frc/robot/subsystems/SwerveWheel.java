@@ -13,9 +13,7 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-
+//import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 //leaving the below imports to remember that profiledPIDControllers exist, and that feedforwards exist in case we need to use them
 // import edu.wpi.first.math.controller.ProfiledPIDController;
 // import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -53,10 +51,7 @@ public class SwerveWheel {
     private PIDController drivePidController;
     private PIDController speedPID;
 
-    private SimpleMotorFeedforward driveFeedforward;
-
     public SwerveWheel(int turnPort, int drivePort, int turnEncoderPort) {
-
         turnMotor = new TalonSRX(turnPort);
         driveMotor = new WPI_TalonFX(drivePort);
 
@@ -81,7 +76,6 @@ public class SwerveWheel {
         speedPID = new PIDController(0.03, 0, 0);
 
         drivePidController = new PIDController(0.01, 0, 0);
-        driveFeedforward = new SimpleMotorFeedforward(.1, 473);
 
         if (turnEncoderPort == 2 || turnEncoderPort == 3) {
             driveMotor.setInverted(true);

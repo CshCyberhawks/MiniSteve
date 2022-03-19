@@ -5,66 +5,108 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IO {
-    private static Joystick joystick = new Joystick(0);
-    private static Joystick joystick2 = new Joystick(1);
+    private static final Joystick joystick = new Joystick(0);
+    private static final Joystick joystick2 = new Joystick(1);
+    private static final XboxController xbox = new XboxController(2);
+    private static final double controllerDeadzone = 0.3;
 
-    private static XboxController xbox = new XboxController(2);
-
-    private static double deadzoneVal = 0.3;
+    public static double deadzone(double input, double zone) {
+        return Math.abs(input) > zone ? input : 0;
+    }
 
     public static double[] getPolarCoords() {
-        double[] ret = { -MathClass.calculateDeadzone(joystick.getDirectionDegrees(), deadzoneVal),
-                MathClass.calculateDeadzone(joystick.getMagnitude(), deadzoneVal),
-                MathClass.calculateDeadzone(joystick.getTwist(), deadzoneVal) };
-        return ret;
+        return new double[] {
+                -deadzone(joystick.getDirectionDegrees(), controllerDeadzone),
+                deadzone(joystick.getMagnitude(), controllerDeadzone),
+                deadzone(joystick.getTwist(), controllerDeadzone)
+        };
     }
 
-    public static double getJoyY() {
-        SmartDashboard.putNumber("Joystick Y", joystick.getY());
-        return MathClass.calculateDeadzone(joystick.getY(), deadzoneVal);
+    public static boolean autoIntake() {
+        return xbox.getYButton();
     }
 
-    public static double getJoyX() {
+    public static boolean autoShoot() {
+        return xbox.getXButtonPressed();
+    }
+
+    public static double climbControl() {
+        return xbox.getRightY();
+    }
+
+    public static boolean deployPneumatics() {
+        return xbox.getAButton();
+    }
+
+    public static boolean getXboxStartButton() {
+        return xbox.getStartButtonPressed();
+    }
+
+    public static double intakeBall() {
+        return xbox.getLeftTriggerAxis();
+    }
+
+    public static boolean limelightLockOn() {
+        return joystick.getRawButton(3);
+    }
+
+    public static double moveTransport() {
+        return Math.abs(xbox.getLeftY()) > controllerDeadzone ? xbox.getLeftY() : 0;
+    }
+
+    public static double moveRobotX() {
         SmartDashboard.putNumber("Jotstick X", joystick.getX());
-        return MathClass.calculateDeadzone(joystick.getX(), deadzoneVal);
+        return deadzone(joystick.getX(), controllerDeadzone);
     }
 
-    public static double getJoyTwist() {
-        SmartDashboard.putNumber("Joystick Twist", joystick.getTwist());
-        return MathClass.calculateDeadzone(joystick.getTwist(), deadzoneVal);
+    public static double moveRobotY() {
+        SmartDashboard.putNumber("Joystick Y", joystick.getY());
+        return deadzone(joystick.getY(), controllerDeadzone);
     }
 
-    public static double getJoyThrottle() {
-        SmartDashboard.putNumber("Joystick Throttle", (-joystick.getThrottle() + 1) / 2);
-        return MathClass.calculateDeadzone((-joystick.getThrottle() + 1) / 2, deadzoneVal);
+    public static boolean removeBall() {
+        return xbox.getBackButton();
     }
 
-    public static boolean getJoystickButton5() {
-        return joystick.getRawButtonPressed(5);
-    }
-
-    public static boolean getJoystickButton8() {
+    public static boolean resetGyro() {
         return joystick.getRawButtonPressed(8);
     }
 
-    public static double getXboxLeftY() {
-        return MathClass.calculateDeadzone(xbox.getLeftY(), deadzoneVal);
+    public static double shootBall() {
+        return xbox.getRightTriggerAxis();
     }
 
-    public static double getXboxLeftX() {
-        return MathClass.calculateDeadzone(xbox.getLeftX(), deadzoneVal);
+    public static double turnControl() {
+        return deadzone(joystick2.getX(), controllerDeadzone);
     }
 
-    public static double getXboxRightX() {
-        return MathClass.calculateDeadzone(xbox.getRightX(), deadzoneVal);
+    public static boolean getJoystickButton5() {
+        return joystick.getRawButton(5);
     }
 
-    public static double getJoy2X() {
-        return MathClass.calculateDeadzone(joystick2.getX(), deadzoneVal);
+    public static double getJoyThrottle() {
+        return deadzone(joystick2.getY(), .5);
     }
 
-    public static double getJoy2Y() {
-        return MathClass.calculateDeadzone(joystick2.getY(), .6);
-    }
+    // public static boolean getXboxRightBumper() {
+    // return xbox.getRightBumper();
+    // }
 
+    // public static boolean getXboxLeftBumper() {
+    // return xbox.getLeftBumper();
+    // }
+
+    // public static double getXboxLeftX() {
+    // return Math.abs(xbox.getLeftX()) > controllerDeadzone ? xbox.getLeftX() : 0;
+    // }
+
+    // public static double getXboxRightX() {
+    // return Math.abs(xbox.getRightX()) > controllerDeadzone ? xbox.getRightX() :
+    // 0;
+    // }
+
+    // public static double getJoyTwist() {
+    // SmartDashboard.putNumber("Joystick Twist", joystick.getTwist());
+    // return deadzone(joystick.getTwist(), controllerDeadzone);
+    // }
 }

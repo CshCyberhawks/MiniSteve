@@ -8,6 +8,13 @@ import org.ejml.dense.fixed.CommonOps_DDF2;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import frc.robot.commands.ManualIntakeCommand;
+import frc.robot.commands.ManualTransportCommand;
+import frc.robot.commands.ShootCommand;
+
+import frc.robot.subsystems.IntakeSystem;
+import frc.robot.subsystems.ShootSystem;
+import frc.robot.subsystems.TransportSystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,6 +28,7 @@ import frc.robot.subsystems.SwerveDriveTrain;
 import frc.robot.subsystems.SwerveOdometry;
 import frc.robot.util.FieldPosition;
 import frc.robot.util.Gyro;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,137 +40,181 @@ import frc.robot.util.Gyro;
  * project.
  */
 public class Robot extends TimedRobot {
-    // private DriveSystem driveSystem;
-    private Command m_autonomousCommand;
+  public static SwerveAuto swerveAuto;
 
-    // private OldSwerveDriveTrain swerveSystem;
-    public static SwerveAuto swerveAuto;
+  public static SwerveDriveTrain swerveSystem;
+  public static SwerveOdometry swo;
+  public static SwerveCommand swerveCommand;
+  // public Alliance teamColor;
+  // public OldSwerveDriveTrain swerveSystem;
+  // public OldSwerveDriveTrain swerveSystem;
+  // public SwerveDriveTrain swerveSystem;
+  public static ShootSystem shootSystem;
+  public static DigitalInput frontBreakBeam;
+  public static DigitalInput backBreakBeam;
+  public static DigitalInput topBreakBeam;
 
-    public static SwerveDriveTrain swerveSystem;
-    public static SwerveOdometry swo;
-    private static SwerveCommand swerveCommand;
-    public static LimeLight limeLight;
+  // public OldSwerveDriveTrain swerveSystem;
+  // public SwerveDriveTrain swerveSystem;
+  public static IntakeSystem intakeSystem;
+  public static TransportSystem transportSystem;
 
-    private Command autoCommands;
+  public static AutoCommandGroup autoCommands;
+  // public RobotContainer m_robotContainer;
 
-    // private RobotContainer m_robotContainer;
+  /**
+   * This function is run when the robot is first started up and should be used
+   * for any
+   * initialization code.
+   */
+  @Override
+  public void robotInit() {
+    // Instantiate our RobotContainer. This will perform all our button bindings,
+    // and put our
+    // autonomous chooser on the dashboard.
+    // teamColor = DriverStation.getAlliance();
+    // m_robotContainer = new RobotContainer();
+    // PortForwarder.add(5800, "limelight.local", 5800);
+    frontBreakBeam = new DigitalInput(Constants.frontBreakBeam);
+    backBreakBeam = new DigitalInput(Constants.backBreakBeam);
+    topBreakBeam = new DigitalInput(Constants.topBreakBeam);
+    shootSystem = new ShootSystem();
+    intakeSystem = new IntakeSystem();
+    transportSystem = new TransportSystem();
 
-    /**
-     * This function is run when the robot is first started up and should be used
-     * for any
-     * initialization code.
-     */
-    @Override
-    public void robotInit() {
-        // Instantiate our RobotContainer. This will perform all our button bindings,
-        // and put our
-        // autonomous chooser on the dashboard.
-        // m_robotContainer = new RobotContainer();
+    swerveSystem = new SwerveDriveTrain();
+    swo = new SwerveOdometry(new FieldPosition(0, 0, 0));
+    CameraServer.startAutomaticCapture();
 
-        // driveSystem = new DriveSystem();
-        // CameraServer.startAutomaticCapture();
-        swerveSystem = new SwerveDriveTrain();
-        swo = new SwerveOdometry(new FieldPosition(0, 0, 0));
-        limeLight = new LimeLight();
-        CameraServer.startAutomaticCapture();
+    // driveSystem = new DriveSystem();
+    // CameraServer.startAutomaticCapture();
+  }
 
+  /**
+   * This function is called every robot packet, no matter the mode. Use this for
+   * items like
+   * diagnostics that you want ran during disabled, autonomous, teleoperated and
+   * test.
+   *
+   * <p>
+   * This runs after the mode specific periodic functions, but before LiveWindow
+   * and
+   * SmartDashboard integrated updating.
+   */
+  @Override
+  public void robotPeriodic() {
+    // Runs the Scheduler. This is responsible for polling buttons, adding
+    // newly-scheduled
+    // commands, running already-scheduled commands, removing finished or
+    // interrupted commands,
+    // and running subsystem periodic() methods. This must be called from the
+    // robot's periodic
+    // block in order for anything in the Command-based framework to work.
+    CommandScheduler.getInstance().run();
+  }
+
+  /** This function is called once each time the robot enters Disabled mode. */
+  @Override
+  public void disabledInit() {
+    swo.resetPos();
+    // swerveSystem.resetPredictedOdometry();
+  }
+
+  @Override
+  public void disabledPeriodic() {
+  }
+
+  /**
+   * This autonomous runs the autonomous command selected by your
+   * {@link RobotContainer} class.
+   */
+  @Override
+  public void autonomousInit() {
+    if (swerveCommand != null) {
+      swerveCommand.cancel();
     }
+    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    swerveAuto = new SwerveAuto();
+    autoCommands = new AutoCommandGroup();
 
-    /**
-     * This function is called every robot packet, no matter the mode. Use this for
-     * items like
-     * diagnostics that you want ran during disabled, autonomous, teleoperated and
-     * test.
-     *
-     * <p>
-     * This runs after the mode specific periodic functions, but before LiveWindow
-     * and
-     * SmartDashboard integrated updating.
-     */
-    @Override
-    public void robotPeriodic() {
-        // Runs the Scheduler. This is responsible for polling buttons, adding
-        // newly-scheduled
-        // commands, running already-scheduled commands, removing finished or
-        // interrupted commands,
-        // and running subsystem periodic() methods. This must be called from the
-        // robot's periodic
-        // block in order for anything in the Command-based framework to work.
-        CommandScheduler.getInstance().run();
+    // schedule the autonomous command (example)
+    autoCommands.schedule();
 
-    }
+  }
 
-    /** This function is called once each time the robot enters Disabled mode. */
-    @Override
-    public void disabledInit() {
-        swo.resetPos();
-        // swerveSystem.resetPredictedOdometry();
-    }
+  /** This function is called periodically during autonomous. */
+  @Override
+  public void autonomousPeriodic() {
+    swo.updatePosition();
 
-    @Override
-    public void disabledPeriodic() {
-    }
+  }
 
-    /**
-     * This autonomous runs the autonomous command selected by your
-     * {@link RobotContainer} class.
-     */
-    @Override
-    public void autonomousInit() {
-        if (swerveCommand != null) {
-            swerveCommand.cancel();
-        }
-        // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-        swerveAuto = new SwerveAuto();
-        autoCommands = new AutoCommandGroup();
+  @Override
+  public void teleopInit() {
 
-        // schedule the autonomous command (example)
-        autoCommands.schedule();
+    shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
+    intakeSystem.setDefaultCommand(new ManualIntakeCommand(intakeSystem));
+    transportSystem.setDefaultCommand(new ManualTransportCommand(transportSystem));
 
-    }
+    swerveCommand = new SwerveCommand(swerveSystem);
+    swerveCommand.schedule();
 
-    /** This function is called periodically during autonomous. */
-    @Override
-    public void autonomousPeriodic() {
-        swo.updatePosition();
+    // This makes sure that the autonomous stops running when
+    // teleop starts running. If you want the autonomous to
+    // continue until interrupted by another command, remove
+    // this line or comment it out.
+    // if (autoCommands != null) {
+    // autoCommands.cancel();
+    // }
+  }
 
-    }
+  /** This function is called periodically during operator control. */
+  @Override
+  public void teleopPeriodic() {
+    swo.updatePosition();
 
-    @Override
-    public void teleopInit() {
+    SmartDashboard.putNumber("cargoStored", transportSystem.getCargoAmount());
 
-        swerveCommand = new SwerveCommand(swerveSystem);
-        swerveCommand.schedule();
+    SmartDashboard.putNumber("Gyro Vel X", Gyro.getVelocityX());
+    SmartDashboard.putNumber("Gyro Vel Y", Gyro.getVelocityY());
+    SmartDashboard.putNumber("Gyro Accel X", Gyro.getAccelX());
+    SmartDashboard.putNumber("Gyro Accel Y", Gyro.getAccelY());
+  }
 
-        // This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
-        if (autoCommands != null) {
-            autoCommands.cancel();
-        }
-    }
+  @Override
+  public void testInit() {
+    // Cancels all running commands at the start of test mode.
+    CommandScheduler.getInstance().cancelAll();
 
-    /** This function is called periodically during operator control. */
-    @Override
-    public void teleopPeriodic() {
-        swo.updatePosition();
+  }
 
-        SmartDashboard.putNumber("Gyro Vel X", Gyro.getVelocityX());
-        SmartDashboard.putNumber("Gyro Vel Y", Gyro.getVelocityY());
-        SmartDashboard.putNumber("Gyro Accel X", Gyro.getAccelX());
-        SmartDashboard.putNumber("Gyro Accel Y", Gyro.getAccelY());
-    }
+  /** This function is called periodically during test mode. */
+  @Override
+  public void testPeriodic() {
+  }
 
-    @Override
-    public void testInit() {
-        // Cancels all running commands at the start of test mode.
-        CommandScheduler.getInstance().cancelAll();
+  public static IntakeSystem getIntakeSystem() {
+    return intakeSystem;
+  }
 
-    }
+  public static ShootSystem getShootSystem() {
+    return shootSystem;
+  }
 
-    /** This function is called periodically during test mode. */
-    @Override
-    public void testPeriodic() {
-    }
+  public static TransportSystem getTransportSystem() {
+    return transportSystem;
+  }
+
+  public static DigitalInput getFrontBreakBeam() {
+    SmartDashboard.putBoolean("frontBreakBeam", frontBreakBeam.get());
+    return frontBreakBeam;
+  }
+
+  public static DigitalInput getBackBreakBeam() {
+    return backBreakBeam;
+  }
+
+  public static DigitalInput getTopBreakBeam() {
+    return topBreakBeam;
+  }
 }
