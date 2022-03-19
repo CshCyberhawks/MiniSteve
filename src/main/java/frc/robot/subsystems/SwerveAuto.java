@@ -18,7 +18,7 @@ public class SwerveAuto {
     private double desiredAngle;
 
     private Alliance team;
-    private Vector2[] ballPositions;
+    public Vector2[] ballPositions;
 
     private boolean byBall = false;
     private double ballDistanceDeadzone = 1;
