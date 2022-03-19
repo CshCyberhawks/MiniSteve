@@ -63,8 +63,7 @@ public class SwerveDriveTrain extends SubsystemBase {
         double x = r * Math.cos(Math.toRadians(theta));
         double y = r * Math.sin(Math.toRadians(theta));
 
-        double[] ret = { x, y };
-        return ret;
+        return new double[] { x, y };
     }
 
     public double[] cartesianToPolar(double x, double y) {
@@ -72,8 +71,7 @@ public class SwerveDriveTrain extends SubsystemBase {
         double r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
         double theta = Math.toDegrees(Math.atan2(y, x));
 
-        double[] ret = { theta, r };
-        return ret;
+        return new double[] { theta, r };
     }
 
     public double[] fieldOriented(double x, double y, double gyroAngle) {
@@ -86,8 +84,7 @@ public class SwerveDriveTrain extends SubsystemBase {
         double r = polar[1];
 
         // returns the new field oriented translation but converted to cartesian
-        double[] ret = polarToCartesian(theta, r);
-        return ret;
+        return polarToCartesian(theta, r);
     }
 
     public double[] calculateDrive(double x1, double y1, double theta2, double r2, double twistMult) {
@@ -101,9 +98,10 @@ public class SwerveDriveTrain extends SubsystemBase {
         // Vector math adds the translation and twisting cartesian coordinates before
         // turning them into polar and returning
         // can average below instead of add - need to look into it
-        double[] ret = cartesianToPolar(driveCoordinate[0] + twistCoordinate[0],
-                driveCoordinate[1] + twistCoordinate[1]);
-        return ret;
+        return cartesianToPolar(
+                driveCoordinate[0] + twistCoordinate[0],
+                driveCoordinate[1] + twistCoordinate[1]
+        );
     }
 
     public void drive(double inputX, double inputY, double inputTwist, double throttleChange, String mode) {

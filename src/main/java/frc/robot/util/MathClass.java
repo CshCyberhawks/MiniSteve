@@ -16,8 +16,7 @@ public class MathClass {
         double r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
         double theta = Math.toDegrees(Math.atan2(y, x));
 
-        double[] ret = { theta, r };
-        return ret;
+        return new double[] { theta, r };
     }
 
     public static double[] polarToCartesian(double theta, double r) {
@@ -25,8 +24,7 @@ public class MathClass {
         double x = r * Math.cos(Math.toRadians(theta));
         double y = r * Math.sin(Math.toRadians(theta));
 
-        double[] ret = { x, y };
-        return ret;
+        return new double[] { x, y };
     }
 
     public static double getMin(double[] values) {
@@ -45,7 +43,6 @@ public class MathClass {
         for (int i = 1; i < values.length; i++)
             if (values[i] > max)
                 max = values[i];
-
         return max;
     }
 
@@ -64,7 +61,6 @@ public class MathClass {
             else if (min < minSpeed && speeds[i] < 0)
                 retSpeeds[i] = speeds[i] / -divSpeed * lowestSpeed;
         }
-
         return retSpeeds;
     }
 
