@@ -4,18 +4,23 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.ShootSystem;
 import frc.robot.subsystems.TransportSystem;
+import frc.robot.util.MathClass;
 
 public class AutoShootCommand extends CommandBase {
     private final ShootSystem shootSystem;
     private TransportSystem transportSystem;
     private final int desiredShootSpeed = 5;
     private double lastTopEncoderSpeed;
+    private double startTime;
 
     public AutoShootCommand(ShootSystem subsystem) {
         shootSystem = subsystem;
         shootSystem.setAutoShootState(true);
         transportSystem = Robot.getTransportSystem();
         lastTopEncoderSpeed = 0;
+
+        startTime = MathClass.getCurrentTime();
+
         addRequirements(subsystem);
     }
 
@@ -24,8 +29,8 @@ public class AutoShootCommand extends CommandBase {
         double currentTopEncoderSpeed = shootSystem.getTopEncoder().getRate() / 8192;
         double encoderDifference = currentTopEncoderSpeed - lastTopEncoderSpeed;
 
-        if (!Robot.getShootBreakBeam().get())
-            transportSystem.setCargoAmount(transportSystem.getCargoAmount() - 1);
+        // if (!Robot.getShootBreakBeam().get())
+        // transportSystem.setCargoAmount(transportSystem.getCargoAmount() - 1);
         if (currentTopEncoderSpeed > desiredShootSpeed)
             transportSystem.move(.25);
 
@@ -42,6 +47,7 @@ public class AutoShootCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return transportSystem.getCargoAmount() == 0;
+        // return transportSystem.getCargoAmount() == 0;
+        return MathClass.getCurrentTime() - startTime > 800;
     }
 }
