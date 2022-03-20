@@ -192,7 +192,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("topBreakBeam", topBreakBeam.get());
         SmartDashboard.putBoolean("shootBreakBeam", shootBreakBeam.get());
 
-        SmartDashboard.putNumber("frontBreakBeamChannel", frontBreakBeam.getChannel());
+        System.out.println(frontBreakBeam.get());
 
     }
 
