@@ -51,13 +51,13 @@ public class IO {
     }
 
     public static double moveRobotX() {
-        SmartDashboard.putNumber("Jotstick X", joystick.getX());
-        return MathClass.calculateDeadzone(joystick.getX(), controllerDeadzone);
+        SmartDashboard.putNumber("Jotstick X", joystick.getY());
+        return MathClass.calculateDeadzone(joystick.getY(), controllerDeadzone);
     }
 
     public static double moveRobotY() {
-        SmartDashboard.putNumber("Joystick Y", joystick.getY());
-        return MathClass.calculateDeadzone(joystick.getY(), controllerDeadzone);
+        SmartDashboard.putNumber("Joystick Y", joystick.getX());
+        return MathClass.calculateDeadzone(joystick.getX(), controllerDeadzone);
     }
 
     public static boolean removeBall() {
@@ -73,7 +73,7 @@ public class IO {
     }
 
     public static double turnControl() {
-        return MathClass.calculateDeadzone(joystick2.getX(), controllerDeadzone);
+        return MathClass.calculateDeadzone(joystick.getTwist(), controllerDeadzone);
     }
 
     public static boolean getJoystickButton5() {
@@ -81,7 +81,8 @@ public class IO {
     }
 
     public static double getJoyThrottle() {
-        return MathClass.calculateDeadzone(joystick2.getY(), .5);
+        SmartDashboard.putNumber("Throttle", (joystick.getThrottle() + 1) / 2);
+        return (-joystick.getThrottle() + 1) / 2;
     }
 
     // public static boolean getXboxRightBumper() {

@@ -32,15 +32,15 @@ public class SwerveCommand extends CommandBase {
             Gyro.setOffset();
         if (IO.limelightLockOn())
             swerveDriveTrain.drive(
-                    -IO.moveRobotY(),
                     -IO.moveRobotX(),
+                    -IO.moveRobotY(),
                     -MathClass.calculateDeadzone(Limelight.getHorizontalOffset(), .5) / 27,
                     IO.getJoyThrottle(),
                     "tele");
         else
             swerveDriveTrain.drive(
-                    -IO.moveRobotY(),
                     -IO.moveRobotX(),
+                    -IO.moveRobotY(),
                     -IO.turnControl(),
                     IO.getJoyThrottle(),
                     "tele");
