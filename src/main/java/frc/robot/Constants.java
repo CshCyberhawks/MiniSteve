@@ -98,6 +98,7 @@ public final class Constants {
     public static final int frontBreakBeam = 1;
     public static final int backBreakBeam = 0;
     public static final int topBreakBeam = 2;
+    public static final int shootBreakBeam = 3;
 
     // Encoders
     public static final int frontRightEncoder = 0;

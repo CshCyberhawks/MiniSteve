@@ -48,6 +48,7 @@ public class Robot extends TimedRobot {
     public static DigitalInput frontBreakBeam;
     public static DigitalInput backBreakBeam;
     public static DigitalInput topBreakBeam;
+    public static DigitalInput shootBreakBeam;
 
     // public OldSwerveDriveTrain swerveSystem;
     // public SwerveDriveTrain swerveSystem;
@@ -73,6 +74,7 @@ public class Robot extends TimedRobot {
         frontBreakBeam = new DigitalInput(Constants.frontBreakBeam);
         backBreakBeam = new DigitalInput(Constants.backBreakBeam);
         topBreakBeam = new DigitalInput(Constants.topBreakBeam);
+        shootBreakBeam = new DigitalInput(Constants.shootBreakBeam);
         shootSystem = new ShootSystem();
         intakeSystem = new IntakeSystem();
         transportSystem = new TransportSystem();
@@ -212,5 +214,9 @@ public class Robot extends TimedRobot {
 
     public static DigitalInput getTopBreakBeam() {
         return topBreakBeam;
+    }
+
+    public static DigitalInput getShootBreakBeam() {
+        return shootBreakBeam;
     }
 }
