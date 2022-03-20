@@ -75,9 +75,9 @@ public final class Constants {
 
     // Encoders
     public static final int frontRightEncoder = 0;
-    public static final int frontLeftEncoder = 3;
-    public static final int backRightEncoder = 1;
+    public static final int frontLeftEncoder = 1;
+    public static final int backRightEncoder = 3;
     public static final int backLeftEncoder = 2;
 
-    public static final double[] turnEncoderOffsets = { 256, 346, 171, 95 };
+    public static final double[] turnEncoderOffsets = { 293.906219904, 79.013663784, 71.367180192, 101.337880248 };
 }
