@@ -28,9 +28,9 @@ public class Limelight extends SubsystemBase {
 
     public static void pipelineInit() {
         if (team == Alliance.Red)
-            pipeline.setDouble(0);
-        else if (team == Alliance.Blue)
             pipeline.setDouble(1);
+        else if (team == Alliance.Blue)
+            pipeline.setDouble(0);
     }
 
     public static double getHorizontalOffset() {
