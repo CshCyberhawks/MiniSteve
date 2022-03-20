@@ -76,12 +76,6 @@ public final class Constants {
     // Capacities
     public static final double maxVolts = 4.85;
 
-    // Encoders
-    public static final int frontRightEncoder = 0;
-    public static final int frontLeftEncoder = 3;
-    public static final int backRightEncoder = 1;
-    public static final int backLeftEncoder = 2;
-
     public static final double wheelRadius = 0.0505; // In meters
     public static final double wheelGearRatio = 7 / 1; // 7:1 gear ratio
 
@@ -105,5 +99,11 @@ public final class Constants {
     public static final int backBreakBeam = 0;
     public static final int topBreakBeam = 2;
 
-    public static final double[] turnEncoderOffsets = { 256, 346, 171, 95 };
+    // Encoders
+    public static final int frontRightEncoder = 0;
+    public static final int frontLeftEncoder = 1;
+    public static final int backRightEncoder = 3;
+    public static final int backLeftEncoder = 2;
+
+    public static final double[] turnEncoderOffsets = { 293.906219904, 79.013663784, 71.367180192, 101.337880248 };
 }
