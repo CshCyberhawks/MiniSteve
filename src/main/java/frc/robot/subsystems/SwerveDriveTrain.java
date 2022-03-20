@@ -140,7 +140,6 @@ public class SwerveDriveTrain extends SubsystemBase {
                 inputX *= throttle;
                 inputY *= throttle;
                 inputTwist *= throttle;
-                break;
         }
 
         SmartDashboard.putNumber("drive inputX ", inputX);
