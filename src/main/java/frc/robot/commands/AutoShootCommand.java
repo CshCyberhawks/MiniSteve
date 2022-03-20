@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.ShootSystem;
@@ -31,8 +32,12 @@ public class AutoShootCommand extends CommandBase {
 
         // if (!Robot.getShootBreakBeam().get())
         // transportSystem.setCargoAmount(transportSystem.getCargoAmount() - 1);
-        if (currentTopEncoderSpeed > desiredShootSpeed)
+        if (currentTopEncoderSpeed > desiredShootSpeed) {
+            SmartDashboard.putBoolean("moving", true);
             transportSystem.move(.25);
+        } else {
+            SmartDashboard.putBoolean("moving", false);
+        }
 
         shootSystem.shoot(1);
         lastTopEncoderSpeed = currentTopEncoderSpeed;
