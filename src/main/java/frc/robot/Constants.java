@@ -48,16 +48,16 @@ public final class Constants {
     };
 
     // TalonSRX Motors
-    public static final int frontRightTurnMotor = 5;
-    public static final int frontLeftTurnMotor = 2;
-    public static final int backRightTurnMotor = 1;
-    public static final int backLeftTurnMotor = 3;
+    public static final int frontRightTurnMotor = 1;
+    public static final int frontLeftTurnMotor = 3;
+    public static final int backRightTurnMotor = 5;
+    public static final int backLeftTurnMotor = 2;
 
-    // CANSparkMax Motors
-    public static final int frontRightDriveMotor = 6;
-    public static final int frontLeftDriveMotor = 8;
-    public static final int backRightDriveMotor = 9;
-    public static final int backLeftDriveMotor = 7;
+    // Falcon Motors
+    public static final int frontRightDriveMotor = 9;
+    public static final int frontLeftDriveMotor = 7;
+    public static final int backRightDriveMotor = 6;
+    public static final int backLeftDriveMotor = 8;
 
     // Shoot System Motors
     public static final int rightShootMotor = 11;
