@@ -17,6 +17,7 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShootSystem;
 import frc.robot.subsystems.TransportSystem;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -28,10 +29,12 @@ import frc.robot.subsystems.SwerveAuto;
 import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.SwerveOdometry;
+import frc.robot.util.DriveEncoder;
 import frc.robot.util.FieldPosition;
 import frc.robot.util.Gyro;
 import frc.robot.util.IO;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -96,8 +99,6 @@ public class Robot extends TimedRobot {
         driveConfiguration.setDefaultOption("Not HOSAS", false);
         driveConfiguration.addOption("HOSAS", true);
 
-        startingPosition = (int) SmartDashboard.getNumber("Starting Position", 0);
-
         frontBreakBeam = new DigitalInput(Constants.frontBreakBeam);
         backBreakBeam = new DigitalInput(Constants.backBreakBeam);
         topBreakBeam = new DigitalInput(Constants.topBreakBeam);
@@ -107,7 +108,11 @@ public class Robot extends TimedRobot {
         transportSystem = new TransportSystem();
 
         swerveSystem = new SwerveDriveTrain();
-        swo = new SwerveOdometry(new FieldPosition(0, 0, 0));
+        if (DriverStation.getAlliance() == Alliance.Blue) {
+            swo = new SwerveOdometry(Constants.blueStartingPositions[autoConfiguration.getSelected()]);
+        } else {
+            swo = new SwerveOdometry(Constants.redStartingPositions[autoConfiguration.getSelected()]);
+        }
         CameraServer.startAutomaticCapture();
 
         // driveSystem = new DriveSystem();
@@ -135,7 +140,7 @@ public class Robot extends TimedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-        
+
         IO.hosas = driveConfiguration.getSelected();
     }
 
