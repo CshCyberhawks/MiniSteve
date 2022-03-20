@@ -13,6 +13,7 @@ import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.ShootSystem;
 import frc.robot.subsystems.TransportSystem;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommandGroup;
@@ -24,6 +25,7 @@ import frc.robot.subsystems.SwerveOdometry;
 import frc.robot.util.FieldPosition;
 import frc.robot.util.Gyro;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -45,14 +47,18 @@ public class Robot extends TimedRobot {
     // public OldSwerveDriveTrain swerveSystem;
     // public SwerveDriveTrain swerveSystem;
     public static ShootSystem shootSystem;
-    public static DigitalInput frontBreakBeam;
-    public static DigitalInput backBreakBeam;
-    public static DigitalInput topBreakBeam;
+    private static DigitalInput frontBreakBeam;
+    private static DigitalInput backBreakBeam;
+    private static DigitalInput topBreakBeam;
+    private static DigitalInput shootBreakBeam;
 
     // public OldSwerveDriveTrain swerveSystem;
     // public SwerveDriveTrain swerveSystem;
     public static IntakeSystem intakeSystem;
     public static TransportSystem transportSystem;
+
+    private static int autoConfiguration;
+    private static int startingPosition;
 
     public static AutoCommandGroup autoCommands;
     // public RobotContainer m_robotContainer;
@@ -70,15 +76,24 @@ public class Robot extends TimedRobot {
         // teamColor = DriverStation.getAlliance();
         // m_robotContainer = new RobotContainer();
         // PortForwarder.add(5800, "limelight.local", 5800);
+
+        startingPosition = (int) SmartDashboard.getNumber("Starting Position", 0);
+        autoConfiguration = (int) SmartDashboard.getNumber("Auto Configuration", 0);
+
         frontBreakBeam = new DigitalInput(Constants.frontBreakBeam);
         backBreakBeam = new DigitalInput(Constants.backBreakBeam);
         topBreakBeam = new DigitalInput(Constants.topBreakBeam);
+        shootBreakBeam = new DigitalInput(Constants.shootBreakBeam);
         shootSystem = new ShootSystem();
         intakeSystem = new IntakeSystem();
         transportSystem = new TransportSystem();
 
         swerveSystem = new SwerveDriveTrain();
-        swo = new SwerveOdometry(new FieldPosition(0, 0, 0));
+        if (DriverStation.getAlliance() == Alliance.Blue) {
+            swo = new SwerveOdometry(Constants.blueStartingPositions[startingPosition]);
+        } else {
+            swo = new SwerveOdometry(Constants.redStartingPositions[startingPosition]);
+        }
         CameraServer.startAutomaticCapture();
 
         // driveSystem = new DriveSystem();
@@ -131,7 +146,7 @@ public class Robot extends TimedRobot {
 
         // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         swerveAuto = new SwerveAuto();
-        autoCommands = new AutoCommandGroup(0);
+        autoCommands = new AutoCommandGroup(autoConfiguration);
 
         // schedule the autonomous command (example)
         autoCommands.schedule();
@@ -212,5 +227,9 @@ public class Robot extends TimedRobot {
 
     public static DigitalInput getTopBreakBeam() {
         return topBreakBeam;
+    }
+
+    public static DigitalInput getShootBreakBeam() {
+        return shootBreakBeam;
     }
 }

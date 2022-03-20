@@ -10,6 +10,8 @@ public class IO {
     private static final XboxController xbox = new XboxController(2);
     private static final double controllerDeadzone = 0.3;
 
+    private static boolean hosas = SmartDashboard.getBoolean("hosas", false);
+
     public static double[] getPolarCoords() {
         return new double[] {
                 -MathClass.calculateDeadzone(joystick.getDirectionDegrees(), controllerDeadzone),
@@ -73,7 +75,8 @@ public class IO {
     }
 
     public static double turnControl() {
-        return MathClass.calculateDeadzone(joystick.getTwist(), controllerDeadzone);
+        return hosas ? MathClass.calculateDeadzone(joystick2.getX(), controllerDeadzone)
+                : MathClass.calculateDeadzone(joystick.getTwist(), .1);
     }
 
     public static boolean getJoystickButton5() {
@@ -81,8 +84,8 @@ public class IO {
     }
 
     public static double getJoyThrottle() {
-        SmartDashboard.putNumber("Throttle", (joystick.getThrottle() + 1) / 2);
-        return (-joystick.getThrottle() + 1) / 2;
+        return hosas ? MathClass.calculateDeadzone(joystick2.getY(), .5)
+                : MathClass.calculateDeadzone(joystick.getThrottle(), .05);
     }
 
     // public static boolean getXboxRightBumper() {
