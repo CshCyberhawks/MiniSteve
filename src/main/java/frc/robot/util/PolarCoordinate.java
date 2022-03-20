@@ -1,7 +1,5 @@
 package frc.robot.util;
 
-import frc.robot.util.Vector2;
-
 public class PolarCoordinate {
     public double theta;
     public double r;

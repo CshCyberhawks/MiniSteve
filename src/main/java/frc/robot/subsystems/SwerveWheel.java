@@ -72,7 +72,7 @@ public class SwerveWheel {
 
         drivePidController = new PIDController(0.01, 0, 0);
 
-        if (turnEncoderPort == 2 || turnEncoderPort == 3) {
+        if (turnEncoderPort == 1 || turnEncoderPort == 2) {
             driveMotor.setInverted(true);
         } else {
             driveMotor.setInverted(false);
@@ -153,7 +153,7 @@ public class SwerveWheel {
         // double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed,
         // speed);
 
-        // SmartDashboard.putNumber(m_turnEncoderPort + " turnEncoderValue", turnValue);
+        SmartDashboard.putNumber(m_turnEncoderPort + " turnEncoderValue", turnValue);
         // SmartDashboard.putNumber(m_turnEncoderPort + " currentDriveSpeed",
         // currentDriveSpeed);
         // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);

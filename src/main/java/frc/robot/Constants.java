@@ -4,9 +4,11 @@
 
 package frc.robot;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 // import java.util.Map;
 
+import frc.robot.util.FieldPosition;
 import frc.robot.util.Vector2;
 
 /**
@@ -92,6 +94,14 @@ public final class Constants {
 
     public static final Vector2[] redShootingPositions = {
             new Vector2(0, 0), new Vector2(0, 0)
+    };
+
+    public static final FieldPosition[] blueStartingPositions = {
+            new FieldPosition(-1, -2.8, 0), new FieldPosition(-2.8, 1, 0)
+    };
+
+    public static final FieldPosition[] redStartingPositions = {
+            new FieldPosition(1, 2.8, 0), new FieldPosition(2.8, -1, 0)
     };
 
     // Break Beams
