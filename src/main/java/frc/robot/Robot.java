@@ -11,6 +11,7 @@ import frc.robot.commands.ManualTransportCommand;
 import frc.robot.commands.ShootCommand;
 
 import frc.robot.subsystems.IntakeSystem;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShootSystem;
 import frc.robot.subsystems.TransportSystem;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -88,6 +89,12 @@ public class Robot extends TimedRobot {
 
         swerveSystem = new SwerveDriveTrain();
         swo = new SwerveOdometry(new FieldPosition(0, 0, 0));
+        CameraServer.startAutomaticCapture();
+
+        Limelight.pipelineInit();
+
+        // driveSystem = new DriveSystem();
+        // CameraServer.startAutomaticCapture();
     }
 
     /**
