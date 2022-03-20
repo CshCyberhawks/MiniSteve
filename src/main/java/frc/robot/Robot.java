@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import java.util.Map;
+
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.HttpCamera;
 import frc.robot.commands.ManualIntakeCommand;
 import frc.robot.commands.ManualTransportCommand;
 import frc.robot.commands.ShootCommand;
@@ -13,6 +16,8 @@ import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.ShootSystem;
 import frc.robot.subsystems.TransportSystem;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommandGroup;
@@ -36,7 +41,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
  */
 public class Robot extends TimedRobot {
     public static SwerveAuto swerveAuto;
-
+    public static HttpCamera limelightFeed;
     public static SwerveDriveTrain swerveSystem;
     public static SwerveOdometry swo;
     public static SwerveCommand swerveCommand;
@@ -65,6 +70,11 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
+        limelightFeed = new HttpCamera("limelight", "http://10.28.75.11:5800/");
+        CameraServer.startAutomaticCapture(limelightFeed);
+
+        // ShuffleboardTab drivShuffleboardTab = Shuffleboard.getTab("DriverStream");
+        // drivShuffleboardTab.add("LL", limelightFeed).withPosition(0, 0).withSize(15, 8).withProperties(Map.of("Show Crosshair", true, "Show Controls", false));
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our
         // autonomous chooser on the dashboard.
