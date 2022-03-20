@@ -109,8 +109,7 @@ public class SwerveAuto {
     }
 
     public boolean isAtDesiredAngle() {
-        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().angle) - Math.abs(desiredAngle),
-                4) == 0) {
+        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().angle) - Math.abs(desiredAngle), 4) == 0) {
             return true;
         }
         return false;
