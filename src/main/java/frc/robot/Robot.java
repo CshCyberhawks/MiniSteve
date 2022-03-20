@@ -45,10 +45,10 @@ public class Robot extends TimedRobot {
     // public OldSwerveDriveTrain swerveSystem;
     // public SwerveDriveTrain swerveSystem;
     public static ShootSystem shootSystem;
-    public static DigitalInput frontBreakBeam;
-    public static DigitalInput backBreakBeam;
-    public static DigitalInput topBreakBeam;
-    public static DigitalInput shootBreakBeam;
+    private static DigitalInput frontBreakBeam;
+    private static DigitalInput backBreakBeam;
+    private static DigitalInput topBreakBeam;
+    private static DigitalInput shootBreakBeam;
 
     // public OldSwerveDriveTrain swerveSystem;
     // public SwerveDriveTrain swerveSystem;

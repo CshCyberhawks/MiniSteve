@@ -89,7 +89,6 @@ public class SwerveAuto {
     }
 
     public boolean isAtDesiredPosition() {
-
         if (byBall) {
             return MathClass.calculateDeadzone(
                     desiredPosition.x - MathClass.swosToMeters(Robot.swo.getPosition().positionCoord.x),

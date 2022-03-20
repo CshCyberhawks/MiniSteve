@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.util.Vector2;
 import frc.robot.Robot;
-import frc.robot.subsystems.SwerveAuto;
 
 public class AutoBall extends SequentialCommandGroup {
     public AutoBall(int ballNumber) {
