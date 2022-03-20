@@ -14,8 +14,9 @@ public class AutoBall extends SequentialCommandGroup {
         Vector2 desiredPosition = Robot.swerveAuto.ballPositions[ballNumber];
         double desiredAngle = Math.atan2(desiredPosition.y, desiredPosition.x);
         addCommands(
-                new AutoGoToAngle(desiredAngle),
-                new AutoGoToPosition(ballNumber, 0),
-                new LimeLightAuto());
+            new AutoGoToAngle(desiredAngle),
+            new AutoGoToPosition(ballNumber, 0),
+            new LimeLightAuto()
+        );
     }
 }

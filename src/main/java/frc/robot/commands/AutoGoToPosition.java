@@ -60,5 +60,4 @@ public class AutoGoToPosition extends CommandBase {
     public boolean isFinished() {
         return Robot.swerveAuto.isAtDesiredPosition();
     }
-
 }
