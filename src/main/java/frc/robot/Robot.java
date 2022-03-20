@@ -24,6 +24,7 @@ import frc.robot.subsystems.SwerveDriveTrain;
 import frc.robot.subsystems.SwerveOdometry;
 import frc.robot.util.FieldPosition;
 import frc.robot.util.Gyro;
+import frc.robot.util.IO;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -121,6 +122,8 @@ public class Robot extends TimedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
+
+        IO.hosas = SmartDashboard.getBoolean("hosas", false);
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
