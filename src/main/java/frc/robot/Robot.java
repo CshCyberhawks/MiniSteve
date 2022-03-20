@@ -19,6 +19,7 @@ import frc.robot.subsystems.TransportSystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommandGroup;
@@ -29,6 +30,7 @@ import frc.robot.subsystems.SwerveDriveTrain;
 import frc.robot.subsystems.SwerveOdometry;
 import frc.robot.util.FieldPosition;
 import frc.robot.util.Gyro;
+import frc.robot.util.IO;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
@@ -62,6 +64,11 @@ public class Robot extends TimedRobot {
     public static TransportSystem transportSystem;
 
     public static AutoCommandGroup autoCommands;
+    private static int startingPosition;
+
+    private static SendableChooser<Integer> autoConfiguration = new SendableChooser<>();
+    private static SendableChooser<Boolean> driveConfiguration = new SendableChooser<>();
+
     // public RobotContainer m_robotContainer;
 
     /**
@@ -83,6 +90,14 @@ public class Robot extends TimedRobot {
         // teamColor = DriverStation.getAlliance();
         // m_robotContainer = new RobotContainer();
         // PortForwarder.add(5800, "limelight.local", 5800);
+        autoConfiguration.setDefaultOption("Auto 0", 0);
+        autoConfiguration.addOption("Auto 1", 1);
+
+        driveConfiguration.setDefaultOption("Not HOSAS", false);
+        driveConfiguration.addOption("HOSAS", true);
+
+        startingPosition = (int) SmartDashboard.getNumber("Starting Position", 0);
+
         frontBreakBeam = new DigitalInput(Constants.frontBreakBeam);
         backBreakBeam = new DigitalInput(Constants.backBreakBeam);
         topBreakBeam = new DigitalInput(Constants.topBreakBeam);
@@ -120,6 +135,8 @@ public class Robot extends TimedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
+        
+        IO.hosas = driveConfiguration.getSelected();
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -146,7 +163,7 @@ public class Robot extends TimedRobot {
 
         // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         swerveAuto = new SwerveAuto();
-        autoCommands = new AutoCommandGroup(0);
+        autoCommands = new AutoCommandGroup(autoConfiguration.getSelected());
 
         // schedule the autonomous command (example)
         autoCommands.schedule();
