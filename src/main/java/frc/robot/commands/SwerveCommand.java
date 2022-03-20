@@ -33,16 +33,16 @@ public class SwerveCommand extends CommandBase {
             Gyro.setOffset();
         if (IO.limelightLockOn())
             swerveDriveTrain.drive(
-                    IO.moveRobotX(),
-                    IO.moveRobotY(),
-                    MathClass.calculateDeadzone(Limelight.getHorizontalOffset(), .5) / 27,
+                    -IO.moveRobotX(),
+                    -IO.moveRobotY(),
+                    -MathClass.calculateDeadzone(Limelight.getHorizontalOffset(), .5) / 27,
                     IO.getJoyThrottle(),
                     DriveState.TELE);
         else
             swerveDriveTrain.drive(
-                    IO.moveRobotX(),
-                    IO.moveRobotY(),
-                    IO.turnControl(),
+                    -IO.moveRobotX(),
+                    -IO.moveRobotY(),
+                    -IO.turnControl(),
                     IO.getJoyThrottle(),
                     DriveState.TELE);
     }

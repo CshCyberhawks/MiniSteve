@@ -85,7 +85,7 @@ public class IO {
 
     public static double getJoyThrottle() {
         return hosas ? MathClass.calculateDeadzone(joystick2.getY(), .5)
-                : MathClass.calculateDeadzone(joystick.getThrottle(), .05);
+                : MathClass.calculateDeadzone((-joystick.getThrottle() + 1) / 2, .05);
     }
 
     // public static boolean getXboxRightBumper() {

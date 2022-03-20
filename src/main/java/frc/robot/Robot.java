@@ -95,8 +95,6 @@ public class Robot extends TimedRobot {
         swo = new SwerveOdometry(new FieldPosition(0, 0, 0));
         CameraServer.startAutomaticCapture();
 
-        Limelight.pipelineInit();
-
         // driveSystem = new DriveSystem();
         // CameraServer.startAutomaticCapture();
     }
@@ -144,6 +142,7 @@ public class Robot extends TimedRobot {
         if (swerveCommand != null) {
             swerveCommand.cancel();
         }
+        Limelight.pipelineInit();
 
         // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         swerveAuto = new SwerveAuto();
@@ -170,6 +169,7 @@ public class Robot extends TimedRobot {
 
         swerveCommand = new SwerveCommand(swerveSystem);
         swerveCommand.schedule();
+        Limelight.pipelineInit();
 
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
@@ -187,10 +187,11 @@ public class Robot extends TimedRobot {
 
         SmartDashboard.putNumber("cargoStored", transportSystem.getCargoAmount());
 
-        SmartDashboard.putNumber("Gyro Vel X", Gyro.getVelocityX());
-        SmartDashboard.putNumber("Gyro Vel Y", Gyro.getVelocityY());
-        SmartDashboard.putNumber("Gyro Accel X", Gyro.getAccelX());
-        SmartDashboard.putNumber("Gyro Accel Y", Gyro.getAccelY());
+        SmartDashboard.putBoolean("frontBreakBeam", frontBreakBeam.get());
+        SmartDashboard.putBoolean("backBreakBeam", backBreakBeam.get());
+        SmartDashboard.putBoolean("topBreakBeam", topBreakBeam.get());
+        SmartDashboard.putBoolean("shootBreakBeam", shootBreakBeam.get());
+
     }
 
     @Override
@@ -203,10 +204,6 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-        SmartDashboard.putBoolean("frontBreakBeam", getFrontBreakBeam().get());
-        SmartDashboard.putBoolean("backBreakBeam", getBackBreakBeam().get());
-        SmartDashboard.putBoolean("topBreakBeam", getTopBreakBeam().get());
-        SmartDashboard.putBoolean("shootBreakBeam", getShootBreakBeam().get());
 
     }
 
@@ -223,7 +220,6 @@ public class Robot extends TimedRobot {
     }
 
     public static DigitalInput getFrontBreakBeam() {
-        SmartDashboard.putBoolean("frontBreakBeam", frontBreakBeam.get());
         return frontBreakBeam;
     }
 
