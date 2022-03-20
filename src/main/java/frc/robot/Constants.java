@@ -32,10 +32,10 @@ public final class Constants {
         // twist speed mults for each motor
         public static final HashMap<String, Double> twistSpeedMap = new HashMap<>() {
                 {
-                        put("frontRight", .5);
-                        put("frontLeft", .5);
-                        put("backRight", .5);
-                        put("backLeft", .5);
+                        put("frontRight", .6);
+                        put("frontLeft", .6);
+                        put("backRight", .6);
+                        put("backLeft", .6);
                 }
         };
 
@@ -105,10 +105,10 @@ public final class Constants {
         };
 
         // Break Beams
-        public static final int frontBreakBeam = 5;
-        public static final int backBreakBeam = 4;
-        public static final int topBreakBeam = 6;
-        public static final int shootBreakBeam = 7;
+        public static final int frontBreakBeam = 4;
+        public static final int backBreakBeam = 5;
+        public static final int topBreakBeam = 8;
+        public static final int shootBreakBeam = 9;
 
         // Encoders
         public static final int frontRightEncoder = 0;

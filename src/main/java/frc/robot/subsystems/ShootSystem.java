@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,9 +25,8 @@ public class ShootSystem extends SubsystemBase {
     private PIDController topPIDController;
     private PIDController bottomRightPIDController;
     private PIDController bottomLeftPIDController;
-    private final double topMotorMult = 1.5;
-    private final int maxRPM = 25;
-    private final int maxSetRPM = 10;
+    private final double topMotorMult = 2;
+    private final int maxRPM = 5;
     private boolean autoShootRunning;
 
     public ShootSystem() {
@@ -73,15 +73,19 @@ public class ShootSystem extends SubsystemBase {
         double bottomRightPIDOutput = bottomRightPIDController.calculate(bottomEncoder.getRate(), power);
         double bottomLeftPIDOutput = bottomLeftPIDController.calculate(bottomEncoder.getRate(), power);
 
-        double rightSet = -((bottomRightPIDOutput / maxRPM) + (power / maxRPM));
-        double leftSet = ((bottomLeftPIDOutput / maxRPM) + (power / maxRPM));
+        // SmartDashboard.putNumber("rightBottomPID", bottomRightPIDOutput);
 
-        SmartDashboard.putNumber("bottomPower", power);
-        SmartDashboard.putNumber("rightSet", rightSet);
-        SmartDashboard.putNumber("leftSet", leftSet);
+        // double rightSet = -((bottomRightPIDOutput / maxRPM) + (power / maxRPM));
+        // double leftSet = ((bottomLeftPIDOutput / maxRPM) + (power / maxRPM));
 
-        bottomRightMotor.set(rightSet);
-        bottomLeftMotor.set(leftSet);
+        // SmartDashboard.putNumber("bottomPower", power);
+        // SmartDashboard.putNumber("rightSet", rightSet);
+        // SmartDashboard.putNumber("leftSet", leftSet);
+
+        SmartDashboard.putNumber("bottomMotorSets", MathUtil.clamp(power, -.2, .2));
+
+        bottomRightMotor.set(-(MathUtil.clamp(power, -.2, .2)));
+        bottomLeftMotor.set(MathUtil.clamp(power, -.2, .2));
     }
 
     public void shoot(double power) {
@@ -92,13 +96,14 @@ public class ShootSystem extends SubsystemBase {
         SmartDashboard.putNumber("Bottom Encoder", bottomEncoder.getRate());
         SmartDashboard.putNumber("Old Encoder", oldEncoder.getVelocity());
 
-        power *= maxSetRPM; // Convert to RPM
+        // power *= maxRPM; // Convert to RPM
 
         SmartDashboard.putNumber("shootPower", power);
 
-        double topPIDOut = topPIDController.calculate(bottomEncoder.getRate(), power);
+        // double topPIDOut = topPIDController.calculate(bottomEncoder.getRate(),
+        // power);
 
-        topMotor.set(-(topPIDOut / maxRPM) + -((power * topMotorMult) / (maxRPM * topMotorMult)));
+        topMotor.set(MathUtil.clamp(-(power * topMotorMult), -1, 1));
         setBottom(power);
     }
 }

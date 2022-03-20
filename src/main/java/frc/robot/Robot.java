@@ -70,11 +70,12 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
-        limelightFeed = new HttpCamera("limelight", "http://10.28.75.11:5800/");
-        CameraServer.startAutomaticCapture(limelightFeed);
+        limelightFeed = new HttpCamera("limelight", "http://10.28.75.11:5800");
+        // CameraServer.startAutomaticCapture(limelightFeed);
 
-        // ShuffleboardTab drivShuffleboardTab = Shuffleboard.getTab("DriverStream");
-        // drivShuffleboardTab.add("LL", limelightFeed).withPosition(0, 0).withSize(15, 8).withProperties(Map.of("Show Crosshair", true, "Show Controls", false));
+        ShuffleboardTab drivShuffleboardTab = Shuffleboard.getTab("DriverStream");
+        drivShuffleboardTab.add("LL", limelightFeed).withPosition(0, 0).withSize(15, 8)
+                .withProperties(Map.of("Show Crosshair", true, "Show Controls", false));
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our
         // autonomous chooser on the dashboard.
@@ -91,10 +92,6 @@ public class Robot extends TimedRobot {
 
         swerveSystem = new SwerveDriveTrain();
         swo = new SwerveOdometry(new FieldPosition(0, 0, 0));
-        CameraServer.startAutomaticCapture();
-
-        // driveSystem = new DriveSystem();
-        // CameraServer.startAutomaticCapture();
     }
 
     /**
@@ -199,6 +196,11 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
+        SmartDashboard.putBoolean("frontBreakBeam", getFrontBreakBeam().get());
+        SmartDashboard.putBoolean("backBreakBeam", getBackBreakBeam().get());
+        SmartDashboard.putBoolean("topBreakBeam", getTopBreakBeam().get());
+        SmartDashboard.putBoolean("shootBreakBeam", getShootBreakBeam().get());
+
     }
 
     public static IntakeSystem getIntakeSystem() {

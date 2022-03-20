@@ -36,7 +36,7 @@ public class SwerveWheel {
     private int m_turnEncoderPort;
 
     // below is in m / 20 ms
-    private double maxAcceleration = .05;
+    private double maxAcceleration = .01;
     private double lastSpeed = 0;
 
     public double turnValue;
@@ -104,7 +104,7 @@ public class SwerveWheel {
     public void drive(double speed, double angle, DriveState mode) {
         oldAngle = angle;
 
-        switch(mode) {
+        switch (mode) {
             case TELE:
                 maxAcceleration = 0.05;
                 break;
@@ -115,7 +115,6 @@ public class SwerveWheel {
 
         double driveVelocity = driveEncoder.getVelocity();
         currentDriveSpeed = convertToMetersPerSecondFromSecond(driveVelocity);
-        SmartDashboard.putNumber(m_turnEncoderPort + " encoder speed", currentDriveSpeed);
         // SmartDashboard.putNumber(m_turnEncoderPort + " wheel rotations",
         // driveVelocity);
         turnValue = wrapAroundAngles(turnEncoder.get());
@@ -157,7 +156,6 @@ public class SwerveWheel {
         // double driveFeedForwardOutput = driveFeedforward.calculate(currentDriveSpeed,
         // speed);
 
-        SmartDashboard.putNumber(m_turnEncoderPort + " turnEncoderValue", turnValue);
         // SmartDashboard.putNumber(m_turnEncoderPort + " currentDriveSpeed",
         // currentDriveSpeed);
         // SmartDashboard.putNumber(m_turnEncoderPort + " turn set", turnPIDOutput);
