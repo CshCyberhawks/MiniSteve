@@ -13,10 +13,11 @@ public class AutoCommandGroup extends SequentialCommandGroup {
 
         if (configuration == 0) {
             addCommands(
-                new AutoBall(4),
-                new AutoGoToCenterAndShoot(0),
-                new AutoBall(5),
-                new AutoGoToCenterAndShoot(0)
+                    new AutoShootCommand(Robot.shootSystem)
+            // new AutoBall(4),
+            // new AutoGoToCenterAndShoot(0),
+            // new AutoBall(5),
+            // new AutoGoToCenterAndShoot(0)
             );
         }
     }

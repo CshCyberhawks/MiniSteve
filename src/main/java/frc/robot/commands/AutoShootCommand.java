@@ -10,15 +10,15 @@ import frc.robot.util.MathClass;
 public class AutoShootCommand extends CommandBase {
     private final ShootSystem shootSystem;
     private TransportSystem transportSystem;
-    private final int desiredShootSpeed = 5;
-    private double lastTopEncoderSpeed;
+    private final int desiredShootSpeed = 3;
+    private double lastBottomEncoderSpeed;
     private double startTime;
 
     public AutoShootCommand(ShootSystem subsystem) {
         shootSystem = subsystem;
         shootSystem.setAutoShootState(true);
         transportSystem = Robot.getTransportSystem();
-        lastTopEncoderSpeed = 0;
+        lastBottomEncoderSpeed = 0;
 
         startTime = MathClass.getCurrentTime();
 
@@ -27,20 +27,20 @@ public class AutoShootCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double currentTopEncoderSpeed = shootSystem.getTopEncoder().getRate() / 8192;
-        double encoderDifference = currentTopEncoderSpeed - lastTopEncoderSpeed;
+        double currentBottomEncoderSpeed = shootSystem.getBottomEncoder().getRate();
+        double encoderDifference = currentBottomEncoderSpeed - lastBottomEncoderSpeed;
 
         // if (!Robot.getShootBreakBeam().get())
         // transportSystem.setCargoAmount(transportSystem.getCargoAmount() - 1);
-        if (currentTopEncoderSpeed > desiredShootSpeed) {
-            SmartDashboard.putBoolean("moving", true);
+        if (currentBottomEncoderSpeed > Math.abs(desiredShootSpeed)) {
             transportSystem.move(.25);
+            SmartDashboard.putBoolean("moving", true);
         } else {
             SmartDashboard.putBoolean("moving", false);
         }
 
         shootSystem.shoot(1);
-        lastTopEncoderSpeed = currentTopEncoderSpeed;
+        lastBottomEncoderSpeed = currentBottomEncoderSpeed;
     }
 
     @Override
