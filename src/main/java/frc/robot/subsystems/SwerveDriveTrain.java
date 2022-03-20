@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.lang.Math;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.robot.util.Vector2;
+import frc.robot.util.DriveState;
 
 public class SwerveDriveTrain extends SubsystemBase {
     public SwerveWheel backLeft;
@@ -103,7 +104,7 @@ public class SwerveDriveTrain extends SubsystemBase {
                 driveCoordinate[1] + twistCoordinate[1]);
     }
 
-    public void drive(double inputX, double inputY, double inputTwist, double throttleChange, String mode) {
+    public void drive(double inputX, double inputY, double inputTwist, double throttleChange, DriveState mode) {
         double timeNow = WPIUtilJNI.now() * 1.0e-6;
         double period = lastUpdateTime >= 0 ? timeNow - lastUpdateTime : 0.0;
         double gyroAngle = Gyro.getAngle();
@@ -134,10 +135,13 @@ public class SwerveDriveTrain extends SubsystemBase {
         SmartDashboard.putNumber("drive inputTwist ", inputTwist);
 
         // FieldPosition robotPos = Robot.swo.getPosition();
-
-        inputX = mode != "auto" ? inputX * throttle : inputX;
-        inputY = mode != "auto" ? inputY * throttle : inputY;
-        inputTwist = mode != "auto" ? inputTwist * throttle : inputTwist;
+        switch(mode) {
+            case TELE:
+                inputX *= throttle;
+                inputY *= throttle;
+                inputTwist *= throttle;
+                break;
+        }
 
         SmartDashboard.putNumber("drive inputX ", inputX);
         SmartDashboard.putNumber("drive inputY ", inputY);

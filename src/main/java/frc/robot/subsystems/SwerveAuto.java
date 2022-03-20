@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.util.DriveState;
 
 public class SwerveAuto {
     private Vector2 desiredPosition;
@@ -143,7 +144,7 @@ public class SwerveAuto {
         SmartDashboard.putNumber("xPID", xVel / 3.777);
         SmartDashboard.putNumber("yPID", yVel / 3.777);
 
-        Robot.swerveSystem.drive(xVel / 3.777, yVel / 3.777, 0, 0, "auto");
+        Robot.swerveSystem.drive(xVel / 3.777, yVel / 3.777, 0, 0, DriveState.AUTO);
 
         trapXCurrentState = trapXOutput;
         trapYCurrentState = trapYOutput;
@@ -158,7 +159,7 @@ public class SwerveAuto {
         System.out.println("isTwisting");
         double twistInput = twistValue * .5;
         SmartDashboard.putNumber(" auto twistVal ", twistInput);
-        Robot.swerveSystem.drive(0, 0, twistInput, 0, "auto");
+        Robot.swerveSystem.drive(0, 0, twistInput, 0, DriveState.AUTO);
 
     }
 

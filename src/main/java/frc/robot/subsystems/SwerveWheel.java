@@ -21,10 +21,11 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import frc.robot.Constants;
 import frc.robot.util.DriveEncoder;
-
+import frc.robot.util.DriveState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveWheel {
+
     private TalonSRX turnMotor;
     private TalonFX driveMotor;
     private TurnEncoder turnEncoder;
@@ -100,13 +101,16 @@ public class SwerveWheel {
         return 7 * meters / wheelConstant;
     }
 
-    public void drive(double speed, double angle, String mode) {
+    public void drive(double speed, double angle, DriveState mode) {
         oldAngle = angle;
 
-        if (mode == "tele") {
-            maxAcceleration = 0.05;
-        } else if (mode == "auto") {
-            maxAcceleration = 0.01;
+        switch(mode) {
+            case TELE:
+                maxAcceleration = 0.05;
+                break;
+            case AUTO:
+                maxAcceleration = 0.01;
+                break;
         }
 
         double driveVelocity = driveEncoder.getVelocity();
@@ -169,7 +173,7 @@ public class SwerveWheel {
     }
 
     public void preserveAngle() {
-        drive(0, oldAngle, "no");
+        drive(0, oldAngle, DriveState.OTHER);
     }
 
     public void kill() {
