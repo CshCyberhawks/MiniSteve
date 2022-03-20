@@ -32,7 +32,7 @@ public class AutoShootCommand extends CommandBase {
 
         // if (!Robot.getShootBreakBeam().get())
         // transportSystem.setCargoAmount(transportSystem.getCargoAmount() - 1);
-        if (currentBottomEncoderSpeed > Math.abs(desiredShootSpeed)) {
+        if (Math.abs(currentBottomEncoderSpeed) > Math.abs(desiredShootSpeed)) {
             transportSystem.move(.25);
             SmartDashboard.putBoolean("moving", true);
         } else {
