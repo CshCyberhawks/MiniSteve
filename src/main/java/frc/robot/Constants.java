@@ -70,6 +70,9 @@ public final class Constants {
         public static final int intakeMotor = 15;
         public static final int intakeSolenoid = 4;
 
+        // Climb System
+        public static final int climbMotor = 10;
+
         // Dimensions
         public static final double length = .53;
         public static final double width = .53;
