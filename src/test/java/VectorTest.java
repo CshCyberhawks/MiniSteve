@@ -43,6 +43,6 @@ public class VectorTest {
     @Test
     public void checkVectorAddSelf() {
         Vector2 vector = new Vector2(1, 3);
-        assertVector(new Vector2(5, 5), vector.add(new Vector2(1, 4)));
+        assertVector(new Vector2(2, 7), vector.add(new Vector2(1, 4)));
     }
 }
