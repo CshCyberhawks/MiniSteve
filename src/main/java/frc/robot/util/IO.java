@@ -10,7 +10,7 @@ public class IO {
     private static final XboxController xbox = new XboxController(2);
     private static final double controllerDeadzone = 0.3;
 
-    public static boolean hosas = SmartDashboard.getBoolean("hosas", false);
+    public static boolean hosas = false;
 
     public static double[] getPolarCoords() {
         return new double[] {
