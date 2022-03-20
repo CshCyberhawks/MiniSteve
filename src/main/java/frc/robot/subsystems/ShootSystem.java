@@ -36,8 +36,8 @@ public class ShootSystem extends SubsystemBase {
         oldEncoder = topMotor.getEncoder();
 
         // traversalEncoder = traversalMotor.getEncoder();
-        topEncoder = new Encoder(3, 4);
-        bottomEncoder = new Encoder(5, 6);
+        topEncoder = new Encoder(2, 3);
+        bottomEncoder = new Encoder(0, 1);
 
         // Set distance to pulse to distance in rotation (makes get rate return
         // rotations)
