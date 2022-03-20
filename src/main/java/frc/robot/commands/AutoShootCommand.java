@@ -24,8 +24,8 @@ public class AutoShootCommand extends CommandBase {
         double currentTopEncoderSpeed = shootSystem.getTopEncoder().getRate() / 8192;
         double encoderDifference = currentTopEncoderSpeed - lastTopEncoderSpeed;
 
-        if (!Robot.getShootBreakBeam().get())
-            transportSystem.setCargoAmount(transportSystem.getCargoAmount() - 1);
+        // if (!Robot.getShootBreakBeam().get())
+        // transportSystem.setCargoAmount(transportSystem.getCargoAmount() - 1);
         if (currentTopEncoderSpeed > desiredShootSpeed)
             transportSystem.move(.25);
 

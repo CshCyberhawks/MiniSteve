@@ -24,8 +24,8 @@ public class AutoTransportCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        if (transportSystem.getCargoAmount() < 2 && interrupted == false)
-            transportSystem.setCargoAmount(transportSystem.getCargoAmount() + 1);
+        // if (transportSystem.getCargoAmount() < 2 && interrupted == false)
+        // transportSystem.setCargoAmount(transportSystem.getCargoAmount() + 1);
         transportSystem.move(0);
     }
 

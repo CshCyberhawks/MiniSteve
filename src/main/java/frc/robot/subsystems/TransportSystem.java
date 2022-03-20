@@ -5,12 +5,23 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
 public class TransportSystem extends SubsystemBase {
     private VictorSPX transportMotor;
     private final double traversalMult = 2;
-    private int cargoAmount;
+    private int cargoAmount = 0;
     private boolean isRunningSequence;
+
+    @Override
+    public void periodic() {
+        if (!Robot.getFrontBreakBeam().get()) {
+            cargoAmount++;
+        }
+        if (!Robot.getShootBreakBeam().get()) {
+            cargoAmount--;
+        }
+    }
 
     public TransportSystem() {
         transportMotor = new VictorSPX(Constants.traversalMotor);
