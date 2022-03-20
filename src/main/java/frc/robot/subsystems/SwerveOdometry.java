@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.util.WPIUtilJNI;
 
 public class SwerveOdometry extends SubsystemBase {
-    private FieldPosition fieldPosition;
+    private FieldPosition fieldPosition = new FieldPosition(0, 0, 0);
 
     private double lastUpdateTime = 1;
-    private double[] robotVelocities;
+    private double[] robotVelocities = new double[] { 0, 0 };
 
     public SwerveOdometry(FieldPosition _fieldPosition) {
         fieldPosition = _fieldPosition;

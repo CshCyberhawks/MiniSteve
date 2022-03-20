@@ -34,11 +34,9 @@ public class SwerveAuto {
     // both below args are in m/s - first is velocity (35% of max robot velocity of
     // 3.77), and a max accel of .05 m/s
     private TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(3.777, 1);
-    private TrapezoidProfile.State trapXCurrentState = new TrapezoidProfile.State(
-            Robot.swo.getPosition().positionCoord.x, Robot.swo.getVelocities()[0]);
+    private TrapezoidProfile.State trapXCurrentState;
     private TrapezoidProfile.State trapXDesiredState;
-    private TrapezoidProfile.State trapYCurrentState = new TrapezoidProfile.State(
-            Robot.swo.getPosition().positionCoord.y, Robot.swo.getVelocities()[1]);
+    private TrapezoidProfile.State trapYCurrentState;
     private TrapezoidProfile.State trapYDesiredState;
 
     private PIDController xPID = new PIDController(1, 0, 0);
@@ -49,6 +47,12 @@ public class SwerveAuto {
     public SwerveAuto() {
         team = DriverStation.getAlliance();
         ballPositions = team == Alliance.Blue ? Constants.blueBallPositions : Constants.redBallPositions;
+
+        trapXCurrentState = new TrapezoidProfile.State(
+                Robot.swo.getPosition().positionCoord.x, Robot.swo.getVelocities()[0]);
+
+        trapYCurrentState = new TrapezoidProfile.State(
+                Robot.swo.getPosition().positionCoord.y, Robot.swo.getVelocities()[1]);
     }
 
     public void setDesiredPosition(Vector2 desiredPosition, double desiredVelocity) {
@@ -165,5 +169,4 @@ public class SwerveAuto {
         Robot.swerveSystem.frontRight.kill();
         Robot.swerveSystem.frontLeft.kill();
     }
-
 }

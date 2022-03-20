@@ -128,6 +128,7 @@ public class Robot extends TimedRobot {
         if (swerveCommand != null) {
             swerveCommand.cancel();
         }
+
         // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         swerveAuto = new SwerveAuto();
         autoCommands = new AutoCommandGroup(0);
