@@ -17,4 +17,8 @@ public class Polar {
     public boolean equals(Polar other) {
         return (theta == other.theta && r == other.r);
     }
+
+    public Polar add(Polar other) {
+        return new Polar(theta + other.theta, r + other.r);
+    }
 }

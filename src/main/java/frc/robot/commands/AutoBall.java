@@ -1,0 +1,22 @@
+package frc.robot.commands;
+
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.util.Vector2;
+import frc.robot.Robot;
+import frc.robot.subsystems.SwerveAuto;
+
+public class AutoBall extends SequentialCommandGroup {
+    public AutoBall(int ballNumber) {
+        Robot.swo.resetPos();
+        // add your autonomous commands below
+        // example: below will move robot 2 meters on the x and rotate to 90 degrees
+        // then it will wait 1 second before moving the robot back to its starting
+        // position
+        Vector2 desiredPosition = Robot.swerveAuto.ballPositions[ballNumber];
+        double desiredAngle = Math.atan2(desiredPosition.y, desiredPosition.x);
+        addCommands(
+                new AutoGoToAngle(desiredAngle),
+                new AutoGoToPosition(ballNumber, 0),
+                new LimeLightAuto());
+    }
+}

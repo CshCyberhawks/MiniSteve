@@ -1,13 +1,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveDriveTrain;
+import frc.robot.util.Gyro;
+import frc.robot.util.MathClass;
 import frc.robot.util.IO;
 
 public class SwerveCommand extends CommandBase {
     private final SwerveDriveTrain swerveDriveTrain;
-    
+
     public SwerveCommand(SwerveDriveTrain subsystem) {
         swerveDriveTrain = subsystem;
         addRequirements(subsystem);
@@ -16,36 +19,41 @@ public class SwerveCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        swerveDriveTrain.gyro.setOffset();
+        Gyro.setOffset();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        
-        if (IO.getJoystickButton8())
-            swerveDriveTrain.gyro.setOffset();
-        if (IO.getJoyButton3())
-            swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), deadzone(-Limelight.getHorizontalOffset() / 27));
+        if (IO.getJoystickButton5())
+            Robot.swo.resetPos();
+        Robot.swo.getPosition();
+        if (IO.resetGyro())
+            Gyro.setOffset();
+        if (IO.limelightLockOn())
+            swerveDriveTrain.drive(
+                    -IO.moveRobotY(),
+                    -IO.moveRobotX(),
+                    -MathClass.calculateDeadzone(Limelight.getHorizontalOffset(), .5) / 27,
+                    IO.getJoyThrottle(),
+                    "tele");
         else
-            swerveDriveTrain.drive(-IO.getJoyY(), -IO.getJoyX(), -IO.getJoy2X());
+            swerveDriveTrain.drive(
+                    -IO.moveRobotY(),
+                    -IO.moveRobotX(),
+                    -IO.turnControl(),
+                    IO.getJoyThrottle(),
+                    "tele");
     }
 
     // Called once the command ends or is interrupted.
     @Override
-    public void end(boolean interrupted) {}
+    public void end(boolean interrupted) {
+    }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
         return false;
-    }
-
-    public void centerWithLimelight() {
-        
-    }
-
-    public static double deadzone(double input) {
-        return Math.abs(input) > 15 ? input : 0;
     }
 }

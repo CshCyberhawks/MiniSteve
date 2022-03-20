@@ -13,12 +13,16 @@ public class TurnEncoder {
     }
 
     private double voltageToDegrees(double input) {
-        return input / (2.5/180);
+        return input / (2.5 / 180);
     }
 
     public double get() {
-        // return (double)Math.floor(filter.calculate(voltageToDegrees(encoder.getVoltage()) - Constants.turnEncoderOffsets[encoderPort]) * 10d) / 10d;
-        // return (double)Math.floor(filter.calculate(voltageToDegrees(encoder.getVoltage())) * 10d) / 10d;
+        // return
+        // (double)Math.floor(filter.calculate(voltageToDegrees(encoder.getVoltage()) -
+        // Constants.turnEncoderOffsets[encoderPort]) * 10d) / 10d;
+        // return
+        // (double)Math.floor(filter.calculate(voltageToDegrees(encoder.getVoltage())) *
+        // 10d) / 10d;
         return voltageToDegrees(encoder.getVoltage()) - Constants.turnEncoderOffsets[encoderPort];
     }
 }
