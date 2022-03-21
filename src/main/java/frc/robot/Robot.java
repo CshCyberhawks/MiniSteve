@@ -172,19 +172,16 @@ public class Robot extends TimedRobot {
 
         // schedule the autonomous command (example)
         autoCommands.schedule();
-
     }
 
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
         swo.updatePosition();
-
     }
 
     @Override
     public void teleopInit() {
-
         shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
         intakeSystem.setDefaultCommand(new ManualIntakeCommand(intakeSystem));
         transportSystem.setDefaultCommand(new ManualTransportCommand(transportSystem));
@@ -219,7 +216,6 @@ public class Robot extends TimedRobot {
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
-
     }
 
     /** This function is called periodically during test mode. */
