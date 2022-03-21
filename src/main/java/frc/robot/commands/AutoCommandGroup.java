@@ -13,10 +13,10 @@ public class AutoCommandGroup extends SequentialCommandGroup {
 
         if (configuration == 0) {
             addCommands(
-                    new AutoBall(4),
-                    new AutoGoToCenterAndShoot(0),
-                    new AutoBall(5),
-                    new AutoGoToCenterAndShoot(0),
+                    // new AutoBall(4),
+                    // new AutoGoToCenterAndShoot(0),
+                    // new AutoBall(5),
+                    // new AutoGoToCenterAndShoot(0),
                     new AutoGoToPosition(new Vector2(-6, 0), 0));
         }
     }
