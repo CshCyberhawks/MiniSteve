@@ -168,7 +168,7 @@ public class Robot extends TimedRobot {
 
         // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         swerveAuto = new SwerveAuto();
-        autoCommands = new AutoCommandGroup(autoConfiguration.getSelected());
+        autoCommands = new AutoCommandGroup(0);// autoConfiguration.getSelected());
 
         // schedule the autonomous command (example)
         autoCommands.schedule();
