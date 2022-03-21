@@ -66,6 +66,10 @@ public final class Constants {
         public static final int topShootMotor = 12;
         public static final int traversalMotor = 16;
 
+        // encoder values for perfect shots
+        public static final double bottomShootSetpoint = -3.7;
+        public static final double topShootSetpoint = 19;
+
         // Intake System
         public static final int intakeMotor = 15;
 

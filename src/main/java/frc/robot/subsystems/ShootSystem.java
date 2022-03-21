@@ -27,14 +27,19 @@ public class ShootSystem extends SubsystemBase {
     private Encoder bottomEncoder;
     private RelativeEncoder oldEncoder;
     private PIDController topPIDController;
-    private PIDController bottomRightPIDController;
-    private PIDController bottomLeftPIDController;
+    private PIDController bottomPIDController;
     private final double topMotorMult = 2;
     private final int maxRPM = 5;
     private boolean autoShootRunning;
     public double bottomWheelSpeed;
 
     private NetworkTableEntry bottomShootSpeed;
+
+    // bottom wheel encoder -3.7 for perfect shot
+    // top wheel encoder 19 for perfect shot
+
+    // top wheel encoder 22 max
+    // bottom wheel encoder -24 max
 
     public ShootSystem() {
         topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -53,8 +58,7 @@ public class ShootSystem extends SubsystemBase {
         bottomEncoder.setDistancePerPulse(0.00012207031);
 
         topPIDController = new PIDController(.01, 0, 0);
-        bottomRightPIDController = new PIDController(.01, 0, 0);
-        bottomLeftPIDController = new PIDController(.01, 0, 0);
+        bottomPIDController = new PIDController(.01, 0, 0);
 
         autoShootRunning = false;
         bottomShootSpeed = Robot.driveShuffleboardTab.add("Bottom Shoot Speed", topEncoder.getRate()).getEntry();
@@ -78,10 +82,9 @@ public class ShootSystem extends SubsystemBase {
 
     // Syncing of bottom 2 motors
     private void setBottom(double power) {
-        // double bottomRightPIDOutput =
-        // bottomRightPIDController.calculate(bottomEncoder.getRate(), power);
-        // double bottomLeftPIDOutput =
-        // bottomLeftPIDController.calculate(bottomEncoder.getRate(), power);
+        power = .18;
+
+        double bottomPIDOutput = bottomPIDController.calculate(bottomEncoder.getRate(), Constants.bottomShootSetpoint);
 
         // SmartDashboard.putNumber("rightBottomPID", bottomRightPIDOutput);
 
@@ -92,30 +95,38 @@ public class ShootSystem extends SubsystemBase {
         // SmartDashboard.putNumber("rightSet", rightSet);
         // SmartDashboard.putNumber("leftSet", leftSet);
 
-        SmartDashboard.putNumber("bottomMotorSets", MathUtil.clamp(power, -.18, .18));
+        // SmartDashboard.putNumber("bottomMotorSets", MathUtil.clamp(power, -1, 1));
 
-        bottomRightMotor.set(-(MathUtil.clamp(power, -.18, .18)));
-        bottomLeftMotor.set(MathUtil.clamp(power, -.18, .18));
+        bottomRightMotor.set(-(MathUtil.clamp(power + bottomPIDOutput, -1, 1)));
+        bottomLeftMotor.set(MathUtil.clamp(power + bottomPIDOutput, -1, 1));
     }
 
     public void shoot(double power) {
-        // double traversalPIDOUt =
-        // motorController.calculate(traverseEncoder.getVelocity(), power *
-        // traversalMult);
         SmartDashboard.putNumber("Top Encoder", topEncoder.getRate());
         SmartDashboard.putNumber("Bottom Encoder", bottomEncoder.getRate());
         bottomShootSpeed.setDouble(bottomEncoder.getRate());
+        SmartDashboard.putNumber("shootPower", power);
+
+        if (power == 0) {
+            topMotor.set(0);
+            bottomLeftMotor.set(0);
+            bottomRightMotor.set(0);
+            return;
+        }
+        power = .8;
+
+        // double traversalPIDOUt =
+        // motorController.calculate(traverseEncoder.getVelocity(), power *
+        // traversalMult);
 
         // SmartDashboard.putNumber("Old Encoder", oldEncoder.getVelocity());
         bottomWheelSpeed = bottomEncoder.getRate();
         // power *= maxRPM; // Convert to RPM
 
-        SmartDashboard.putNumber("shootPower", power);
+        double topPIDOut = topPIDController.calculate(topEncoder.getRate(), Constants.topShootSetpoint);
 
-        // double topPIDOut = topPIDController.calculate(bottomEncoder.getRate(),
-        // power);
+        topMotor.set(MathUtil.clamp(-(power + topPIDOut), -1, 1));
 
-        topMotor.set(MathUtil.clamp(-(power * topMotorMult), -.85, .85));
         setBottom(power);
     }
 }
