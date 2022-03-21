@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
+import frc.robot.util.Gyro;
 import frc.robot.util.Vector2;
 
 public class AutoCommandGroup extends SequentialCommandGroup {
@@ -13,6 +14,7 @@ public class AutoCommandGroup extends SequentialCommandGroup {
 
         if (configuration == 0) {
             addCommands(
+                    // Gyro.offset =
                     // new AutoBall(4),
                     // new AutoGoToCenterAndShoot(0),
                     // new AutoBall(5),

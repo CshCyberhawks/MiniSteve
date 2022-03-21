@@ -99,16 +99,16 @@ public final class Constants {
         };
 
         public static final FieldPosition[] blueStartingPositions = {
-                        new FieldPosition(-1, -2.8, 0), new FieldPosition(-2.8, 1, 0)
+                        new FieldPosition(-0.3, -1.7, 0), new FieldPosition(-2.8, 1, 0)
         };
 
         public static final FieldPosition[] redStartingPositions = {
-                        new FieldPosition(1, 2.8, 0), new FieldPosition(2.8, -1, 0)
+                        new FieldPosition(1.7, 0.3, 0), new FieldPosition(2.8, -1, 0)
         };
 
         // Break Beams
-        public static final int frontBreakBeam = 4;
-        public static final int backBreakBeam = 5;
+        public static final int frontBreakBeam = 5;
+        public static final int backBreakBeam = 4;
         public static final int topBreakBeam = 6;
         public static final int shootBreakBeam = 7;
 
