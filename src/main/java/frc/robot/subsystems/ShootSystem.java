@@ -84,10 +84,10 @@ public class ShootSystem extends SubsystemBase {
         // SmartDashboard.putNumber("rightSet", rightSet);
         // SmartDashboard.putNumber("leftSet", leftSet);
 
-        SmartDashboard.putNumber("bottomMotorSets", MathUtil.clamp(power, -.15, .15));
+        SmartDashboard.putNumber("bottomMotorSets", MathUtil.clamp(power, -.175, .175));
 
-        bottomRightMotor.set(-(MathUtil.clamp(power, -.15, .15)));
-        bottomLeftMotor.set(MathUtil.clamp(power, -.15, .15));
+        bottomRightMotor.set(-(MathUtil.clamp(power, -.175, .175)));
+        bottomLeftMotor.set(MathUtil.clamp(power, -.175, .175));
     }
 
     public void shoot(double power) {
@@ -105,7 +105,7 @@ public class ShootSystem extends SubsystemBase {
         // double topPIDOut = topPIDController.calculate(bottomEncoder.getRate(),
         // power);
 
-        topMotor.set(MathUtil.clamp(-(power * topMotorMult), -.8, .8));
+        topMotor.set(MathUtil.clamp(-(power * topMotorMult), -1, 1));
         setBottom(power);
     }
 }

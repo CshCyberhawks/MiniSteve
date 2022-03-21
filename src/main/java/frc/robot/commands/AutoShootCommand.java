@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.ShootSystem;
 import frc.robot.subsystems.TransportSystem;
+import frc.robot.util.IO;
 
 public class AutoShootCommand extends CommandBase {
     private final ShootSystem shootSystem;
@@ -42,6 +43,6 @@ public class AutoShootCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return transportSystem.getCargoAmount() == 0;
+        return transportSystem.getCargoAmount() == 0 || IO.getAutoShootCancel();
     }
 }

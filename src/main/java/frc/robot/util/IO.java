@@ -66,6 +66,10 @@ public class IO {
         return xbox.getBackButton();
     }
 
+    public static boolean getAutoShootCancel() {
+        return xbox.getBButton();
+    }
+
     public static boolean resetGyro() {
         return joystick.getRawButtonPressed(8);
     }
