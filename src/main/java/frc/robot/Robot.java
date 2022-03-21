@@ -12,7 +12,7 @@ import edu.wpi.first.util.net.PortForwarder;
 import frc.robot.commands.ManualIntakeCommand;
 import frc.robot.commands.ManualTransportCommand;
 import frc.robot.commands.ShootCommand;
-
+import frc.robot.subsystems.ClimbSystem;
 import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShootSystem;
@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommandGroup;
+import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.SwerveAuto;
 import frc.robot.subsystems.SwerveDriveTrain;
@@ -66,6 +67,7 @@ public class Robot extends TimedRobot {
     // public SwerveDriveTrain swerveSystem;
     public static IntakeSystem intakeSystem;
     public static TransportSystem transportSystem;
+    public static ClimbSystem climbSystem;
 
     public static AutoCommandGroup autoCommands;
     private static int startingPosition;
@@ -108,6 +110,7 @@ public class Robot extends TimedRobot {
         shootSystem = new ShootSystem();
         intakeSystem = new IntakeSystem();
         transportSystem = new TransportSystem();
+        climbSystem = new ClimbSystem();
 
         swerveSystem = new SwerveDriveTrain();
         if (DriverStation.getAlliance() == Alliance.Blue) {
@@ -187,6 +190,7 @@ public class Robot extends TimedRobot {
         shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
         intakeSystem.setDefaultCommand(new ManualIntakeCommand(intakeSystem));
         transportSystem.setDefaultCommand(new ManualTransportCommand(transportSystem));
+        climbSystem.setDefaultCommand(new ClimbCommand(climbSystem));
 
         swerveCommand = new SwerveCommand(swerveSystem);
         swerveCommand.schedule();
