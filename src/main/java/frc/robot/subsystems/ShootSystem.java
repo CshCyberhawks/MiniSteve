@@ -28,6 +28,7 @@ public class ShootSystem extends SubsystemBase {
     private final double topMotorMult = 2;
     private final int maxRPM = 5;
     private boolean autoShootRunning;
+    public double bottomWheelSpeed;
 
     public ShootSystem() {
         topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -97,7 +98,7 @@ public class ShootSystem extends SubsystemBase {
         SmartDashboard.putNumber("Top Encoder", topEncoder.getRate());
         SmartDashboard.putNumber("Bottom Encoder", bottomEncoder.getRate());
         SmartDashboard.putNumber("Old Encoder", oldEncoder.getVelocity());
-
+        bottomWheelSpeed = bottomEncoder.getRate();
         // power *= maxRPM; // Convert to RPM
 
         SmartDashboard.putNumber("shootPower", power);

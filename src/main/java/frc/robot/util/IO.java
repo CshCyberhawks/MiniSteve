@@ -36,8 +36,8 @@ public class IO {
         return xbox.getAButton();
     }
 
-    public static boolean getXboxStartButton() {
-        return xbox.getStartButtonPressed();
+    public static boolean getAutoIntakeCancel() {
+        return xbox.getStartButtonPressed() || intakeBall() > 0;
     }
 
     public static double intakeBall() {

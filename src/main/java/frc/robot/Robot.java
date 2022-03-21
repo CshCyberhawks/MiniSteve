@@ -110,7 +110,7 @@ public class Robot extends TimedRobot {
         shootSystem = new ShootSystem();
         intakeSystem = new IntakeSystem();
         transportSystem = new TransportSystem();
-        climbSystem = new ClimbSystem();
+        // climbSystem = new ClimbSystem();
 
         swerveSystem = new SwerveDriveTrain();
         if (DriverStation.getAlliance() == Alliance.Blue) {
@@ -147,6 +147,8 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().run();
 
         IO.hosas = driveConfiguration.getSelected();
+        SmartDashboard.putNumber("cargoStored", transportSystem.getCargoAmount());
+
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -190,7 +192,7 @@ public class Robot extends TimedRobot {
         shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
         intakeSystem.setDefaultCommand(new ManualIntakeCommand(intakeSystem));
         transportSystem.setDefaultCommand(new ManualTransportCommand(transportSystem));
-        climbSystem.setDefaultCommand(new ClimbCommand(climbSystem));
+        // climbSystem.setDefaultCommand(new ClimbCommand(climbSystem));
 
         swerveCommand = new SwerveCommand(swerveSystem);
         swerveCommand.schedule();
@@ -209,8 +211,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         swo.updatePosition();
-
-        SmartDashboard.putNumber("cargoStored", transportSystem.getCargoAmount());
 
         SmartDashboard.putBoolean("frontBreakBeam", frontBreakBeam.get());
         SmartDashboard.putBoolean("backBreakBeam", backBreakBeam.get());

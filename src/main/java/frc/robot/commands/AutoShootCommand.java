@@ -9,40 +9,40 @@ import frc.robot.util.IO;
 public class AutoShootCommand extends CommandBase {
     private final ShootSystem shootSystem;
     private TransportSystem transportSystem;
-    private final int desiredShootSpeed = 2;
-    private double lastTopEncoderSpeed;
+    private final int desiredShootSpeed = 3;
+    private double lastBottomEncoderSpeed;
 
     public AutoShootCommand(ShootSystem subsystem) {
         shootSystem = subsystem;
         shootSystem.setAutoShootState(true);
         transportSystem = Robot.getTransportSystem();
-        lastTopEncoderSpeed = 0;
+        lastBottomEncoderSpeed = 0;
         addRequirements(subsystem);
     }
 
     @Override
     public void execute() {
-        double currentTopEncoderSpeed = shootSystem.getTopEncoder().getRate() / 8192;
-        double encoderDifference = currentTopEncoderSpeed - lastTopEncoderSpeed;
+        double currentBottomEncoderSpeed = shootSystem.bottomWheelSpeed;
+        double encoderDifference = currentBottomEncoderSpeed - lastBottomEncoderSpeed;
 
         // if (!Robot.getShootBreakBeam().get())
         // transportSystem.setCargoAmount(transportSystem.getCargoAmount() - 1);
-        if (currentTopEncoderSpeed > desiredShootSpeed)
+        if (Math.abs(currentBottomEncoderSpeed) > Math.abs(desiredShootSpeed))
             transportSystem.move(.25);
 
         shootSystem.shoot(1);
-        lastTopEncoderSpeed = currentTopEncoderSpeed;
+        lastBottomEncoderSpeed = currentBottomEncoderSpeed;
     }
 
     @Override
     public void end(boolean interrupted) {
         shootSystem.shoot(0);
         transportSystem.move(0);
-        shootSystem.setAutoShootState(true);
+        shootSystem.setAutoShootState(false);
     }
 
     @Override
     public boolean isFinished() {
-        return transportSystem.getCargoAmount() == 0 || IO.getAutoShootCancel();
+        return transportSystem.getCargoAmount() <= 0 || IO.getAutoShootCancel();
     }
 }

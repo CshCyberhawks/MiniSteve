@@ -14,9 +14,8 @@ public class IntakeSequence extends SequentialCommandGroup {
         autoTransportCommand = new AutoTransportCommand(Robot.getTransportSystem());
         Robot.getTransportSystem().setSequenceState(true);
         addCommands(
-            autoIntakeCommand,
-            autoTransportCommand
-        );
+                autoIntakeCommand,
+                autoTransportCommand);
     }
 
     @Override
@@ -27,7 +26,7 @@ public class IntakeSequence extends SequentialCommandGroup {
     @Override
     public boolean isFinished() {
         if (!autoTransportCommand.isFinished())
-            return IO.getXboxStartButton();
+            return IO.getAutoIntakeCancel();
         return autoTransportCommand.isFinished();
     }
 }
