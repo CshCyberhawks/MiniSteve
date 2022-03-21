@@ -148,7 +148,7 @@ public class Robot extends TimedRobot {
 
         IO.hosas = driveConfiguration.getSelected();
         SmartDashboard.putNumber("cargoStored", transportSystem.getCargoAmount());
-
+        transportSystem.cargoMonitor();
     }
 
     /** This function is called once each time the robot enters Disabled mode. */

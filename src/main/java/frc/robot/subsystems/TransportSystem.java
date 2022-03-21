@@ -19,14 +19,13 @@ public class TransportSystem extends SubsystemBase {
     private boolean cargoPickedUp = false;
     private boolean cargoShot = false;
 
-    @Override
-    public void periodic() {
+    public void cargoMonitor() {
 
         double shootDifference = MathClass.getCurrentTime() - lastCargoShootTime;
         double pickupDifference = MathClass.getCurrentTime() - lastCargoPickupTime;
 
-        cargoPickedUp = !Robot.getFrontBreakBeam().get() && cargoAmount < 2 && pickupDifference > 60;
-        cargoShot = !Robot.getShootBreakBeam().get() && cargoAmount > 0 && shootDifference > 60;
+        cargoPickedUp = !Robot.getFrontBreakBeam().get() && cargoAmount < 2; // && pickupDifference > 60;
+        cargoShot = !Robot.getShootBreakBeam().get() && cargoAmount > 0; // && shootDifference > 60;
 
         if (cargoPickedUp) {
             lastCargoPickupTime = MathClass.getCurrentTime();
@@ -36,6 +35,8 @@ public class TransportSystem extends SubsystemBase {
             lastCargoShootTime = MathClass.getCurrentTime();
             cargoAmount--;
         }
+
+        System.out.println("transport periodic ran");
     }
 
     public TransportSystem() {
