@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
+import frc.robot.util.Vector2;
 
 public class AutoCommandGroup extends SequentialCommandGroup {
     public AutoCommandGroup(int configuration) {
@@ -15,7 +16,8 @@ public class AutoCommandGroup extends SequentialCommandGroup {
                     new AutoBall(4),
                     new AutoGoToCenterAndShoot(0),
                     new AutoBall(5),
-                    new AutoGoToCenterAndShoot(0));
+                    new AutoGoToCenterAndShoot(0),
+                    new AutoGoToPosition(new Vector2(-6, 0), 0));
         }
     }
 }

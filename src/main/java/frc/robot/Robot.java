@@ -8,6 +8,7 @@ import java.util.Map;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.util.net.PortForwarder;
 import frc.robot.commands.ManualIntakeCommand;
 import frc.robot.commands.ManualTransportCommand;
 import frc.robot.commands.ShootCommand;
@@ -92,6 +93,7 @@ public class Robot extends TimedRobot {
         // autonomous chooser on the dashboard.
         // teamColor = DriverStation.getAlliance();
         // m_robotContainer = new RobotContainer();
+        PortForwarder.add(5800, "10.28.75.11", 5800);
         // PortForwarder.add(5800, "limelight.local", 5800);
         autoConfiguration.setDefaultOption("Auto 0", 0);
         autoConfiguration.addOption("Auto 1", 1);
