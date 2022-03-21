@@ -26,7 +26,7 @@ public class TransportSystem extends SubsystemBase {
         double shootDifference = MathClass.getCurrentTime() - lastCargoShootTime;
         double pickupDifference = MathClass.getCurrentTime() - lastCargoPickupTime;
 
-        cargoPickedUp = !Robot.getFrontBreakBeam().get() && cargoAmount < 0 && pickupDifference > 100;
+        cargoPickedUp = !Robot.getFrontBreakBeam().get() && cargoAmount <= 0 && pickupDifference > 100;
         cargoShot = !Robot.getShootBreakBeam().get() && cargoAmount > 0 && shootDifference > 100;
 
         if (cargoPickedUp) {

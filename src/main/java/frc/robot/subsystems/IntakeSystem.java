@@ -34,5 +34,6 @@ public class IntakeSystem extends SubsystemBase {
 
     public void kill() {
         intakeMotor.set(ControlMode.PercentOutput, 0);
+        intakeSolenoid.set(false);
     }
 }

@@ -16,7 +16,7 @@ public class ManualTransportCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double transportPower = IO.moveTransport();
+        double transportPower = -IO.moveTransport();
 
         if (!transportSystem.getSequenceState())
             transportSystem.move(transportPower);

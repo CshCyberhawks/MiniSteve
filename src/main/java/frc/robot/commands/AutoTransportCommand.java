@@ -19,7 +19,7 @@ public class AutoTransportCommand extends CommandBase {
 
     @Override
     public void execute() {
-        transportSystem.move(-.25);
+        transportSystem.move(.25);
     }
 
     @Override
