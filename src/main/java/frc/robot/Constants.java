@@ -99,17 +99,20 @@ public final class Constants {
         };
 
         public static final FieldPosition[] blueStartingPositions = {
-                        new FieldPosition(-0.3, -1.7, 0), new FieldPosition(-2.8, 1, 0)
+                        new FieldPosition(-0.41, -1.1, 111), new FieldPosition(-2.8, 1, 0)
         };
 
         public static final FieldPosition[] redStartingPositions = {
-                        new FieldPosition(1.7, 0.3, 0), new FieldPosition(2.8, -1, 0)
+                        new FieldPosition(0.41, 1.1, -69), new FieldPosition(2.8, -1, 0)
         };
 
+        public static final Vector2 blueTaxiPos = new Vector2(-6, 0);
+        public static final Vector2 redTaxiPos = new Vector2(6, 0);
+
         // Break Beams
-        public static final int frontBreakBeam = 5;
+        public static final int frontBreakBeam = 6;
         public static final int backBreakBeam = 4;
-        public static final int topBreakBeam = 6;
+        public static final int topBreakBeam = 5;
         public static final int shootBreakBeam = 7;
 
         // Encoders

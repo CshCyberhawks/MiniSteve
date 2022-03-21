@@ -14,7 +14,7 @@ public class AutoGoToCenterAndShoot extends SequentialCommandGroup {
         // example: below will move robot 2 meters on the x and rotate to 90 degrees
         // then it will wait 1 second before moving the robot back to its starting
         // position
-        switch(DriverStation.getAlliance()) {
+        switch (DriverStation.getAlliance()) {
             case Blue:
                 shootPositions = Constants.blueShootingPositions;
                 break;
@@ -23,9 +23,8 @@ public class AutoGoToCenterAndShoot extends SequentialCommandGroup {
         }
 
         addCommands(
-            new AutoGoToAngle(0),
-            new AutoGoToPosition(shootPositions[shootPosition], 0),
-            new AutoShootCommand(Robot.getShootSystem())
-        );
+                // new AutoGoToAngle(111),
+                new AutoGoToPosition(shootPositions[shootPosition], 0),
+                new AutoShootCommand(Robot.getShootSystem()));
     }
 }

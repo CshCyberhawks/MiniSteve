@@ -111,9 +111,9 @@ public class Robot extends TimedRobot {
 
         swerveSystem = new SwerveDriveTrain();
         if (DriverStation.getAlliance() == Alliance.Blue) {
-            swo = new SwerveOdometry(Constants.blueStartingPositions[autoConfiguration.getSelected()]);
+            swo = new SwerveOdometry(Constants.blueStartingPositions[0]);// autoConfiguration.getSelected()]);
         } else {
-            swo = new SwerveOdometry(Constants.redStartingPositions[autoConfiguration.getSelected()]);
+            swo = new SwerveOdometry(Constants.redStartingPositions[0]);// autoConfiguration.getSelected()]);
         }
         CameraServer.startAutomaticCapture();
 

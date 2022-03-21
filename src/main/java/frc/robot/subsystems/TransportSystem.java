@@ -11,7 +11,7 @@ import frc.robot.util.MathClass;
 public class TransportSystem extends SubsystemBase {
     private VictorSPX transportMotor;
     private final double traversalMult = 2;
-    private int cargoAmount = 0;
+    private int cargoAmount = 1;
     private boolean isRunningSequence;
     private double lastCargoPickupTime = 0;
     private double lastCargoShootTime = 0;
@@ -41,7 +41,7 @@ public class TransportSystem extends SubsystemBase {
     public TransportSystem() {
         transportMotor = new VictorSPX(Constants.traversalMotor);
         isRunningSequence = false;
-        cargoAmount = 0;
+        cargoAmount = 1;
     }
 
     public boolean getSequenceState() {

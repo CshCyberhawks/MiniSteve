@@ -8,7 +8,7 @@ import frc.robot.subsystems.TransportSystem;
 public class AutoShootCommand extends CommandBase {
     private final ShootSystem shootSystem;
     private TransportSystem transportSystem;
-    private final int desiredShootSpeed = 5;
+    private final int desiredShootSpeed = 2;
     private double lastTopEncoderSpeed;
 
     public AutoShootCommand(ShootSystem subsystem) {
