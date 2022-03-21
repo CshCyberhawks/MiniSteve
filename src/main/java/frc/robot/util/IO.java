@@ -67,7 +67,7 @@ public class IO {
     }
 
     public static boolean getAutoShootCancel() {
-        return xbox.getBButton();
+        return xbox.getStartButton();
     }
 
     public static boolean resetGyro() {
