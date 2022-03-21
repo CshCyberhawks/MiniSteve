@@ -17,8 +17,8 @@ public class AutoCommandGroup extends SequentialCommandGroup {
                     // Gyro.offset =
                     // new AutoBall(4),
                     new AutoGoToCenterAndShoot(0, false),
-                    // new AutoBall(5),
-                    // new AutoGoToCenterAndShoot(0),
+                    new AutoBall(4),
+                    new AutoGoToCenterAndShoot(0, true),
                     new AutoGoToPosition(new Vector2(6, 0), 0));
         }
     }

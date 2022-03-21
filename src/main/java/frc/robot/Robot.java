@@ -75,6 +75,8 @@ public class Robot extends TimedRobot {
     private static SendableChooser<Integer> autoConfiguration = new SendableChooser<>();
     private static SendableChooser<Boolean> driveConfiguration = new SendableChooser<>();
 
+    public static ShuffleboardTab driveShuffleboardTab = Shuffleboard.getTab("DriverStream");
+
     // public RobotContainer m_robotContainer;
 
     /**
@@ -87,8 +89,7 @@ public class Robot extends TimedRobot {
         limelightFeed = new HttpCamera("limelight", "http://10.28.75.11:5800");
         // CameraServer.startAutomaticCapture(limelightFeed);
 
-        ShuffleboardTab drivShuffleboardTab = Shuffleboard.getTab("DriverStream");
-        drivShuffleboardTab.add("LL", limelightFeed).withPosition(0, 0).withSize(15, 8)
+        driveShuffleboardTab.add("LL", limelightFeed).withPosition(0, 0).withSize(15, 8)
                 .withProperties(Map.of("Show Crosshair", true, "Show Controls", false));
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our
@@ -110,7 +111,7 @@ public class Robot extends TimedRobot {
         shootSystem = new ShootSystem();
         intakeSystem = new IntakeSystem();
         transportSystem = new TransportSystem();
-        // climbSystem = new ClimbSystem();
+        climbSystem = new ClimbSystem();
 
         swerveSystem = new SwerveDriveTrain();
         if (DriverStation.getAlliance() == Alliance.Blue) {
@@ -118,7 +119,6 @@ public class Robot extends TimedRobot {
         } else {
             swo = new SwerveOdometry(Constants.redStartingPositions[0]);// autoConfiguration.getSelected()]);
         }
-        CameraServer.startAutomaticCapture();
 
         // driveSystem = new DriveSystem();
         // CameraServer.startAutomaticCapture();
@@ -147,6 +147,7 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().run();
 
         IO.hosas = driveConfiguration.getSelected();
+
         SmartDashboard.putNumber("cargoStored", transportSystem.getCargoAmount());
         transportSystem.cargoMonitor();
     }
@@ -192,7 +193,7 @@ public class Robot extends TimedRobot {
         shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
         intakeSystem.setDefaultCommand(new ManualIntakeCommand(intakeSystem));
         transportSystem.setDefaultCommand(new ManualTransportCommand(transportSystem));
-        // climbSystem.setDefaultCommand(new ClimbCommand(climbSystem));
+        climbSystem.setDefaultCommand(new ClimbCommand(climbSystem));
 
         swerveCommand = new SwerveCommand(swerveSystem);
         swerveCommand.schedule();

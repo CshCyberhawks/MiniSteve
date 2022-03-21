@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ClimbSystem extends SubsystemBase {
     private CANSparkMax climbMotor;
@@ -18,8 +19,8 @@ public class ClimbSystem extends SubsystemBase {
     public ClimbSystem() {
         climbMotor = new CANSparkMax(0, CANSparkMaxLowLevel.MotorType.kBrushless);
         encoder = climbMotor.getEncoder();
-        leftSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 1);
-        rightSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 2);
+        // leftSolenoid = new Solenoid(Constants.pcm, PneumaticsModuleType.CTREPCM, 1);
+        // rightSolenoid = new Solenoid(Constants.pcm, PneumaticsModuleType.CTREPCM, 2);
         climbPidController = new PIDController(0, 0, 0);
     }
 
@@ -29,7 +30,7 @@ public class ClimbSystem extends SubsystemBase {
     }
 
     public void controlPneumatics(boolean control) {
-        leftSolenoid.set(control);
-        rightSolenoid.set(control);
+        // leftSolenoid.set(control);
+        // rightSolenoid.set(control);
     }
 }

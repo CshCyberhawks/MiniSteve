@@ -1,9 +1,11 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.util.Gyro;
 import frc.robot.util.MathClass;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.lang.Math;
@@ -32,6 +34,8 @@ public class SwerveDriveTrain extends SubsystemBase {
         // odometry
         private double lastUpdateTime = -1;
 
+        private NetworkTableEntry throttleShuffle;
+
         double maxSwos = 13.9458;
         double maxMeters = 3.777;
 
@@ -56,6 +60,7 @@ public class SwerveDriveTrain extends SubsystemBase {
 
                 predictedVelocity = new Vector2(0, 0);
 
+                throttleShuffle = Robot.driveShuffleboardTab.add("throttle", throttle).getEntry();
                 Gyro.setOffset();
         }
 
@@ -110,6 +115,8 @@ public class SwerveDriveTrain extends SubsystemBase {
                 double gyroAngle = Gyro.getAngle();
 
                 throttle = throttleChange;
+
+                throttleShuffle.setDouble(throttle);
 
                 SmartDashboard.putNumber("throttle ", throttle);
                 SmartDashboard.putNumber("gyro val", gyroAngle);

@@ -109,7 +109,9 @@ public class SwerveAuto {
     }
 
     public boolean isAtDesiredAngle() {
-        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().angle) - Math.abs(desiredAngle), 4) == 0) {
+        if (MathClass.calculateDeadzone(
+                MathClass.wrapAroundAngles(Robot.swo.getPosition().angle) - MathClass.wrapAroundAngles(desiredAngle),
+                10) == 0) {
             return true;
         }
         return false;
@@ -155,7 +157,7 @@ public class SwerveAuto {
     public void twist() {
         double twistValue = MathUtil.clamp(Robot.swo.getPosition().angle - desiredAngle, -1, 1);
 
-        double twistInput = twistValue * .5;
+        double twistInput = twistValue * .3;
         SmartDashboard.putNumber(" auto twistVal ", twistInput);
         Robot.swerveSystem.drive(0, 0, twistInput, 0, DriveState.AUTO);
 

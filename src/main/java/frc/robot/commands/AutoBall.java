@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.util.Vector2;
 import frc.robot.Robot;
@@ -13,10 +14,10 @@ public class AutoBall extends SequentialCommandGroup {
         // position
         Vector2 desiredPosition = Robot.swerveAuto.ballPositions[ballNumber];
         double desiredAngle = Math.atan2(desiredPosition.y, desiredPosition.x);
+        Robot.driveShuffleboardTab.add("desiredAngleAuto", desiredAngle);
         addCommands(
-            new AutoGoToAngle(desiredAngle),
-            new AutoGoToPosition(ballNumber, 0),
-            new LimeLightAuto()
-        );
+                new AutoGoToAngle(90), // desiredAngle),
+                new AutoGoToPosition(ballNumber, 0),
+                new LimeLightAuto());
     }
 }

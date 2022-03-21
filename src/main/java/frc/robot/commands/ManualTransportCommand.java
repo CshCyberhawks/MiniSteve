@@ -20,5 +20,8 @@ public class ManualTransportCommand extends CommandBase {
 
         if (!transportSystem.getSequenceState())
             transportSystem.move(transportPower);
+        if (IO.getResetCargo()) {
+            transportSystem.cargoAmount = 0;
+        }
     }
 }

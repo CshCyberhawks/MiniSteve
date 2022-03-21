@@ -67,7 +67,7 @@ public class IO {
     }
 
     public static boolean getAutoShootCancel() {
-        return xbox.getStartButton();
+        return xbox.getStartButton() || shootBall() > 0;
     }
 
     public static boolean resetGyro() {
@@ -90,6 +90,10 @@ public class IO {
     public static double getJoyThrottle() {
         return hosas ? MathClass.calculateDeadzone(joystick2.getY(), .5)
                 : MathClass.calculateDeadzone((-joystick.getThrottle() + 1) / 2, .05);
+    }
+
+    public static boolean getResetCargo() {
+        return xbox.getBButtonPressed();
     }
 
     // public static boolean getXboxRightBumper() {

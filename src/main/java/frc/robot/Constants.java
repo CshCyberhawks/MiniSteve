@@ -68,7 +68,9 @@ public final class Constants {
 
         // Intake System
         public static final int intakeMotor = 15;
-        public static final int intakeSolenoid = 4;
+
+        // Solenoid Controller
+        public static final int pcm = 4;
 
         // Climb System
         public static final int climbMotor = 10;

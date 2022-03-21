@@ -18,7 +18,7 @@ public class IntakeSystem extends SubsystemBase {
     public IntakeSystem() {
         intakeMotor = new VictorSPX(Constants.intakeMotor);
         intakeMotor.setInverted(true);
-        intakeSolenoid = new Solenoid(Constants.intakeSolenoid, PneumaticsModuleType.CTREPCM, 0);
+        intakeSolenoid = new Solenoid(Constants.pcm, PneumaticsModuleType.CTREPCM, 0);
     }
 
     public void intake(double speed) {

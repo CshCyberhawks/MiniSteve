@@ -10,10 +10,14 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
 public class ShootSystem extends SubsystemBase {
     private CANSparkMax topMotor;
@@ -29,6 +33,8 @@ public class ShootSystem extends SubsystemBase {
     private final int maxRPM = 5;
     private boolean autoShootRunning;
     public double bottomWheelSpeed;
+
+    private NetworkTableEntry bottomShootSpeed;
 
     public ShootSystem() {
         topMotor = new CANSparkMax(Constants.topShootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -51,6 +57,7 @@ public class ShootSystem extends SubsystemBase {
         bottomLeftPIDController = new PIDController(.01, 0, 0);
 
         autoShootRunning = false;
+        bottomShootSpeed = Robot.driveShuffleboardTab.add("Bottom Shoot Speed", topEncoder.getRate()).getEntry();
     }
 
     public Encoder getTopEncoder() {
@@ -97,7 +104,9 @@ public class ShootSystem extends SubsystemBase {
         // traversalMult);
         SmartDashboard.putNumber("Top Encoder", topEncoder.getRate());
         SmartDashboard.putNumber("Bottom Encoder", bottomEncoder.getRate());
-        SmartDashboard.putNumber("Old Encoder", oldEncoder.getVelocity());
+        bottomShootSpeed.setDouble(bottomEncoder.getRate());
+
+        // SmartDashboard.putNumber("Old Encoder", oldEncoder.getVelocity());
         bottomWheelSpeed = bottomEncoder.getRate();
         // power *= maxRPM; // Convert to RPM
 
@@ -106,7 +115,7 @@ public class ShootSystem extends SubsystemBase {
         // double topPIDOut = topPIDController.calculate(bottomEncoder.getRate(),
         // power);
 
-        topMotor.set(MathUtil.clamp(-(power * topMotorMult), -1, 1));
+        topMotor.set(MathUtil.clamp(-(power * topMotorMult), -.8, .8));
         setBottom(power);
     }
 }
