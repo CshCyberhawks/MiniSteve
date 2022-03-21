@@ -155,7 +155,6 @@ public class SwerveAuto {
     public void twist() {
         double twistValue = MathUtil.clamp(Robot.swo.getPosition().angle - desiredAngle, -1, 1);
 
-        System.out.println("isTwisting");
         double twistInput = twistValue * .5;
         SmartDashboard.putNumber(" auto twistVal ", twistInput);
         Robot.swerveSystem.drive(0, 0, twistInput, 0, DriveState.AUTO);
