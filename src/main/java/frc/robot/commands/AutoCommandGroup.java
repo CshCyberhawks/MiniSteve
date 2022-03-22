@@ -16,24 +16,20 @@ public class AutoCommandGroup extends SequentialCommandGroup {
         // then it will wait 1 second before moving the robot back to its starting
         // position
 
-        // if (configuration == 0 && DriverStation.getAlliance() == Alliance.Blue) {
-        addCommands(
-                // Gyro.offset =
-                // new AutoBall(1),
-                new AutoGoToCenterAndShoot(0, false),
-                // new AutoBall(5),
-                // new AutoGoToCenterAndShoot(0, true),
-                // below should be 6 and 2
-                new AutoGoToPosition(new Vector2(-6, 0), 0));
-        /*
-         * } else if (configuration == 0 && DriverStation.getAlliance() == Alliance.Red)
-         * {
-         * addCommands(
-         * new AutoGoToCenterAndShoot(0, false),
-         * new AutoBall(2),
-         * new AutoGoToCenterAndShoot(0, false),
-         * new AutoGoToPosition(new Vector2(6, 2), 0));
-         */
-        // }
+        if (configuration == 0 && DriverStation.getAlliance() == Alliance.Blue) {
+            addCommands(
+                    // new AutoBall(1),
+                    new AutoGoToCenterAndShoot(0, false),
+                    // new AutoBall(5),
+                    // new AutoGoToCenterAndShoot(0, true),
+                    new AutoGoToPosition(new Vector2(-6, -2), 0));
+
+        } else if (configuration == 0 && DriverStation.getAlliance() == Alliance.Red) {
+            addCommands(
+                    new AutoGoToCenterAndShoot(0, false),
+                    // new AutoBall(2),
+                    // new AutoGoToCenterAndShoot(0, false),
+                    new AutoGoToPosition(new Vector2(6, 2), 0));
+        }
     }
 }
