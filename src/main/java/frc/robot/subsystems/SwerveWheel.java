@@ -110,6 +110,9 @@ public class SwerveWheel {
                 break;
             case AUTO:
                 maxAcceleration = 0.01;
+                break;
+            case OTHER:
+                maxAcceleration = 0.05;
         }
 
         double driveVelocity = driveEncoder.getVelocity();
