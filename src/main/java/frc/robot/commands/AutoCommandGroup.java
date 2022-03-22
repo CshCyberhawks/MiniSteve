@@ -22,14 +22,14 @@ public class AutoCommandGroup extends SequentialCommandGroup {
                     new AutoGoToCenterAndShoot(0, false),
                     // new AutoBall(5),
                     // new AutoGoToCenterAndShoot(0, true),
-                    new AutoGoToPosition(new Vector2(.5, 0), 0));
+                    new AutoGoToPosition(new Vector2(2, 0), 0));
 
         } else if (configuration == 0 && DriverStation.getAlliance() == Alliance.Red) {
             addCommands(
                     new AutoGoToCenterAndShoot(0, false),
                     // new AutoBall(2),
                     // new AutoGoToCenterAndShoot(0, false),
-                    new AutoGoToPosition(new Vector2(.5, 0), 0));
+                    new AutoGoToPosition(new Vector2(2, 0), 0));
             // new AutoGoToPosition(new Vector2(.7, 3.8), 0));
         }
     }
