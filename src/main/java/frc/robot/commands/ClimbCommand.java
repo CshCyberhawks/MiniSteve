@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimbSystem;
 import frc.robot.util.IO;
@@ -15,7 +16,10 @@ public class ClimbCommand extends CommandBase {
 
     @Override
     public void execute() {
+        SmartDashboard.putNumber("climbControl", IO.climbControl());
         climbSystem.climb(IO.climbControl() * speedMult);
-        climbSystem.controlPneumatics(IO.deployPneumatics());
+        if (IO.deployClimbSolenoid()) {
+            climbSystem.controlPneumatics();
+        }
     }
 }

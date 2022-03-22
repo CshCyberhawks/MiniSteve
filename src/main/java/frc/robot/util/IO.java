@@ -32,8 +32,8 @@ public class IO {
         return xbox.getRightY();
     }
 
-    public static boolean deployPneumatics() {
-        return xbox.getAButton();
+    public static boolean deployClimbSolenoid() {
+        return xbox.getAButtonPressed();
     }
 
     public static boolean getAutoIntakeCancel() {
