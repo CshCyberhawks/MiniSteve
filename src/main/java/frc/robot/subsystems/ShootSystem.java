@@ -108,12 +108,13 @@ public class ShootSystem extends SubsystemBase {
     }
 
     public void shoot(double power) {
+
+        shootMultTable.setDouble(shootMult);
+
         SmartDashboard.putNumber("Top Encoder", topEncoder.getRate());
         SmartDashboard.putNumber("Bottom Encoder", bottomEncoder.getRate());
         bottomShootSpeed.setDouble(bottomEncoder.getRate());
         SmartDashboard.putNumber("shootPower", power);
-
-        shootMultTable.setDouble(shootMult);
 
         if (power == 0) {
             topMotor.set(0);
