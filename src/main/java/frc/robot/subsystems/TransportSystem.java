@@ -27,8 +27,8 @@ public class TransportSystem extends SubsystemBase {
         double shootDifference = MathClass.getCurrentTime() - lastCargoShootTime;
         double pickupDifference = MathClass.getCurrentTime() - lastCargoPickupTime;
 
-        cargoPickedUp = !Robot.getFrontBreakBeam().get() && cargoAmount <= 0 && pickupDifference > 100;
-        cargoShot = !Robot.getShootBreakBeam().get() && cargoAmount > 0 && shootDifference > 100;
+        cargoPickedUp = !Robot.getFrontBreakBeam().get() && cargoAmount <= 0 && pickupDifference > .1;
+        cargoShot = !Robot.getShootBreakBeam().get() && cargoAmount > 0 && shootDifference > .1;
 
         if (cargoPickedUp) {
             lastCargoPickupTime = MathClass.getCurrentTime();
@@ -49,6 +49,8 @@ public class TransportSystem extends SubsystemBase {
         transportMotor.setNeutralMode(NeutralMode.Brake);
         isRunningSequence = false;
         cargoAmount = 1;
+        // lastCargoPickupTime = MathClass.getCurrentTime();
+        // lastCargoShootTime = MathClass.getCurrentTime();
     }
 
     public boolean getSequenceState() {

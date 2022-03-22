@@ -31,8 +31,6 @@ public class AutoTransportCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        // return true on 2nd breakbeam if ball == 1, return true on 3rd breakbeam if
-        // ball == 2
         boolean backBeam = Robot.getBackBreakBeam().get();
         hitBackBreak = !hitBackBreak ? !backBeam : hitBackBreak;
         if (cargoStored <= 1)

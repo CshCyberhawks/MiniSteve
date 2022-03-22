@@ -33,7 +33,12 @@ public class ShootSystem extends SubsystemBase {
     private boolean autoShootRunning;
     public double bottomWheelSpeed;
 
+    public double topShootFeed = .9;
+    public double bottomShootFeed = .18;
+
     private NetworkTableEntry bottomShootSpeed;
+    private NetworkTableEntry bottomShootFeedTable;
+    private NetworkTableEntry topShootFeedTable;
 
     // bottom wheel encoder -3.7 for perfect shot
     // top wheel encoder 19 for perfect shot
@@ -62,6 +67,9 @@ public class ShootSystem extends SubsystemBase {
 
         autoShootRunning = false;
         bottomShootSpeed = Robot.driveShuffleboardTab.add("Bottom Shoot Speed", topEncoder.getRate()).getEntry();
+
+        bottomShootFeedTable = Robot.driveShuffleboardTab.add("Bottom Shoot Feed", bottomShootFeed).getEntry();
+        topShootFeedTable = Robot.driveShuffleboardTab.add("Top Shoot Feed", topShootFeed).getEntry();
     }
 
     public Encoder getTopEncoder() {
@@ -82,7 +90,7 @@ public class ShootSystem extends SubsystemBase {
 
     // Syncing of bottom 2 motors
     private void setBottom(double power) {
-        power = .18;
+        power = bottomShootFeed;
 
         double bottomPIDOutput = bottomPIDController.calculate(bottomEncoder.getRate(), Constants.bottomShootSetpoint);
 
@@ -107,13 +115,16 @@ public class ShootSystem extends SubsystemBase {
         bottomShootSpeed.setDouble(bottomEncoder.getRate());
         SmartDashboard.putNumber("shootPower", power);
 
+        bottomShootFeedTable.setDouble(bottomShootFeed);
+        topShootFeedTable.setDouble(topShootFeed);
+
         if (power == 0) {
             topMotor.set(0);
             bottomLeftMotor.set(0);
             bottomRightMotor.set(0);
             return;
         }
-        power = .8;
+        power = topShootFeed;
 
         // double traversalPIDOUt =
         // motorController.calculate(traverseEncoder.getVelocity(), power *

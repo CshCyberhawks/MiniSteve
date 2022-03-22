@@ -6,9 +6,11 @@ import frc.robot.subsystems.IntakeSystem;
 
 public class AutoIntakeCommand extends CommandBase {
     private final IntakeSystem intakeSystem;
+    private double storedCargoAtStart;
 
     public AutoIntakeCommand(IntakeSystem subsystem) {
         intakeSystem = subsystem;
+        storedCargoAtStart = Robot.transportSystem.cargoAmount;
         addRequirements(subsystem);
     }
 

@@ -83,8 +83,8 @@ public class IO {
                 : MathClass.calculateDeadzone(joystick.getTwist(), .1);
     }
 
-    public static boolean getJoystickButton5() {
-        return joystick.getRawButton(5);
+    public static boolean getSWOReset() {
+        return joystick.getRawButton(7);
     }
 
     public static double getJoyThrottle() {
@@ -94,6 +94,22 @@ public class IO {
 
     public static boolean getResetCargo() {
         return xbox.getBButtonPressed();
+    }
+
+    public static boolean raiseBottomShootSpeed() {
+        return joystick.getRawButtonPressed(5);
+    }
+
+    public static boolean lowerBottomShootSpeed() {
+        return joystick.getRawButtonPressed(10);
+    }
+
+    public static boolean raiseShootSpeed() {
+        return joystick.getRawButtonPressed(6);
+    }
+
+    public static boolean lowerShootSpeed() {
+        return joystick.getRawButtonPressed(9);
     }
 
     // public static boolean getXboxRightBumper() {
