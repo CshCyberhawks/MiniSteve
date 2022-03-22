@@ -35,7 +35,7 @@ public class AutoTransportCommand extends CommandBase {
         // ball == 2
         boolean backBeam = Robot.getBackBreakBeam().get();
         hitBackBreak = !hitBackBreak ? !backBeam : hitBackBreak;
-        if (cargoStored == 0)
+        if (cargoStored <= 1)
             return !backBeam;
         return backBeam && hitBackBreak;
     }

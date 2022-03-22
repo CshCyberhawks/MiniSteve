@@ -1,7 +1,11 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.ADXL345_I2C.AllAxes;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
+import frc.robot.util.DriveEncoder;
 import frc.robot.util.Gyro;
 import frc.robot.util.Vector2;
 
@@ -12,14 +16,19 @@ public class AutoCommandGroup extends SequentialCommandGroup {
         // then it will wait 1 second before moving the robot back to its starting
         // position
 
-        if (configuration == 0) {
+        if (configuration == 0 && DriverStation.getAlliance() == Alliance.Blue) {
             addCommands(
                     // Gyro.offset =
                     // new AutoBall(4),
-                    new AutoGoToCenterAndShoot(0, false),
-                    new AutoBall(4),
-                    new AutoGoToCenterAndShoot(0, true),
-                    new AutoGoToPosition(new Vector2(6, 0), 0));
+                    // new AutoGoToCenterAndShoot(0, false),
+                    new AutoBall(4));
+            // new AutoGoToCenterAndShoot(0, true),
+            // new AutoGoToPosition(new Vector2(6, 0), 0));
+        } else if (configuration == 0 && DriverStation.getAlliance() == Alliance.Red) {
+            addCommands(
+                    // new AutoGoToCenterAndShoot(0, false),
+                    new AutoBall(2));
+            // new AutoGoToCenterAndShoot(0, false));
         }
     }
 }
