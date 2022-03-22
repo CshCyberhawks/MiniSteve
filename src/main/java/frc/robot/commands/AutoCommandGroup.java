@@ -20,7 +20,7 @@ public class AutoCommandGroup extends SequentialCommandGroup {
             addCommands(
                     // new AutoBall(1),
                     new AutoGoToCenterAndShoot(0, false),
-                    new AutoBall(5));
+                    new AutoBall(4));
             // new AutoGoToCenterAndShoot(0, true),
             // new AutoGoToPosition(new Vector2(2, 0), 0));
 

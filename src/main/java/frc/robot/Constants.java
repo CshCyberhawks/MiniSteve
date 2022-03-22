@@ -105,11 +105,11 @@ public final class Constants {
         };
 
         public static final FieldPosition[] blueStartingPositions = {
-                        new FieldPosition(-0.41, -1.1, 0), new FieldPosition(-2.8, 1, 0) // 111
+                        new FieldPosition(-0.41, -1.1, 111), new FieldPosition(-2.8, 1, 0) // 111 is 0 angle
         };
 
         public static final FieldPosition[] redStartingPositions = {
-                        new FieldPosition(0.41, 1.1, 0), new FieldPosition(2.8, -1, 0) // 291
+                        new FieldPosition(0.41, 1.1, 291), new FieldPosition(2.8, -1, 0) // 291 is 0 angle
         };
 
         public static final Vector2 blueTaxiPos = new Vector2(-6, 0);
