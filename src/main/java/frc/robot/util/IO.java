@@ -96,20 +96,12 @@ public class IO {
         return xbox.getBButtonPressed();
     }
 
-    public static boolean raiseBottomShootSpeed() {
+    public static boolean raiseShootSpeed() {
         return joystick.getRawButtonPressed(5);
     }
 
-    public static boolean lowerBottomShootSpeed() {
-        return joystick.getRawButtonPressed(10);
-    }
-
-    public static boolean raiseShootSpeed() {
-        return joystick.getRawButtonPressed(6);
-    }
-
     public static boolean lowerShootSpeed() {
-        return joystick.getRawButtonPressed(9);
+        return joystick.getRawButtonPressed(10);
     }
 
     // public static boolean getXboxRightBumper() {
