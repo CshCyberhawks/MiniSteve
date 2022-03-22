@@ -34,12 +34,13 @@ public class SwerveAuto {
 
     // both below args are in m/s - first is velocity (35% of max robot velocity of
     // 3.77), and a max accel of .05 m/s
-    private TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(3.777, 1);
+    private TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(2, .5);
     private TrapezoidProfile.State trapXCurrentState;
     private TrapezoidProfile.State trapXDesiredState;
     private TrapezoidProfile.State trapYCurrentState;
     private TrapezoidProfile.State trapYDesiredState;
 
+    // TODO: prob need to increase derivates
     private PIDController xPID = new PIDController(1, 0, 0);
     private PIDController yPID = new PIDController(1, 0, 0);
 
@@ -142,8 +143,8 @@ public class SwerveAuto {
         double yVel = trapYOutput.velocity
                 + yPIDOutput;
 
-        SmartDashboard.putNumber("xPID", xVel / 3.777);
-        SmartDashboard.putNumber("yPID", yVel / 3.777);
+        SmartDashboard.putNumber("xDriveInput", xVel / 3.777);
+        SmartDashboard.putNumber("yDriveInput", yVel / 3.777);
 
         Robot.swerveSystem.drive(xVel / 3.777, yVel / 3.777, 0, 0, DriveState.AUTO);
 

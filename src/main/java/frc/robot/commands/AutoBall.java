@@ -20,7 +20,7 @@ public class AutoBall extends SequentialCommandGroup {
         Robot.driveShuffleboardTab.add("desiredAngleAuto", desiredAngle);
         SmartDashboard.putNumber("desiredAngleAuto", desiredAngle);
         addCommands(
-                new AutoGoToAngle(desiredAngle), // desiredAngle),
+                new AutoGoToAngle((desiredAngle + 180) % 360), // desiredAngle),
                 new AutoGoToPosition(ballNumber, 0));
         // new LimeLightAuto());
     }
