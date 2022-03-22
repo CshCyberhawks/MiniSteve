@@ -20,13 +20,16 @@ public class IntakeSequence extends SequentialCommandGroup {
 
     @Override
     public void end(boolean interrupted) {
+        System.out.println("intakeSequenceEnd");
         Robot.getTransportSystem().setSequenceState(false);
     }
 
     @Override
     public boolean isFinished() {
-        if (!autoTransportCommand.isFinished())
+        if (!autoTransportCommand.isFinished()) {
+            System.out.println("manually canceled sequence");
             return IO.getAutoIntakeCancel();
+        }
         return autoTransportCommand.isFinished();
     }
 }

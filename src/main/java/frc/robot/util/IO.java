@@ -21,7 +21,7 @@ public class IO {
     }
 
     public static boolean autoIntake() {
-        return xbox.getYButton();
+        return xbox.getYButtonPressed();
     }
 
     public static boolean autoShoot() {
@@ -37,7 +37,7 @@ public class IO {
     }
 
     public static boolean getAutoIntakeCancel() {
-        return xbox.getStartButtonPressed() || intakeBall() > 0;
+        return xbox.getStartButtonPressed();
     }
 
     public static double intakeBall() {
