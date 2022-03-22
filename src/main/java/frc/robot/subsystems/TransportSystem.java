@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -45,6 +46,7 @@ public class TransportSystem extends SubsystemBase {
         cargoAmountShuffle = Robot.driveShuffleboardTab.add("cargoAmount", cargoAmount).getEntry();
 
         transportMotor = new VictorSPX(Constants.traversalMotor);
+        transportMotor.setNeutralMode(NeutralMode.Brake);
         isRunningSequence = false;
         cargoAmount = 1;
     }
