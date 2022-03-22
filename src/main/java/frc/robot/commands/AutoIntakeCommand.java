@@ -21,12 +21,14 @@ public class AutoIntakeCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        System.out.println("autoIntakeFinsihed");
         Robot.getTransportSystem().move(0);
         Robot.getIntakeSystem().kill();
     }
 
     @Override
     public boolean isFinished() {
+
         return !Robot.getFrontBreakBeam().get();
     }
 }

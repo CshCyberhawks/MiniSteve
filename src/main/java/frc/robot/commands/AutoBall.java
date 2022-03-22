@@ -18,6 +18,7 @@ public class AutoBall extends SequentialCommandGroup {
                 - (MathClass.cartesianToPolar(desiredPosition.x - Robot.swo.getPosition().positionCoord.x,
                         desiredPosition.y - Robot.swo.getPosition().positionCoord.y)[0]);
         Robot.driveShuffleboardTab.add("desiredAngleAuto", desiredAngle);
+        SmartDashboard.putNumber("desiredAngleAuto", desiredAngle);
         addCommands(
                 new AutoGoToAngle(desiredAngle), // desiredAngle),
                 new AutoGoToPosition(ballNumber, 0),

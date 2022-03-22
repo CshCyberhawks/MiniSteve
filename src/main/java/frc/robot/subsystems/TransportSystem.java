@@ -1,10 +1,13 @@
 package frc.robot.subsystems;
 
+import javax.swing.text.StyleContext.SmallAttributeSet;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -27,14 +30,16 @@ public class TransportSystem extends SubsystemBase {
         double shootDifference = MathClass.getCurrentTime() - lastCargoShootTime;
         double pickupDifference = MathClass.getCurrentTime() - lastCargoPickupTime;
 
-        cargoPickedUp = !Robot.getFrontBreakBeam().get() && cargoAmount <= 0 && pickupDifference > .1;
-        cargoShot = !Robot.getShootBreakBeam().get() && cargoAmount > 0 && shootDifference > .1;
+        SmartDashboard.putNumber("pickupDiff", pickupDifference);
+
+        cargoPickedUp = !Robot.getFrontBreakBeam().get() && pickupDifference > 1;
+        cargoShot = !Robot.getShootBreakBeam().get() && cargoAmount > 0 && shootDifference > 1;
 
         if (cargoPickedUp) {
             lastCargoPickupTime = MathClass.getCurrentTime();
             cargoAmount++;
         }
-        if (cargoShot) {
+        if (cargoShot && cargoAmount > 0) {
             lastCargoShootTime = MathClass.getCurrentTime();
             cargoAmount--;
         }

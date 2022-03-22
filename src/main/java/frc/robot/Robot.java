@@ -149,7 +149,6 @@ public class Robot extends TimedRobot {
         IO.hosas = driveConfiguration.getSelected();
 
         SmartDashboard.putNumber("cargoStored", transportSystem.getCargoAmount());
-        transportSystem.cargoMonitor();
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -176,6 +175,7 @@ public class Robot extends TimedRobot {
 
         // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         swerveAuto = new SwerveAuto();
+        transportSystem.setCargoAmount(1);
         autoCommands = new AutoCommandGroup(0);// autoConfiguration.getSelected());
 
         // schedule the autonomous command (example)
@@ -186,6 +186,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         swo.updatePosition();
+        transportSystem.cargoMonitor();
     }
 
     @Override
@@ -212,6 +213,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         swo.updatePosition();
+        transportSystem.cargoMonitor();
 
         SmartDashboard.putBoolean("frontBreakBeam", frontBreakBeam.get());
         SmartDashboard.putBoolean("backBreakBeam", backBreakBeam.get());

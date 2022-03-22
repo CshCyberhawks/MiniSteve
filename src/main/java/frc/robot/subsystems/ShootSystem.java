@@ -33,8 +33,8 @@ public class ShootSystem extends SubsystemBase {
     private boolean autoShootRunning;
     public double bottomWheelSpeed;
 
-    public double topShootFeed = .9;
-    public double bottomShootFeed = .18;
+    public double topShootMult = 1;
+    public double bottomShootMult = 1;
 
     private NetworkTableEntry bottomShootSpeed;
     private NetworkTableEntry bottomShootFeedTable;
@@ -68,8 +68,8 @@ public class ShootSystem extends SubsystemBase {
         autoShootRunning = false;
         bottomShootSpeed = Robot.driveShuffleboardTab.add("Bottom Shoot Speed", topEncoder.getRate()).getEntry();
 
-        bottomShootFeedTable = Robot.driveShuffleboardTab.add("Bottom Shoot Feed", bottomShootFeed).getEntry();
-        topShootFeedTable = Robot.driveShuffleboardTab.add("Top Shoot Feed", topShootFeed).getEntry();
+        bottomShootFeedTable = Robot.driveShuffleboardTab.add("Bottom Shoot Feed", bottomShootMult).getEntry();
+        topShootFeedTable = Robot.driveShuffleboardTab.add("Top Shoot Feed", topShootMult).getEntry();
     }
 
     public Encoder getTopEncoder() {
@@ -90,9 +90,10 @@ public class ShootSystem extends SubsystemBase {
 
     // Syncing of bottom 2 motors
     private void setBottom(double power) {
-        power = bottomShootFeed;
+        power = .23 * bottomShootMult;
 
-        double bottomPIDOutput = bottomPIDController.calculate(bottomEncoder.getRate(), Constants.bottomShootSetpoint);
+        double bottomPIDOutput = bottomPIDController.calculate(bottomEncoder.getRate(),
+                Constants.bottomShootSetpoint * bottomShootMult);
 
         // SmartDashboard.putNumber("rightBottomPID", bottomRightPIDOutput);
 
@@ -115,8 +116,8 @@ public class ShootSystem extends SubsystemBase {
         bottomShootSpeed.setDouble(bottomEncoder.getRate());
         SmartDashboard.putNumber("shootPower", power);
 
-        bottomShootFeedTable.setDouble(bottomShootFeed);
-        topShootFeedTable.setDouble(topShootFeed);
+        bottomShootFeedTable.setDouble(bottomShootMult);
+        topShootFeedTable.setDouble(topShootMult);
 
         if (power == 0) {
             topMotor.set(0);
@@ -124,7 +125,7 @@ public class ShootSystem extends SubsystemBase {
             bottomRightMotor.set(0);
             return;
         }
-        power = topShootFeed;
+        power = .95 * topShootMult;
 
         // double traversalPIDOUt =
         // motorController.calculate(traverseEncoder.getVelocity(), power *
@@ -134,7 +135,7 @@ public class ShootSystem extends SubsystemBase {
         bottomWheelSpeed = bottomEncoder.getRate();
         // power *= maxRPM; // Convert to RPM
 
-        double topPIDOut = topPIDController.calculate(topEncoder.getRate(), Constants.topShootSetpoint);
+        double topPIDOut = topPIDController.calculate(topEncoder.getRate(), Constants.topShootSetpoint * topShootMult);
 
         topMotor.set(MathUtil.clamp(-(power + topPIDOut), -1, 1));
 
