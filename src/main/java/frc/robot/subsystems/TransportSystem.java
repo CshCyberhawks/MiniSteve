@@ -24,6 +24,8 @@ public class TransportSystem extends SubsystemBase {
     private boolean cargoPickedUp = false;
     private boolean cargoShot = false;
 
+    private boolean lastFrontBB = true;
+
     private NetworkTableEntry cargoAmountShuffle;
 
     public void cargoMonitor() {
@@ -33,9 +35,9 @@ public class TransportSystem extends SubsystemBase {
         SmartDashboard.putNumber("pickupDiff", pickupDifference);
 
         cargoPickedUp = !Robot.getFrontBreakBeam().get() && pickupDifference > 1;
-        cargoShot = !Robot.getShootBreakBeam().get() && cargoAmount > 0 && shootDifference > 1;
+        cargoShot = !Robot.getShootBreakBeam().get() && cargoAmount > 0 && shootDifference > .5;
 
-        if (cargoPickedUp) {
+        if (cargoPickedUp && Robot.getFrontBreakBeam().get() != lastFrontBB) {
             lastCargoPickupTime = MathClass.getCurrentTime();
             cargoAmount++;
         }
@@ -45,6 +47,7 @@ public class TransportSystem extends SubsystemBase {
         }
 
         cargoAmountShuffle.setNumber(cargoAmount);
+        lastFrontBB = Robot.getFrontBreakBeam().get();
     }
 
     public TransportSystem() {

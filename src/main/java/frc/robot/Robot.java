@@ -178,7 +178,6 @@ public class Robot extends TimedRobot {
         // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         swerveAuto = new SwerveAuto();
         transportSystem.setCargoAmount(1);
-        shootSystem.shootMult = 1.1;
         autoCommands = new AutoCommandGroup(0);// autoConfiguration.getSelected());
 
         // schedule the autonomous command (example)
@@ -197,7 +196,6 @@ public class Robot extends TimedRobot {
         shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
         intakeSystem.setDefaultCommand(new ManualIntakeCommand(intakeSystem));
         transportSystem.setDefaultCommand(new ManualTransportCommand(transportSystem));
-        shootSystem.shootMult = .9;
         climbSystem.setDefaultCommand(new ClimbCommand(climbSystem));
 
         swerveCommand = new SwerveCommand(swerveSystem);
