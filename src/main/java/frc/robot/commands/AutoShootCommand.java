@@ -10,7 +10,7 @@ import frc.robot.util.MathClass;
 public class AutoShootCommand extends CommandBase {
     private final ShootSystem shootSystem;
     private TransportSystem transportSystem;
-    private final double desiredShootSpeed = 4.2;
+    private final double desiredShootSpeed = 4.4;
     private double lastBottomEncoderSpeed;
     private double startTime = 0;
 
