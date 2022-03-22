@@ -111,7 +111,7 @@ public class SwerveWheel {
             case AUTO:
                 maxAcceleration = 0.01;
                 break;
-            case OTHER:
+            default:
                 maxAcceleration = 0.05;
         }
 
