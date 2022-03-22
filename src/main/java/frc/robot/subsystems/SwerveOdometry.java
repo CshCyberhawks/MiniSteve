@@ -16,6 +16,7 @@ public class SwerveOdometry extends SubsystemBase {
 
     public SwerveOdometry(FieldPosition fieldPosition) {
         this.fieldPosition = fieldPosition;
+        Gyro.offset = fieldPosition.angle;
     }
 
     public FieldPosition getPosition() {

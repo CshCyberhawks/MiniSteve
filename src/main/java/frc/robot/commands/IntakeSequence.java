@@ -14,20 +14,22 @@ public class IntakeSequence extends SequentialCommandGroup {
         autoTransportCommand = new AutoTransportCommand(Robot.getTransportSystem());
         Robot.getTransportSystem().setSequenceState(true);
         addCommands(
-            autoIntakeCommand,
-            autoTransportCommand
-        );
+                autoIntakeCommand,
+                autoTransportCommand);
     }
 
     @Override
     public void end(boolean interrupted) {
+        System.out.println("intakeSequenceEnd");
         Robot.getTransportSystem().setSequenceState(false);
     }
 
     @Override
     public boolean isFinished() {
-        if (!autoTransportCommand.isFinished())
-            return IO.getXboxStartButton();
+        if (!autoTransportCommand.isFinished()) {
+            System.out.println("manually canceled sequence");
+            return IO.getAutoIntakeCancel();
+        }
         return autoTransportCommand.isFinished();
     }
 }

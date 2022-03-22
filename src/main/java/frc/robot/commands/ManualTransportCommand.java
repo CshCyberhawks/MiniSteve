@@ -16,9 +16,12 @@ public class ManualTransportCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double transportPower = IO.moveTransport();
+        double transportPower = -IO.moveTransport();
 
-        if (!transportSystem.getSequenceState())
+        if (!transportSystem.getSequenceState() && !Robot.isSpitting)
             transportSystem.move(transportPower);
+        if (IO.getResetCargo()) {
+            transportSystem.cargoAmount = 0;
+        }
     }
 }

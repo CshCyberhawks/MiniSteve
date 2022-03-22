@@ -21,7 +21,7 @@ public class IO {
     }
 
     public static boolean autoIntake() {
-        return xbox.getYButton();
+        return xbox.getYButtonPressed();
     }
 
     public static boolean autoShoot() {
@@ -32,11 +32,11 @@ public class IO {
         return xbox.getRightY();
     }
 
-    public static boolean deployPneumatics() {
-        return xbox.getAButton();
+    public static boolean deployClimbSolenoid() {
+        return xbox.getAButtonPressed();
     }
 
-    public static boolean getXboxStartButton() {
+    public static boolean getAutoIntakeCancel() {
         return xbox.getStartButtonPressed();
     }
 
@@ -66,6 +66,10 @@ public class IO {
         return xbox.getBackButton();
     }
 
+    public static boolean getAutoShootCancel() {
+        return xbox.getStartButton() || shootBall() > 0;
+    }
+
     public static boolean resetGyro() {
         return joystick.getRawButtonPressed(8);
     }
@@ -79,13 +83,25 @@ public class IO {
                 : MathClass.calculateDeadzone(joystick.getTwist(), .1);
     }
 
-    public static boolean getJoystickButton5() {
-        return joystick.getRawButton(5);
+    public static boolean getSWOReset() {
+        return joystick.getRawButton(7);
     }
 
     public static double getJoyThrottle() {
         return hosas ? MathClass.calculateDeadzone(joystick2.getY(), .5)
                 : MathClass.calculateDeadzone((-joystick.getThrottle() + 1) / 2, .05);
+    }
+
+    public static boolean getResetCargo() {
+        return xbox.getBButtonPressed();
+    }
+
+    public static boolean raiseShootSpeed() {
+        return joystick.getRawButtonPressed(5);
+    }
+
+    public static boolean lowerShootSpeed() {
+        return joystick.getRawButtonPressed(10);
     }
 
     // public static boolean getXboxRightBumper() {

@@ -8,10 +8,11 @@ import java.util.Map;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.util.net.PortForwarder;
 import frc.robot.commands.ManualIntakeCommand;
 import frc.robot.commands.ManualTransportCommand;
 import frc.robot.commands.ShootCommand;
-
+import frc.robot.subsystems.ClimbSystem;
 import frc.robot.subsystems.IntakeSystem;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShootSystem;
@@ -24,6 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommandGroup;
+import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.SwerveAuto;
 import frc.robot.subsystems.SwerveDriveTrain;
@@ -61,16 +63,21 @@ public class Robot extends TimedRobot {
     public static DigitalInput topBreakBeam;
     public static DigitalInput shootBreakBeam;
 
+    public static boolean isSpitting = false;
+
     // public OldSwerveDriveTrain swerveSystem;
     // public SwerveDriveTrain swerveSystem;
     public static IntakeSystem intakeSystem;
     public static TransportSystem transportSystem;
+    public static ClimbSystem climbSystem;
 
     public static AutoCommandGroup autoCommands;
     private static int startingPosition;
 
     private static SendableChooser<Integer> autoConfiguration = new SendableChooser<>();
     private static SendableChooser<Boolean> driveConfiguration = new SendableChooser<>();
+
+    public static ShuffleboardTab driveShuffleboardTab = Shuffleboard.getTab("DriverStream");
 
     // public RobotContainer m_robotContainer;
 
@@ -84,8 +91,7 @@ public class Robot extends TimedRobot {
         limelightFeed = new HttpCamera("limelight", "http://10.28.75.11:5800");
         // CameraServer.startAutomaticCapture(limelightFeed);
 
-        ShuffleboardTab drivShuffleboardTab = Shuffleboard.getTab("DriverStream");
-        drivShuffleboardTab.add("LL", limelightFeed).withPosition(0, 0).withSize(15, 8)
+        driveShuffleboardTab.add("LL", limelightFeed).withPosition(0, 0).withSize(8, 4)
                 .withProperties(Map.of("Show Crosshair", true, "Show Controls", false));
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our
@@ -93,6 +99,7 @@ public class Robot extends TimedRobot {
         // teamColor = DriverStation.getAlliance();
         // m_robotContainer = new RobotContainer();
         // PortForwarder.add(5800, "limelight.local", 5800);
+        PortForwarder.add(5800, "limelight.local", 5800);
         autoConfiguration.setDefaultOption("Auto 0", 0);
         autoConfiguration.addOption("Auto 1", 1);
 
@@ -106,14 +113,14 @@ public class Robot extends TimedRobot {
         shootSystem = new ShootSystem();
         intakeSystem = new IntakeSystem();
         transportSystem = new TransportSystem();
+        climbSystem = new ClimbSystem();
 
         swerveSystem = new SwerveDriveTrain();
         if (DriverStation.getAlliance() == Alliance.Blue) {
-            swo = new SwerveOdometry(Constants.blueStartingPositions[autoConfiguration.getSelected()]);
+            swo = new SwerveOdometry(Constants.blueStartingPositions[0]);// autoConfiguration.getSelected()]);
         } else {
-            swo = new SwerveOdometry(Constants.redStartingPositions[autoConfiguration.getSelected()]);
+            swo = new SwerveOdometry(Constants.redStartingPositions[0]);// autoConfiguration.getSelected()]);
         }
-        CameraServer.startAutomaticCapture();
 
         // driveSystem = new DriveSystem();
         // CameraServer.startAutomaticCapture();
@@ -142,6 +149,8 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().run();
 
         IO.hosas = driveConfiguration.getSelected();
+
+        SmartDashboard.putNumber("cargoStored", transportSystem.getCargoAmount());
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -156,7 +165,7 @@ public class Robot extends TimedRobot {
     }
 
     /**
-     * This autonomous runs the autonomous command selected by your
+     * This autonomou6s runs the autonomous command selected by your
      * {@link RobotContainer} class.
      */
     @Override
@@ -168,26 +177,28 @@ public class Robot extends TimedRobot {
 
         // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         swerveAuto = new SwerveAuto();
-        autoCommands = new AutoCommandGroup(autoConfiguration.getSelected());
+        transportSystem.setCargoAmount(1);
+        shootSystem.shootMult = 1.1;
+        autoCommands = new AutoCommandGroup(0);// autoConfiguration.getSelected());
 
         // schedule the autonomous command (example)
         autoCommands.schedule();
-
     }
 
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
         swo.updatePosition();
-
+        transportSystem.cargoMonitor();
     }
 
     @Override
     public void teleopInit() {
-
         shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
         intakeSystem.setDefaultCommand(new ManualIntakeCommand(intakeSystem));
         transportSystem.setDefaultCommand(new ManualTransportCommand(transportSystem));
+        shootSystem.shootMult = .9;
+        climbSystem.setDefaultCommand(new ClimbCommand(climbSystem));
 
         swerveCommand = new SwerveCommand(swerveSystem);
         swerveCommand.schedule();
@@ -206,23 +217,18 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         swo.updatePosition();
-
-        SmartDashboard.putNumber("cargoStored", transportSystem.getCargoAmount());
+        transportSystem.cargoMonitor();
 
         SmartDashboard.putBoolean("frontBreakBeam", frontBreakBeam.get());
         SmartDashboard.putBoolean("backBreakBeam", backBreakBeam.get());
         SmartDashboard.putBoolean("topBreakBeam", topBreakBeam.get());
         SmartDashboard.putBoolean("shootBreakBeam", shootBreakBeam.get());
-
-        System.out.println(frontBreakBeam.get());
-
     }
 
     @Override
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
-
     }
 
     /** This function is called periodically during test mode. */

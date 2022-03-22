@@ -66,9 +66,15 @@ public final class Constants {
         public static final int topShootMotor = 12;
         public static final int traversalMotor = 16;
 
+        // encoder values for perfect shots
+        public static final double bottomShootSetpoint = -3.7;
+        public static final double topShootSetpoint = 19;
+
         // Intake System
         public static final int intakeMotor = 15;
-        public static final int intakeSolenoid = 4;
+
+        // Solenoid Controller
+        public static final int pcm = 4;
 
         // Climb System
         public static final int climbMotor = 10;
@@ -91,25 +97,28 @@ public final class Constants {
                         new Vector2(2.3, -3.2), new Vector2(-0.6, -3.8), new Vector2(-3.2, -2.2) };
 
         public static final Vector2[] blueShootingPositions = {
-                        new Vector2(0, 0), new Vector2(0, 0)
+                        new Vector2(-0.41, -1.1), new Vector2(0, 0)
         };
 
         public static final Vector2[] redShootingPositions = {
-                        new Vector2(0, 0), new Vector2(0, 0)
+                        new Vector2(0.41, 1.1), new Vector2(0, 0)
         };
 
         public static final FieldPosition[] blueStartingPositions = {
-                        new FieldPosition(-1, -2.8, 0), new FieldPosition(-2.8, 1, 0)
+                        new FieldPosition(-0.41, -1.1, 0), new FieldPosition(-2.8, 1, 0) // 111
         };
 
         public static final FieldPosition[] redStartingPositions = {
-                        new FieldPosition(1, 2.8, 0), new FieldPosition(2.8, -1, 0)
+                        new FieldPosition(0.41, 1.1, 0), new FieldPosition(2.8, -1, 0) // 291
         };
 
+        public static final Vector2 blueTaxiPos = new Vector2(-6, 0);
+        public static final Vector2 redTaxiPos = new Vector2(6, 0);
+
         // Break Beams
-        public static final int frontBreakBeam = 4;
-        public static final int backBreakBeam = 5;
-        public static final int topBreakBeam = 6;
+        public static final int frontBreakBeam = 6;
+        public static final int backBreakBeam = 4;
+        public static final int topBreakBeam = 5;
         public static final int shootBreakBeam = 7;
 
         // Encoders

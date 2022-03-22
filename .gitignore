@@ -163,3 +163,7 @@ bin/
 
 # Windows Powershell Log
 Microsoft/
+
+# Simulation Config
+simgui-ds.json
+simgui.json

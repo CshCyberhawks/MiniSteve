@@ -22,13 +22,18 @@ public class ManualIntakeCommand extends CommandBase {
         SmartDashboard.putBoolean("intakeSequenceBool", Robot.getTransportSystem().getSequenceState());
 
         if (IO.autoIntake()) {
+            Robot.isSpitting = false;
             IntakeSequence intakeCommandSequence = new IntakeSequence();
             intakeCommandSequence.schedule();
             SmartDashboard.putBoolean("intakeSequenceBegan", true);
         } else if (!Robot.getTransportSystem().getSequenceState())
-            if (IO.removeBall())
-                intakeSystem.intake(-.5);
-            else
+            if (IO.removeBall()) {
+                Robot.isSpitting = true;
+                intakeSystem.intake(-1);
+                Robot.transportSystem.move(-1);
+            } else {
+                Robot.isSpitting = false;
                 intakeSystem.intake(speed);
+            }
     }
 }

@@ -8,7 +8,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 public class Gyro {
     private static AHRS gyro = new AHRS(SPI.Port.kMXP);
-    private static double offset = 0;
+    public static double offset = 0;
     private static LinearFilter filter = LinearFilter.highPass(0.1, 0.02);
 
     private static double wrapAroundAngles(double input) {
