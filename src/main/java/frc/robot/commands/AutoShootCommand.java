@@ -5,18 +5,21 @@ import frc.robot.Robot;
 import frc.robot.subsystems.ShootSystem;
 import frc.robot.subsystems.TransportSystem;
 import frc.robot.util.IO;
+import frc.robot.util.MathClass;
 
 public class AutoShootCommand extends CommandBase {
     private final ShootSystem shootSystem;
     private TransportSystem transportSystem;
     private final double desiredShootSpeed = 4.2;
     private double lastBottomEncoderSpeed;
+    private double startTime = 0;
 
     public AutoShootCommand(ShootSystem subsystem) {
         shootSystem = subsystem;
         shootSystem.setAutoShootState(true);
         transportSystem = Robot.getTransportSystem();
         lastBottomEncoderSpeed = 0;
+        startTime = MathClass.getCurrentTime();
         addRequirements(subsystem);
     }
 
@@ -44,6 +47,7 @@ public class AutoShootCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return transportSystem.getCargoAmount() <= 0 || IO.getAutoShootCancel();
+        return transportSystem.getCargoAmount() <= 0 || IO.getAutoShootCancel()
+                || (MathClass.getCurrentTime() - startTime) > 5;
     }
 }

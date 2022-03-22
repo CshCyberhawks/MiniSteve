@@ -63,6 +63,8 @@ public class Robot extends TimedRobot {
     public static DigitalInput topBreakBeam;
     public static DigitalInput shootBreakBeam;
 
+    public static boolean isSpitting = false;
+
     // public OldSwerveDriveTrain swerveSystem;
     // public SwerveDriveTrain swerveSystem;
     public static IntakeSystem intakeSystem;

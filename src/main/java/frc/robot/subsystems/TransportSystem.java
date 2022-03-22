@@ -75,6 +75,7 @@ public class TransportSystem extends SubsystemBase {
     }
 
     public void move(double speed) {
+        SmartDashboard.putNumber("transportSpeed", speed * traversalMult);
         transportMotor.set(ControlMode.PercentOutput, speed * traversalMult);
     }
 }

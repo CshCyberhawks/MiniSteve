@@ -33,7 +33,7 @@ public class ShootSystem extends SubsystemBase {
     private boolean autoShootRunning;
     public double bottomWheelSpeed;
 
-    public double shootMult = 1;
+    public double shootMult = .95;
 
     private NetworkTableEntry bottomShootSpeed;
     private NetworkTableEntry shootMultTable;
