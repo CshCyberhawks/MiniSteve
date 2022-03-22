@@ -19,16 +19,17 @@ public class AutoCommandGroup extends SequentialCommandGroup {
         if (configuration == 0 && DriverStation.getAlliance() == Alliance.Blue) {
             addCommands(
                     // Gyro.offset =
-                    // new AutoBall(4),
-                    // new AutoGoToCenterAndShoot(0, false),
-                    new AutoBall(4));
-            // new AutoGoToCenterAndShoot(0, true),
-            // new AutoGoToPosition(new Vector2(6, 0), 0));
+                    new AutoBall(4),
+                    new AutoGoToCenterAndShoot(0, false),
+                    new AutoBall(4),
+                    new AutoGoToCenterAndShoot(0, true),
+                    new AutoGoToPosition(new Vector2(-6, -2), 0));
         } else if (configuration == 0 && DriverStation.getAlliance() == Alliance.Red) {
             addCommands(
-                    // new AutoGoToCenterAndShoot(0, false),
-                    new AutoBall(2));
-            // new AutoGoToCenterAndShoot(0, false));
+                    new AutoGoToCenterAndShoot(0, false),
+                    new AutoBall(2),
+                    new AutoGoToCenterAndShoot(0, false),
+                    new AutoGoToPosition(new Vector2(6, 2), 0));
         }
     }
 }
