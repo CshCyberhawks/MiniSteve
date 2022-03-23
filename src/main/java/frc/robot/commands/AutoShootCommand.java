@@ -48,6 +48,6 @@ public class AutoShootCommand extends CommandBase {
                 : lastShootTime;
         boolean cargoReturn = transportSystem.getCargoAmount() <= 0 && MathClass.getCurrentTime() - lastShootTime > .1;
         return (transportSystem.getCargoAmount() <= 0 && cargoReturn) || IO.getAutoShootCancel()
-                || (MathClass.getCurrentTime() - startTime) > 5;
+                || (MathClass.getCurrentTime() - startTime) > 4;
     }
 }

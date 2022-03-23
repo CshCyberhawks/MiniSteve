@@ -41,9 +41,9 @@ public class AutoGoToPosition extends CommandBase {
         // (based on
         // robot staring position)
         if (!byBallNumber) {
-            Robot.swerveAuto.setDesiredPosition(desiredPosition, desiredVelocity);
+            Robot.swerveAuto.setDesiredPosition(desiredPosition);// , desiredVelocity);
         } else {
-            Robot.swerveAuto.setDesiredPositionBall(ballNumber, desiredVelocity);
+            Robot.swerveAuto.setDesiredPositionBall(ballNumber);// , desiredVelocity);
         }
     }
 
@@ -62,6 +62,6 @@ public class AutoGoToPosition extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Robot.swerveAuto.isAtDesiredPosition() || MathClass.getCurrentTime() - startTime > 3;
+        return Robot.swerveAuto.isAtDesiredPosition() || MathClass.getCurrentTime() - startTime > 5;
     }
 }

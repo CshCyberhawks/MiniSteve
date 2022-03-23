@@ -21,7 +21,7 @@ public class AutoGoToCenterAndShoot extends SequentialCommandGroup {
         if (move) {
             addCommands(
                     // new AutoGoToAngle(111),
-                    new AutoGoToPosition(shootPositions[shootPosition], 0),
+                    new AutoGoToPosition(new Vector2(0, 0), 0), // shootPositions[shootPosition], 0),
                     new AutoShootCommand(Robot.getShootSystem()));
         } else {
             addCommands(

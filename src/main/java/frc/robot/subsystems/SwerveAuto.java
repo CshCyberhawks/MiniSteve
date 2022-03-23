@@ -34,7 +34,7 @@ public class SwerveAuto {
 
     // both below args are in m/s - first is velocity (35% of max robot velocity of
     // 3.77), and a max accel of .05 m/s
-    private TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(2, .5);
+    private TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(2, .8);
     private TrapezoidProfile.State trapXCurrentState;
     private TrapezoidProfile.State trapXDesiredState;
     private TrapezoidProfile.State trapYCurrentState;
@@ -57,19 +57,21 @@ public class SwerveAuto {
                 Robot.swo.getPosition().positionCoord.y, Robot.swo.getVelocities()[1]);
     }
 
-    public void setDesiredPosition(Vector2 desiredPosition, double desiredVelocity) {
+    public void setDesiredPosition(Vector2 desiredPosition) {// , double desiredVelocity) {
         byBall = false;
         this.desiredPosition = desiredPosition;
 
         double[] polarPosition = MathClass.cartesianToPolar(desiredPosition.x, desiredPosition.y);
-        double[] desiredVelocities = MathClass.polarToCartesian(polarPosition[0], desiredVelocity);
+        // double[] desiredVelocities = MathClass.polarToCartesian(polarPosition[0],
+        // desiredVelocity);
 
-        trapXDesiredState = new TrapezoidProfile.State(this.desiredPosition.x, desiredVelocities[0]);
-        trapYDesiredState = new TrapezoidProfile.State(this.desiredPosition.y, desiredVelocities[0]);
+        trapXDesiredState = new TrapezoidProfile.State(this.desiredPosition.x, 0);// desiredVelocities[0]);
+        trapYDesiredState = new TrapezoidProfile.State(this.desiredPosition.y, 0);// desiredVelocities[0]);
     }
 
-    public void setDesiredPositionBall(int ballNumber, double desiredVelocity) {
-        setDesiredPosition(ballPositions[ballNumber], desiredVelocity);
+    public void setDesiredPositionBall(int ballNumber) {// , double desiredVelocity) {
+
+        setDesiredPosition(ballPositions[ballNumber]);// , desiredVelocity);
         byBall = true;
     }
 
@@ -77,7 +79,7 @@ public class SwerveAuto {
 
         double[] desiredPositionCart = MathClass.polarToCartesian(Gyro.getAngle(), distance);
 
-        setDesiredPosition(new Vector2(desiredPositionCart[0], desiredPositionCart[1]), 0);
+        setDesiredPosition(new Vector2(desiredPositionCart[0], desiredPositionCart[1]));// , 0);
 
     }
 

@@ -7,7 +7,11 @@ import frc.robot.util.Vector2;
 import frc.robot.Robot;
 
 public class AutoBall extends SequentialCommandGroup {
+    private double startTime = 0;
+    private IntakeSequence intakeSequence;
+
     public AutoBall(int ballNumber) {
+        startTime = MathClass.getCurrentTime();
         Robot.swo.resetPos();
         // add your autonomous commands below
         // example: below will move robot 2 meters on the x and rotate to 90 degrees
@@ -19,9 +23,17 @@ public class AutoBall extends SequentialCommandGroup {
                         desiredPosition.y - Robot.swo.getPosition().positionCoord.y)[0]);
         Robot.driveShuffleboardTab.add("desiredAngleAuto", desiredAngle);
         SmartDashboard.putNumber("desiredAngleAuto", desiredAngle);
+        intakeSequence = new IntakeSequence();
+        AutoGoToPosition autoPos = new AutoGoToPosition(ballNumber, 0);
+        autoPos.schedule();
         addCommands(
-                new AutoGoToAngle((desiredAngle + 180) % 360), // desiredAngle),
-                new AutoGoToPosition(ballNumber, 0));
+                // new AutoGoToAngle((desiredAngle + 180) % 360), // desiredAngle),
+                intakeSequence);
         // new LimeLightAuto());
+    }
+
+    @Override
+    public boolean isFinished() {
+        return intakeSequence.isFinished() || MathClass.getCurrentTime() - startTime > 5;
     }
 }
