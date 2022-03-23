@@ -20,18 +20,16 @@ public class AutoCommandGroup extends SequentialCommandGroup {
             addCommands(
                     // new AutoBall(1),
                     new AutoGoToCenterAndShoot(0, false),
-                    // new AutoBall(0));
-                    // new AutoGoToCenterAndShoot(0, true),
-                    new AutoGoToPosition(new Vector2(2, 0), 0));
+                    new AutoBall(0));
+            // new AutoGoToCenterAndShoot(0, true),
 
         } else if (configuration == 0 && DriverStation.getAlliance() == Alliance.Red) {
             addCommands(
                     // new Wait(3),
                     // new AutoGoToPosition(new Vector2(3, 0), 0),
                     new AutoGoToCenterAndShoot(0, false),
-                    new AutoGoToPosition(new Vector2(2, 0), 0));
+                    new AutoBall(0));
             // new AutoGoToCenterAndShoot(0, true),
-            // new AutoBall(0),
             // new AutoGoToCenterAndShoot(0, true));
             // new AutoGoToCenterAndShoot(0, false),
             // new AutoGoToPosition(new Vector2(2, 0), 0));

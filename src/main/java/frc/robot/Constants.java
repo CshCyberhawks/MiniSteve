@@ -132,5 +132,6 @@ public final class Constants {
         public static final int backRightEncoder = 3;
         public static final int backLeftEncoder = 2;
 
-        public static final double[] turnEncoderOffsets = { 293.906219904, 79.013663784, 71.367180192, 101.337880248 };
+        public static final double[] turnEncoderOffsets = { 294.785126064, 81.474601032, 69.16991479200001,
+                        102.83202072000002 };
 }

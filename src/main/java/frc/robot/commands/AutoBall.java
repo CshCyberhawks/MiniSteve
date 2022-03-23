@@ -1,14 +1,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.util.MathClass;
 import frc.robot.util.Vector2;
 import frc.robot.Robot;
 
-public class AutoBall extends SequentialCommandGroup {
+public class AutoBall extends CommandBase {
     private double startTime = 0;
     private IntakeSequence intakeSequence;
+    private AutoGoToPosition autoPos;
 
     public AutoBall(int ballNumber) {
         startTime = MathClass.getCurrentTime();
@@ -24,12 +26,16 @@ public class AutoBall extends SequentialCommandGroup {
         Robot.driveShuffleboardTab.add("desiredAngleAuto", desiredAngle);
         SmartDashboard.putNumber("desiredAngleAuto", desiredAngle);
         intakeSequence = new IntakeSequence();
-        AutoGoToPosition autoPos = new AutoGoToPosition(ballNumber, 0);
-        autoPos.schedule();
-        addCommands(
-                // new AutoGoToAngle((desiredAngle + 180) % 360), // desiredAngle),
-                intakeSequence);
+        autoPos = new AutoGoToPosition(ballNumber, 0);
+        // new AutoGoToAngle((desiredAngle + 180) % 360), // desiredAngle),
         // new LimeLightAuto());
+    }
+
+    @Override
+    public void initialize() {
+        autoPos.schedule();
+        intakeSequence.schedule();
+
     }
 
     @Override

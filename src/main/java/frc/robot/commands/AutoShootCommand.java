@@ -1,5 +1,8 @@
 package frc.robot.commands;
 
+import javax.sql.RowSetMetaData;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.ShootSystem;
@@ -47,6 +50,8 @@ public class AutoShootCommand extends CommandBase {
         lastShootTime = transportSystem.getCargoAmount() <= 0 && lastShootTime == 0 ? MathClass.getCurrentTime()
                 : lastShootTime;
         boolean cargoReturn = transportSystem.getCargoAmount() <= 0 && MathClass.getCurrentTime() - lastShootTime > .1;
+                        SmartDashboard.putBoolean("shoot command done", (transportSystem.getCargoAmount() <= 0 && cargoReturn) || IO.getAutoShootCancel()
+        || (MathClass.getCurrentTime() - startTime) > 4);
         return (transportSystem.getCargoAmount() <= 0 && cargoReturn) || IO.getAutoShootCancel()
                 || (MathClass.getCurrentTime() - startTime) > 4;
     }

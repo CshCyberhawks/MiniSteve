@@ -27,7 +27,9 @@ public class IntakeSequence extends SequentialCommandGroup {
     @Override
     public boolean isFinished() {
         if (!autoTransportCommand.isFinished()) {
-            System.out.println("manually canceled sequence");
+            if (IO.getAutoIntakeCancel()) {
+                System.out.println("manually canceled sequence");
+            }
             return IO.getAutoIntakeCancel();
         }
         return autoTransportCommand.isFinished();
