@@ -26,8 +26,12 @@ public class AutoCommandGroup extends SequentialCommandGroup {
 
         } else if (configuration == 0 && DriverStation.getAlliance() == Alliance.Red) {
             addCommands(
-                    new AutoGoToCenterAndShoot(0, false),
-                    new AutoBall(2));
+                    new Wait(3),
+                    new AutoGoToPosition(new Vector2(3, 0), 0),
+                    new AutoShootCommand(Robot.shootSystem),
+                    new AutoGoToPosition(new Vector2(-3, 0), 0));
+            // new AutoGoToCenterAndShoot(0, true),
+            // new AutoBall(2));
             // new AutoGoToCenterAndShoot(0, false),
             // new AutoGoToPosition(new Vector2(2, 0), 0));
             // new AutoGoToPosition(new Vector2(.7, 3.8), 0));

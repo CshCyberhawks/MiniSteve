@@ -8,7 +8,6 @@ public class Wait extends CommandBase {
     double startTime;
     private double length;
 
-    // length is in MS
     public Wait(double _length) {
         length = _length;
     }

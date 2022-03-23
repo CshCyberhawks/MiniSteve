@@ -117,11 +117,14 @@ public class Robot extends TimedRobot {
         climbSystem = new ClimbSystem();
 
         swerveSystem = new SwerveDriveTrain();
-        if (DriverStation.getAlliance() == Alliance.Blue) {
-            swo = new SwerveOdometry(Constants.blueStartingPositions[0]);// autoConfiguration.getSelected()]);
-        } else {
-            swo = new SwerveOdometry(Constants.redStartingPositions[0]);// autoConfiguration.getSelected()]);
-        }
+        // if (DriverStation.getAlliance() == Alliance.Blue) {
+        // swo = new SwerveOdometry(Constants.blueStartingPositions[0]);//
+        // autoConfiguration.getSelected()]);
+        // } else {
+        // swo = new SwerveOdometry(Constants.redStartingPositions[0]);//
+        // autoConfiguration.getSelected()]);
+        // }
+        swo = new SwerveOdometry(new FieldPosition(0, 0, 0));
 
         // driveSystem = new DriveSystem();
         // CameraServer.startAutomaticCapture();
