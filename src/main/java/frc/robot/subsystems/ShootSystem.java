@@ -36,7 +36,7 @@ public class ShootSystem extends SubsystemBase {
 
     public double shootMult = .9;
 
-    private NetworkTableEntry bottomShootSpeed;
+    private NetworkTableEntry shootSpeedTable;
     private NetworkTableEntry shootMultTable;
     private NetworkTableEntry isAtSpeedTable;
 
@@ -66,7 +66,7 @@ public class ShootSystem extends SubsystemBase {
         bottomPIDController = new PIDController(.01, 0, 0);
 
         autoShootRunning = false;
-        bottomShootSpeed = Robot.driveShuffleboardTab.add("Bottom Shoot Speed", topEncoder.getRate()).getEntry();
+        shootSpeedTable = Robot.driveShuffleboardTab.add("Shoot Speed", topEncoder.getRate()).getEntry();
 
         shootMultTable = Robot.driveShuffleboardTab.add("Shoot Mult", shootMult).getEntry();
         isAtSpeedTable = Robot.driveShuffleboardTab.add("At Desired Speed", false).getEntry();
@@ -116,7 +116,7 @@ public class ShootSystem extends SubsystemBase {
 
         SmartDashboard.putNumber("Top Encoder", topEncoder.getRate());
         SmartDashboard.putNumber("Bottom Encoder", bottomEncoder.getRate());
-        bottomShootSpeed.setDouble(bottomEncoder.getRate());
+        shootSpeedTable.setDouble(topEncoder.getRate());
         SmartDashboard.putNumber("shootPower", power);
 
         if (power == 0) {
