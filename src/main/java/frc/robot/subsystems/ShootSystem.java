@@ -32,11 +32,13 @@ public class ShootSystem extends SubsystemBase {
     private final int maxRPM = 5;
     private boolean autoShootRunning;
     public double bottomWheelSpeed;
+    public double topWheelSpeed;
 
-    public double shootMult = .85;
+    public double shootMult = .9;
 
     private NetworkTableEntry bottomShootSpeed;
     private NetworkTableEntry shootMultTable;
+    private NetworkTableEntry isAtSpeedTable;
 
     // bottom wheel encoder -3.7 for perfect shot
     // top wheel encoder 19 for perfect shot
@@ -67,6 +69,7 @@ public class ShootSystem extends SubsystemBase {
         bottomShootSpeed = Robot.driveShuffleboardTab.add("Bottom Shoot Speed", topEncoder.getRate()).getEntry();
 
         shootMultTable = Robot.driveShuffleboardTab.add("Shoot Mult", shootMult).getEntry();
+        isAtSpeedTable = Robot.driveShuffleboardTab.add("At Desired Speed", false).getEntry();
     }
 
     public Encoder getTopEncoder() {
@@ -120,6 +123,7 @@ public class ShootSystem extends SubsystemBase {
             topMotor.set(0);
             bottomLeftMotor.set(0);
             bottomRightMotor.set(0);
+            isAtSpeedTable.setBoolean(false);
             return;
         }
         power = .95 * shootMult;
@@ -130,9 +134,11 @@ public class ShootSystem extends SubsystemBase {
 
         // SmartDashboard.putNumber("Old Encoder", oldEncoder.getVelocity());
         bottomWheelSpeed = bottomEncoder.getRate();
+        topWheelSpeed = topEncoder.getRate();
+        isAtSpeedTable.setBoolean(topWheelSpeed >= 19);
         // power *= maxRPM; // Convert to RPM
 
-        double topPIDOut = topPIDController.calculate(topEncoder.getRate(), Constants.topShootSetpoint * shootMult);
+        double topPIDOut = topPIDController.calculate(topWheelSpeed, Constants.topShootSetpoint * shootMult);
 
         topMotor.set(MathUtil.clamp(-(power + topPIDOut), -1, 1));
 
