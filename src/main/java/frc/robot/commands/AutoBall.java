@@ -34,6 +34,6 @@ public class AutoBall extends SequentialCommandGroup {
 
     @Override
     public boolean isFinished() {
-        return intakeSequence.isFinished() || MathClass.getCurrentTime() - startTime > 5;
+        return intakeSequence.isFinished(); // || MathClass.getCurrentTime() - startTime > 5;
     }
 }

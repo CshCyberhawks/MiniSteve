@@ -54,14 +54,14 @@ public class AutoGoToPosition extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        SmartDashboard.putBoolean("auto translate command finsihed", Robot.swerveAuto.isAtDesiredPosition());
         // commented below code out so that robot will maintain desired autonomous
         // velocities
-        // Robot.swerveAuto.kill();
+        Robot.swerveAuto.kill();
     }
 
     @Override
     public boolean isFinished() {
-        return Robot.swerveAuto.isAtDesiredPosition() || MathClass.getCurrentTime() - startTime > 5;
+        SmartDashboard.putBoolean("auto translate command finsihed", Robot.swerveAuto.isAtDesiredPosition());
+        return Robot.swerveAuto.isAtDesiredPosition(); // || MathClass.getCurrentTime() - startTime > 5;
     }
 }
