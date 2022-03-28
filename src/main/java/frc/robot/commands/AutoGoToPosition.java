@@ -4,6 +4,7 @@ import frc.robot.Robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.util.MathClass;
 import frc.robot.util.Vector2;
 
 public class AutoGoToPosition extends CommandBase {
@@ -11,16 +12,19 @@ public class AutoGoToPosition extends CommandBase {
     private double desiredVelocity;
     private int ballNumber;
     private boolean byBallNumber = false;
+    private double startTime = 0;
 
     public AutoGoToPosition(Vector2 desiredPosition, double desiredVelocity) {
         this.desiredPosition = desiredPosition;
         this.desiredVelocity = desiredVelocity;
+        startTime = MathClass.getCurrentTime();
     }
 
     public AutoGoToPosition(int ballNumber, double desiredVelocity) {
         this.ballNumber = ballNumber;
         this.desiredVelocity = desiredVelocity;
         byBallNumber = true;
+
     }
 
     // this command will move the robot to the desired position x, y and twist
@@ -37,9 +41,9 @@ public class AutoGoToPosition extends CommandBase {
         // (based on
         // robot staring position)
         if (!byBallNumber) {
-            Robot.swerveAuto.setDesiredPosition(desiredPosition, desiredVelocity);
+            Robot.swerveAuto.setDesiredPosition(desiredPosition);// , desiredVelocity);
         } else {
-            Robot.swerveAuto.setDesiredPositionBall(ballNumber, desiredVelocity);
+            Robot.swerveAuto.setDesiredPositionBall(ballNumber);// , desiredVelocity);
         }
     }
 
@@ -50,15 +54,14 @@ public class AutoGoToPosition extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        SmartDashboard.putBoolean("auto translate command finsihed", Robot.swerveAuto.isAtDesiredPosition());
         // commented below code out so that robot will maintain desired autonomous
         // velocities
-        // Robot.swerveAuto.kill();
+        Robot.swerveAuto.kill();
     }
 
     @Override
     public boolean isFinished() {
-        return Robot.swerveAuto.isAtDesiredPosition();
+        SmartDashboard.putBoolean("auto translate command finsihed", Robot.swerveAuto.isAtDesiredPosition());
+        return Robot.swerveAuto.isAtDesiredPosition(); // || MathClass.getCurrentTime() - startTime > 5;
     }
-
 }

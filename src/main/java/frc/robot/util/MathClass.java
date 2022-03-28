@@ -21,44 +21,38 @@ public class MathClass {
 
     public static double[] polarToCartesian(double theta, double r) {
         // math to turn polar coordinate into cartesian
-        double x = r * Math.cos(Math.toRadians(theta));
-        double y = r * Math.sin(Math.toRadians(theta));
+        theta = Math.toRadians(theta);
+        double x = r * Math.cos(theta);
+        double y = r * Math.sin(theta);
 
         return new double[] { x, y };
     }
 
-    public static double getMin(double[] values) {
+    public static double[] getMinMax(double[] values) {
         double min = values[0];
-
-        for (int i = 1; i < values.length; i++)
-            if (values[i] < min)
-                min = values[i];
-
-        return min;
-    }
-
-    public static double getMax(double[] values) {
         double max = values[0];
 
-        for (int i = 1; i < values.length; i++)
-            if (values[i] > max)
-                max = values[i];
-        return max;
+        for (double v : values) {
+            if (v < min)
+                min = v;
+            if (v > max)
+                max = v;
+        }
+        return new double[] {min, max};
     }
 
     public static double[] normalizeSpeeds(double[] speeds, double maxSpeed, double minSpeed) {
         double[] retSpeeds = speeds;
 
-        double max = getMax(speeds);
-        double min = getMin(speeds);
-        double divSpeed = Math.abs(min) > max ? Math.abs(min) : max;
-        double highestSpeed = max > maxSpeed ? maxSpeed : max;
-        double lowestSpeed = min < minSpeed ? minSpeed : min;
+        double[] minMax = getMinMax(speeds);
+        double divSpeed = Math.abs(minMax[0]) > minMax[1] ? Math.abs(minMax[0]) : minMax[1];
+        double highestSpeed = minMax[1] > maxSpeed ? maxSpeed : minMax[1];
+        double lowestSpeed = minMax[0] < minSpeed ? minSpeed : minMax[0];
 
         for (int i = 0; i < speeds.length; i++) {
-            if (max > maxSpeed && speeds[i] > 0)
+            if (minMax[1] > maxSpeed && speeds[i] > 0)
                 retSpeeds[i] = speeds[i] / divSpeed * highestSpeed;
-            else if (min < minSpeed && speeds[i] < 0)
+            else if (minMax[0] < minSpeed && speeds[i] < 0)
                 retSpeeds[i] = speeds[i] / -divSpeed * lowestSpeed;
         }
         return retSpeeds;

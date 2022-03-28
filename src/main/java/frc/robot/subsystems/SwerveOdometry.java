@@ -14,8 +14,9 @@ public class SwerveOdometry extends SubsystemBase {
     private double lastUpdateTime = 1;
     private double[] robotVelocities = new double[] { 0, 0 };
 
-    public SwerveOdometry(FieldPosition _fieldPosition) {
-        fieldPosition = _fieldPosition;
+    public SwerveOdometry(FieldPosition fieldPosition) {
+        this.fieldPosition = fieldPosition;
+        Gyro.offset = fieldPosition.angle;
     }
 
     public FieldPosition getPosition() {

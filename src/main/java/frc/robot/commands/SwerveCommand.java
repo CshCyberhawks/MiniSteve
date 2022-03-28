@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveDriveTrain;
+import frc.robot.util.DriveState;
 import frc.robot.util.Gyro;
 import frc.robot.util.MathClass;
 import frc.robot.util.IO;
@@ -25,25 +26,25 @@ public class SwerveCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (IO.getJoystickButton5())
+        if (IO.getSWOReset())
             Robot.swo.resetPos();
         Robot.swo.getPosition();
         if (IO.resetGyro())
             Gyro.setOffset();
         if (IO.limelightLockOn())
             swerveDriveTrain.drive(
-                    -IO.moveRobotY(),
                     -IO.moveRobotX(),
+                    -IO.moveRobotY(),
                     -MathClass.calculateDeadzone(Limelight.getHorizontalOffset(), .5) / 27,
                     IO.getJoyThrottle(),
-                    "tele");
+                    DriveState.TELE);
         else
             swerveDriveTrain.drive(
-                    -IO.moveRobotY(),
                     -IO.moveRobotX(),
+                    -IO.moveRobotY(),
                     -IO.turnControl(),
                     IO.getJoyThrottle(),
-                    "tele");
+                    DriveState.TELE);
     }
 
     // Called once the command ends or is interrupted.

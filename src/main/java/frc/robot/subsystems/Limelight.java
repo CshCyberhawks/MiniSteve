@@ -54,9 +54,9 @@ public class Limelight extends SubsystemBase {
     }
 
     public static double getBallDistance() {
-        double cameraHeight = 0.305; // Height of camera (meters)
+        double cameraHeight = .711; // Height of camera (meters)
         double ballHeight = 0.24; // Height of target (meters) measured perfectly
-        int mountAngle = 0; // Angle that the limelight is mounted
+        double mountAngle = 23; // Angle that the limelight is mounted
         return (ballHeight - cameraHeight) / Math.tan(mountAngle + getVerticalOffset());
     }
 

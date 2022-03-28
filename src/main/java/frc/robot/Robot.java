@@ -2,28 +2,42 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+//! SHOOTER IS THE FRONT FOR AUTO
 package frc.robot;
 
+import java.util.Map;
+
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.util.net.PortForwarder;
 import frc.robot.commands.ManualIntakeCommand;
 import frc.robot.commands.ManualTransportCommand;
 import frc.robot.commands.ShootCommand;
-
+import frc.robot.subsystems.ClimbSystem;
 import frc.robot.subsystems.IntakeSystem;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShootSystem;
 import frc.robot.subsystems.TransportSystem;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommandGroup;
+import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.SwerveAuto;
 import frc.robot.subsystems.SwerveDriveTrain;
 //import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.SwerveOdometry;
+import frc.robot.util.DriveEncoder;
 import frc.robot.util.FieldPosition;
 import frc.robot.util.Gyro;
+import frc.robot.util.IO;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -36,7 +50,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
  */
 public class Robot extends TimedRobot {
     public static SwerveAuto swerveAuto;
-
+    public static HttpCamera limelightFeed;
     public static SwerveDriveTrain swerveSystem;
     public static SwerveOdometry swo;
     public static SwerveCommand swerveCommand;
@@ -48,13 +62,24 @@ public class Robot extends TimedRobot {
     public static DigitalInput frontBreakBeam;
     public static DigitalInput backBreakBeam;
     public static DigitalInput topBreakBeam;
+    public static DigitalInput shootBreakBeam;
+
+    public static boolean isSpitting = false;
 
     // public OldSwerveDriveTrain swerveSystem;
     // public SwerveDriveTrain swerveSystem;
     public static IntakeSystem intakeSystem;
     public static TransportSystem transportSystem;
+    public static ClimbSystem climbSystem;
 
     public static AutoCommandGroup autoCommands;
+    private static int startingPosition;
+
+    private static SendableChooser<Integer> autoConfiguration = new SendableChooser<>();
+    private static SendableChooser<Boolean> driveConfiguration = new SendableChooser<>();
+
+    public static ShuffleboardTab driveShuffleboardTab = Shuffleboard.getTab("DriverStream");
+
     // public RobotContainer m_robotContainer;
 
     /**
@@ -64,22 +89,42 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
+        limelightFeed = new HttpCamera("limelight", "http://10.28.75.11:5800");
+        // CameraServer.startAutomaticCapture(limelightFeed);
+
+        driveShuffleboardTab.add("LL", limelightFeed).withPosition(0, 0).withSize(8, 4)
+                .withProperties(Map.of("Show Crosshair", true, "Show Controls", false));
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our
         // autonomous chooser on the dashboard.
         // teamColor = DriverStation.getAlliance();
         // m_robotContainer = new RobotContainer();
         // PortForwarder.add(5800, "limelight.local", 5800);
+        PortForwarder.add(5800, "limelight.local", 5800);
+        autoConfiguration.setDefaultOption("Auto 0", 0);
+        autoConfiguration.addOption("Auto 1", 1);
+
+        driveConfiguration.setDefaultOption("Not HOSAS", false);
+        driveConfiguration.addOption("HOSAS", true);
+
         frontBreakBeam = new DigitalInput(Constants.frontBreakBeam);
         backBreakBeam = new DigitalInput(Constants.backBreakBeam);
         topBreakBeam = new DigitalInput(Constants.topBreakBeam);
+        shootBreakBeam = new DigitalInput(Constants.shootBreakBeam);
         shootSystem = new ShootSystem();
         intakeSystem = new IntakeSystem();
         transportSystem = new TransportSystem();
+        climbSystem = new ClimbSystem();
 
         swerveSystem = new SwerveDriveTrain();
+        // if (DriverStation.getAlliance() == Alliance.Blue) {
+        // swo = new SwerveOdometry(Constants.blueStartingPositions[0]);//
+        // autoConfiguration.getSelected()]);
+        // } else {
+        // swo = new SwerveOdometry(Constants.redStartingPositions[0]);//
+        // autoConfiguration.getSelected()]);
+        // }
         swo = new SwerveOdometry(new FieldPosition(0, 0, 0));
-        CameraServer.startAutomaticCapture();
 
         // driveSystem = new DriveSystem();
         // CameraServer.startAutomaticCapture();
@@ -106,6 +151,10 @@ public class Robot extends TimedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
+
+        IO.hosas = driveConfiguration.getSelected();
+
+        SmartDashboard.putNumber("cargoStored", transportSystem.getCargoAmount());
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -120,7 +169,7 @@ public class Robot extends TimedRobot {
     }
 
     /**
-     * This autonomous runs the autonomous command selected by your
+     * This autonomou6s runs the autonomous command selected by your
      * {@link RobotContainer} class.
      */
     @Override
@@ -128,32 +177,34 @@ public class Robot extends TimedRobot {
         if (swerveCommand != null) {
             swerveCommand.cancel();
         }
+        Limelight.pipelineInit();
 
         // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         swerveAuto = new SwerveAuto();
-        autoCommands = new AutoCommandGroup(0);
+        transportSystem.setCargoAmount(1);
+        autoCommands = new AutoCommandGroup(0);// autoConfiguration.getSelected());
 
         // schedule the autonomous command (example)
         autoCommands.schedule();
-
     }
 
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
         swo.updatePosition();
-
+        transportSystem.cargoMonitor();
     }
 
     @Override
     public void teleopInit() {
-
         shootSystem.setDefaultCommand(new ShootCommand(shootSystem));
         intakeSystem.setDefaultCommand(new ManualIntakeCommand(intakeSystem));
         transportSystem.setDefaultCommand(new ManualTransportCommand(transportSystem));
+        climbSystem.setDefaultCommand(new ClimbCommand(climbSystem));
 
         swerveCommand = new SwerveCommand(swerveSystem);
         swerveCommand.schedule();
+        Limelight.pipelineInit();
 
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
@@ -168,25 +219,24 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         swo.updatePosition();
+        transportSystem.cargoMonitor();
 
-        SmartDashboard.putNumber("cargoStored", transportSystem.getCargoAmount());
-
-        SmartDashboard.putNumber("Gyro Vel X", Gyro.getVelocityX());
-        SmartDashboard.putNumber("Gyro Vel Y", Gyro.getVelocityY());
-        SmartDashboard.putNumber("Gyro Accel X", Gyro.getAccelX());
-        SmartDashboard.putNumber("Gyro Accel Y", Gyro.getAccelY());
+        SmartDashboard.putBoolean("frontBreakBeam", frontBreakBeam.get());
+        SmartDashboard.putBoolean("backBreakBeam", backBreakBeam.get());
+        SmartDashboard.putBoolean("topBreakBeam", topBreakBeam.get());
+        SmartDashboard.putBoolean("shootBreakBeam", shootBreakBeam.get());
     }
 
     @Override
     public void testInit() {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
-
     }
 
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
+
     }
 
     public static IntakeSystem getIntakeSystem() {
@@ -202,7 +252,6 @@ public class Robot extends TimedRobot {
     }
 
     public static DigitalInput getFrontBreakBeam() {
-        SmartDashboard.putBoolean("frontBreakBeam", frontBreakBeam.get());
         return frontBreakBeam;
     }
 
@@ -212,5 +261,9 @@ public class Robot extends TimedRobot {
 
     public static DigitalInput getTopBreakBeam() {
         return topBreakBeam;
+    }
+
+    public static DigitalInput getShootBreakBeam() {
+        return shootBreakBeam;
     }
 }

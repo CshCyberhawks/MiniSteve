@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.util.DriveState;
 
 public class SwerveAuto {
     private Vector2 desiredPosition;
@@ -33,12 +34,13 @@ public class SwerveAuto {
 
     // both below args are in m/s - first is velocity (35% of max robot velocity of
     // 3.77), and a max accel of .05 m/s
-    private TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(3.777, 1);
+    private TrapezoidProfile.Constraints trapConstraints = new TrapezoidProfile.Constraints(2, .8);
     private TrapezoidProfile.State trapXCurrentState;
     private TrapezoidProfile.State trapXDesiredState;
     private TrapezoidProfile.State trapYCurrentState;
     private TrapezoidProfile.State trapYDesiredState;
 
+    // TODO: prob need to increase derivates
     private PIDController xPID = new PIDController(1, 0, 0);
     private PIDController yPID = new PIDController(1, 0, 0);
 
@@ -55,19 +57,21 @@ public class SwerveAuto {
                 Robot.swo.getPosition().positionCoord.y, Robot.swo.getVelocities()[1]);
     }
 
-    public void setDesiredPosition(Vector2 desiredPosition, double desiredVelocity) {
+    public void setDesiredPosition(Vector2 desiredPosition) {// , double desiredVelocity) {
         byBall = false;
         this.desiredPosition = desiredPosition;
 
         double[] polarPosition = MathClass.cartesianToPolar(desiredPosition.x, desiredPosition.y);
-        double[] desiredVelocities = MathClass.polarToCartesian(polarPosition[0], desiredVelocity);
+        // double[] desiredVelocities = MathClass.polarToCartesian(polarPosition[0],
+        // desiredVelocity);
 
-        trapXDesiredState = new TrapezoidProfile.State(this.desiredPosition.x, desiredVelocities[0]);
-        trapYDesiredState = new TrapezoidProfile.State(this.desiredPosition.y, desiredVelocities[0]);
+        trapXDesiredState = new TrapezoidProfile.State(this.desiredPosition.x, 0);// desiredVelocities[0]);
+        trapYDesiredState = new TrapezoidProfile.State(this.desiredPosition.y, 0);// desiredVelocities[0]);
     }
 
-    public void setDesiredPositionBall(int ballNumber, double desiredVelocity) {
-        setDesiredPosition(ballPositions[ballNumber], desiredVelocity);
+    public void setDesiredPositionBall(int ballNumber) {// , double desiredVelocity) {
+
+        setDesiredPosition(ballPositions[ballNumber]);// , desiredVelocity);
         byBall = true;
     }
 
@@ -75,7 +79,7 @@ public class SwerveAuto {
 
         double[] desiredPositionCart = MathClass.polarToCartesian(Gyro.getAngle(), distance);
 
-        setDesiredPosition(new Vector2(desiredPositionCart[0], desiredPositionCart[1]), 0);
+        setDesiredPosition(new Vector2(desiredPositionCart[0], desiredPositionCart[1]));// , 0);
 
     }
 
@@ -89,7 +93,6 @@ public class SwerveAuto {
     }
 
     public boolean isAtDesiredPosition() {
-
         if (byBall) {
             return MathClass.calculateDeadzone(
                     desiredPosition.x - MathClass.swosToMeters(Robot.swo.getPosition().positionCoord.x),
@@ -109,8 +112,9 @@ public class SwerveAuto {
     }
 
     public boolean isAtDesiredAngle() {
-        if (MathClass.calculateDeadzone(Math.abs(Robot.swo.getPosition().angle) - Math.abs(desiredAngle),
-                4) == 0) {
+        if (MathClass.calculateDeadzone(
+                MathClass.wrapAroundAngles(Robot.swo.getPosition().angle) - MathClass.wrapAroundAngles(desiredAngle),
+                10) == 0) {
             return true;
         }
         return false;
@@ -141,10 +145,10 @@ public class SwerveAuto {
         double yVel = trapYOutput.velocity
                 + yPIDOutput;
 
-        SmartDashboard.putNumber("xPID", xVel / 3.777);
-        SmartDashboard.putNumber("yPID", yVel / 3.777);
+        SmartDashboard.putNumber("xDriveInput", xVel / 3.777);
+        SmartDashboard.putNumber("yDriveInput", yVel / 3.777);
 
-        Robot.swerveSystem.drive(xVel / 3.777, yVel / 3.777, 0, 0, "auto");
+        Robot.swerveSystem.drive(xVel / 3.777, yVel / 3.777, 0, 0, DriveState.AUTO);
 
         trapXCurrentState = trapXOutput;
         trapYCurrentState = trapYOutput;
@@ -156,10 +160,9 @@ public class SwerveAuto {
     public void twist() {
         double twistValue = MathUtil.clamp(Robot.swo.getPosition().angle - desiredAngle, -1, 1);
 
-        System.out.println("isTwisting");
-        double twistInput = twistValue * .5;
+        double twistInput = twistValue * .3;
         SmartDashboard.putNumber(" auto twistVal ", twistInput);
-        Robot.swerveSystem.drive(0, 0, twistInput, 0, "auto");
+        Robot.swerveSystem.drive(0, 0, twistInput, 0, DriveState.AUTO);
 
     }
 

@@ -22,7 +22,7 @@ public class DriveEncoder {
         // SmartDashboard.putNumber("Raw Drive Encoder",
         // driveMotor.getSelectedSensorVelocity());
 
-        double velocity = (driveMotor.getSelectedSensorVelocity() / 2048) * 10;
+        double velocity = driveMotor.getSelectedSensorVelocity() / 204.8;
         // SmartDashboard.putNumber("Drive Encoder", velocity);
         // lastUpdateTime = timeNow;
         return velocity;

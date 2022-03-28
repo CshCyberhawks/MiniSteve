@@ -10,20 +10,22 @@ import frc.robot.Robot;
 public class AutoGoToCenterAndShoot extends SequentialCommandGroup {
     private Vector2[] shootPositions;
 
-    public AutoGoToCenterAndShoot(int shootPosition) {
+    public AutoGoToCenterAndShoot(int shootPosition, boolean move) {
         // add your autonomous commands below
         // example: below will move robot 2 meters on the x and rotate to 90 degrees
         // then it will wait 1 second before moving the robot back to its starting
         // position
-        if (DriverStation.getAlliance() == Alliance.Blue) {
-            shootPositions = Constants.blueShootingPositions;
-        } else {
-            shootPositions = Constants.redShootingPositions;
-        }
-        addCommands(
-                new AutoGoToAngle(0),
-                new AutoGoToPosition(shootPositions[shootPosition], 0),
-                new AutoShootCommand(Robot.getShootSystem()));
+        shootPositions = DriverStation.getAlliance() == Alliance.Blue ? Constants.blueShootingPositions
+                : Constants.redShootingPositions;
 
+        if (move) {
+            addCommands(
+                    // new AutoGoToAngle(111),
+                    new AutoGoToPosition(new Vector2(0, 0), 0), // shootPositions[shootPosition], 0),
+                    new AutoShootCommand(Robot.getShootSystem()));
+        } else {
+            addCommands(
+                    new AutoShootCommand(Robot.getShootSystem()));
+        }
     }
 }

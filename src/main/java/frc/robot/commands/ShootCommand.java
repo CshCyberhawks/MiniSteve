@@ -17,6 +17,11 @@ public class ShootCommand extends CommandBase {
 
     @Override
     public void execute() {
+        if (IO.raiseShootSpeed())
+            shootSystem.shootMult += 0.05;
+        if (IO.lowerShootSpeed())
+            shootSystem.shootMult -= 0.05;
+
         if (IO.autoShoot()) {
             shootCommand = new AutoShootCommand(shootSystem);
             shootCommand.schedule();
