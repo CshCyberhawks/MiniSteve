@@ -175,7 +175,7 @@ public class Robot extends TimedRobot {
 
     orchestra = new Orchestra(instruments);
 
-    loadSong(1);
+    loadSong(0);
 
     orchestra.play();
   }
