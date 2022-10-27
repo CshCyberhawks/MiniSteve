@@ -31,7 +31,7 @@ public class DriveCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-      double forwardSpeed = IO.getY();
+      double forwardSpeed = IO.getY()*IO.getThrottle();
       double turnlevel = IO.getX();
       double turnSpeed = IO.getZ();
 
