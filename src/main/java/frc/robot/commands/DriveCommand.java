@@ -32,6 +32,7 @@ public class DriveCommand extends CommandBase {
     @Override
     public void execute() {
       double forwardSpeed = IO.getY();
+      double turnlevel = IO.getX();
       double turnSpeed = IO.getZ();
 
       double leftSpeed = MathUtil.clamp(forwardSpeed - (turnSpeed * .5), -1, 1);
